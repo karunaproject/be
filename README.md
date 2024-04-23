@@ -1,6 +1,6 @@
 # Karuna Backend
 
-## Polish:
+## Polski:
 
 ## Aby uruchomić ten projekt, wcześniej musisz pobrać repozytorium DevOps i uruchomić Docker
 
