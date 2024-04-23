@@ -56,8 +56,7 @@ jobs:
 
       - name: Publish to GitHub Packages
         run: |
-          cd microservices
-          echo "//maven.pkg.github.com/username/repository/:registryToken=$GITHUB_TOKEN" > .npmrc
+          echo "//maven.pkg.github.com/karunaproject/be/:registryToken=$GITHUB_TOKEN" > .npmrc
           mvn deploy -Dmaven.deploy.skip=true -Dmaven.repo.local=$HOME/.m2/repository
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
