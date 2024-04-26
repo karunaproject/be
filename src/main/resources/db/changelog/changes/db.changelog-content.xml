@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet author="Maciej" id="create_contents_table">
+        <dropTable  cascadeConstraints="true"
+                    tableName="contents"/>
+        <createTable tableName="contents">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="page" type="VARCHAR(255)">
+                    <constraints nullable="true"/>
+            </column>
+            <column name="key" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="value_pl" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <insert tableName="contents">
+            <column name="page" value="Home"/>
+            <column name="key" value="welcome_message"/>
+            <column name="value_pl" value="Welcome to our website!"/>
+        </insert>
+        <insert tableName="contents">
+            <column name="page" value="About"/>
+            <column name="key" value="company_description"/>
+            <column name="value_pl" value="A brief description of your company"/>
+        </insert>
+        <insert tableName="contents">
+            <column name="page" value="null"/>
+            <column name="key" value="Default_1"/>
+            <column name="value_pl" value="Default msg for all pages"/>
+        </insert>
+        <insert tableName="contents">
+            <column name="page" value="null"/>
+            <column name="key" value="Default_2"/>
+            <column name="value_pl" value="Default msg for all pages 2"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
