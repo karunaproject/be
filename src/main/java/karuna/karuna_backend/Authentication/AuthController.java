@@ -30,8 +30,8 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@RequestBody String name) {
-        service.authenticateUser(name, "123");
-        return ResponseEntity.ok("test");
+        String jwt = service.authenticateUser(name, "123");
+        return ResponseEntity.ok(jwt);
     }
 
     @PostMapping("/register")
@@ -40,7 +40,7 @@ public class AuthController {
                 .username(name)
                 .password(passwordEncoder.encode("123"))
                 .build();
-            service.registerUser(user);
-            return ResponseEntity.ok("dodane");
+        String jwt = service.registerUser(user);
+        return ResponseEntity.ok(jwt);
     }
 }

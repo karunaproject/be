@@ -1,5 +1,6 @@
 package karuna.karuna_backend.Services;
 
+import karuna.karuna_backend.Authentication.CustomUserDetails;
 import karuna.karuna_backend.Authentication.JWT.JwtTokenService;
 import karuna.karuna_backend.DTO.UserDTO;
 import karuna.karuna_backend.Errors.CustomException;
@@ -66,20 +67,22 @@ public class UserService {
      * @param user the User to register.
      * @return the UserDTO representation of the registered user.
      */
-    public void registerUser(User user)  {
+    public String registerUser(User user)  {
             Role defaultRole = roleRepository.findByName("ROLE_USER")
                 .orElseThrow(() -> new RuntimeException("Default role not found."));
 
             user.getRoles().add(defaultRole);
             User savedUser = userRepository.save(user);
-           // return Optional.of(savedUser).map(User::dto);
+
+            return jwtTokenService.generateToken(savedUser.mapToUserDetails());
     }
 
-    public void authenticateUser(String username, String password) throws AuthenticationException{
+    public String authenticateUser(String username, String password) throws AuthenticationException{
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(username, password)
         );
-        final String jwt = jwtTokenService.generateToken(authentication);
+
+        return jwtTokenService.generateToken((CustomUserDetails) authentication.getPrincipal());
 
     }
 
