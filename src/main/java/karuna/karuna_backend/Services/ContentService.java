@@ -5,6 +5,7 @@ import karuna.karuna_backend.Repositories.ContentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,11 +15,15 @@ public class ContentService {
 
     private final ContentRepository contentRepository;
 
-    public List<Content> getContentByPage(String page) {
+    public HashMap<String, String> getContentByPage(String page) {
         List<Content> allPages = contentRepository.findByPageIsNull();
         Optional<List<Content>> pages = contentRepository.findByPage(page);
         pages.ifPresent(allPages::addAll);
+        HashMap<String, String> allContent = new HashMap<>();
+        allPages.forEach(singlePage -> {
+            allContent.put(singlePage.getKey(), singlePage.getValuePl());
+        });
 
-        return allPages;
+        return allContent;
     }
 }
