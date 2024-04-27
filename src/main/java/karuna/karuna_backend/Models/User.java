@@ -2,7 +2,11 @@ package karuna.karuna_backend.Models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import karuna.karuna_backend.DTO.UserDTO;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name="users")
@@ -10,16 +14,31 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 @Getter
+@Setter
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long ID;
+    private long id;
 
-    @Column(name = "username", nullable = false)
+    @Column(name = "username", nullable = false, unique = true)
     private String username;
 
     @Column(name = "password", nullable = false)
     private String password;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "user_roles",
+            joinColumns = @JoinColumn(name="user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name="role_id", referencedColumnName = "id")
+    )
+    private List<Role> roles = new ArrayList<>();
+
+    public UserDTO dto(){
+        return UserDTO.builder()
+                .username(this.username)
+                .password(this.password)
+                .build();
+    }
 
 }

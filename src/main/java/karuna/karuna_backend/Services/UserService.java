@@ -1,8 +1,20 @@
 package karuna.karuna_backend.Services;
 
+import karuna.karuna_backend.Authentication.JWT.JwtTokenService;
 import karuna.karuna_backend.DTO.UserDTO;
+import karuna.karuna_backend.Errors.CustomException;
+import karuna.karuna_backend.Errors.DatabaseExceptionHandler;
 import karuna.karuna_backend.Models.User;
 import karuna.karuna_backend.Repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -11,11 +23,18 @@ import java.util.Optional;
 public class UserService {
 
 
+    private final AuthenticationManager authenticationManager;
+    private final JwtTokenService jwtTokenService;
     private final UserRepository repository;
 
-    //@Autowired
-    public UserService(UserRepository repository) {
+
+    @Autowired
+    public UserService(UserRepository repository,
+                       AuthenticationManager authenticationManager,
+                       JwtTokenService jwtTokenService) {
         this.repository = repository;
+        this.authenticationManager=authenticationManager;
+        this.jwtTokenService=jwtTokenService;
     }
 
     /**
@@ -24,10 +43,17 @@ public class UserService {
      * @return an Optional containing the UserDTO if the user is found, or an empty Optional if not found.
      */
     public Optional<UserDTO> getUserById(int id){
-        Optional<User> optionalUser = repository.findByID(id);
-        return optionalUser.map(this::convertToDTO);
+        Optional<User> optionalUser = repository.findById(id);
+        return optionalUser.map(User::dto);
 
     }
+
+    public Optional<UserDTO> getUserByUsername(String username){
+        Optional<User> optionalUser = repository.findByUsername(username);
+        return optionalUser.map(User::dto);
+
+    }
+
 
     /**
      * Registers a new user in the repository.
@@ -35,21 +61,18 @@ public class UserService {
      * @param user the User to register.
      * @return the UserDTO representation of the registered user.
      */
-    public UserDTO registerUser(User user){
-        return convertToDTO(repository.save(user));
+    public void registerUser(User user)  {
+            User savedUser = repository.save(user);
+           // return Optional.of(savedUser).map(User::dto);
+    }
+
+    public void authenticateUser(String username, String password) throws AuthenticationException{
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(username, password)
+        );
+        final String jwt = jwtTokenService.generateToken(authentication);
+
     }
 
 
-    /**
-     * Converts a User entity to a UserDTO.
-     * This method is used internally to transform User objects into their Data Transfer Object (DTO) form.
-     * @param user the User to convert.
-     * @return the converted UserDTO.
-     */
-    private UserDTO convertToDTO(User user) {
-        UserDTO userDTO = new UserDTO();
-        userDTO.setUsername(user.getUsername());
-        userDTO.setPassword(user.getPassword());
-        return userDTO;
-    }
 }
