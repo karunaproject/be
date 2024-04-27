@@ -4,7 +4,9 @@ import karuna.karuna_backend.Authentication.JWT.JwtTokenService;
 import karuna.karuna_backend.DTO.UserDTO;
 import karuna.karuna_backend.Errors.CustomException;
 import karuna.karuna_backend.Errors.DatabaseExceptionHandler;
+import karuna.karuna_backend.Models.Role;
 import karuna.karuna_backend.Models.User;
+import karuna.karuna_backend.Repositories.RoleRepository;
 import karuna.karuna_backend.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -25,14 +27,17 @@ public class UserService {
 
     private final AuthenticationManager authenticationManager;
     private final JwtTokenService jwtTokenService;
-    private final UserRepository repository;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
 
 
     @Autowired
-    public UserService(UserRepository repository,
+    public UserService(UserRepository userRepository,
+                       RoleRepository roleRepository,
                        AuthenticationManager authenticationManager,
                        JwtTokenService jwtTokenService) {
-        this.repository = repository;
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
         this.authenticationManager=authenticationManager;
         this.jwtTokenService=jwtTokenService;
     }
@@ -43,13 +48,13 @@ public class UserService {
      * @return an Optional containing the UserDTO if the user is found, or an empty Optional if not found.
      */
     public Optional<UserDTO> getUserById(int id){
-        Optional<User> optionalUser = repository.findById(id);
+        Optional<User> optionalUser = userRepository.findById(id);
         return optionalUser.map(User::dto);
 
     }
 
     public Optional<UserDTO> getUserByUsername(String username){
-        Optional<User> optionalUser = repository.findByUsername(username);
+        Optional<User> optionalUser = userRepository.findByUsername(username);
         return optionalUser.map(User::dto);
 
     }
@@ -62,7 +67,11 @@ public class UserService {
      * @return the UserDTO representation of the registered user.
      */
     public void registerUser(User user)  {
-            User savedUser = repository.save(user);
+            Role defaultRole = roleRepository.findByName("ROLE_USER")
+                .orElseThrow(() -> new RuntimeException("Default role not found."));
+
+            user.getRoles().add(defaultRole);
+            User savedUser = userRepository.save(user);
            // return Optional.of(savedUser).map(User::dto);
     }
 
