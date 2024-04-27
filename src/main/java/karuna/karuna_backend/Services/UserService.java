@@ -3,21 +3,16 @@ package karuna.karuna_backend.Services;
 import karuna.karuna_backend.Authentication.CustomUserDetails;
 import karuna.karuna_backend.Authentication.JWT.JwtTokenService;
 import karuna.karuna_backend.DTO.UserDTO;
-import karuna.karuna_backend.Errors.CustomException;
-import karuna.karuna_backend.Errors.DatabaseExceptionHandler;
+import karuna.karuna_backend.Errors.AuthenticateExceptions.CustomAuthenticationException;
 import karuna.karuna_backend.Models.Role;
 import karuna.karuna_backend.Models.User;
 import karuna.karuna_backend.Repositories.RoleRepository;
 import karuna.karuna_backend.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -78,13 +73,19 @@ public class UserService {
     }
 
     public String authenticateUser(String username, String password) throws AuthenticationException{
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(username, password)
-        );
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(username, password)
+            );
 
-        return jwtTokenService.generateToken((CustomUserDetails) authentication.getPrincipal());
+            return jwtTokenService.generateToken((CustomUserDetails) authentication.getPrincipal());
+
+        }
+        catch (AuthenticationException ex) {
+            throw new CustomAuthenticationException("wrong_login_credentials",
+                    "Provided login credentials are invalid");
+        }
+
 
     }
-
-
 }

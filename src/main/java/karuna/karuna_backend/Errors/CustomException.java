@@ -9,7 +9,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class CustomException{
+public class CustomException extends RuntimeException{
     private  String key;
     private  String description;
+
+    public CustomExceptionDao mapToDao(){
+        return new CustomExceptionDao(key, description);
+    }
 }

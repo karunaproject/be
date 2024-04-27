@@ -1,4 +1,4 @@
-package karuna.karuna_backend.Errors;
+package karuna.karuna_backend.Errors.DatabaseExceptions;
 
 import jakarta.annotation.PostConstruct;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -12,13 +12,13 @@ import java.util.Map;
 public class DatabaseErrorResolver {
     private final Map<String, ErrorCode> errorMappings;
 
-    protected enum ErrorCode{
+      enum ErrorCode{
         UNKNOWN_ERROR,
         UNIQUE_CONSTRAINT_VIOLATION,
         NOT_NULL_CONSTRAINT_VIOLATION
     }
 
-    protected DatabaseErrorResolver() {
+     DatabaseErrorResolver() {
         errorMappings = new HashMap<>();
 
     }
@@ -32,12 +32,12 @@ public class DatabaseErrorResolver {
         errorMappings.put("23502", ErrorCode.NOT_NULL_CONSTRAINT_VIOLATION); // PostgreSQL NOT NULL constraint
     }
 
-    protected ErrorCode resolveErrorCode(DataIntegrityViolationException e) {
+     ErrorCode resolveErrorCode(DataIntegrityViolationException e) {
         String errorCode = extractErrorCode(e);
         return errorMappings.getOrDefault(errorCode, ErrorCode.UNKNOWN_ERROR);
     }
 
-    protected String extractErrorCode(DataIntegrityViolationException e) {
+     String extractErrorCode(DataIntegrityViolationException e) {
         Throwable rootCause = e.getMostSpecificCause();
         if (rootCause instanceof SQLException sqlEx) {
             return sqlEx.getSQLState();  // Get SQL state code
