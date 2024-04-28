@@ -44,7 +44,7 @@ class ContentServiceTest {
     @Test
     void getContentByPageHome() {
         when(contentRepository.findByPageIsNull()).thenReturn(listForNullPages());
-        when(contentRepository.findByPage("home")).thenReturn(Optional.of(listForHome()));
+        when(contentRepository.findByPage("home")).thenReturn(listForHome());
 
         HashMap<String, String> result = contentService.getContentByPage("home");
 

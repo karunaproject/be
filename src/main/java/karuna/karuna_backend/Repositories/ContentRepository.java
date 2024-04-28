@@ -9,6 +9,6 @@ import java.util.Optional;
 
 @Repository
 public interface ContentRepository extends JpaRepository<Content, Long> {
-    public Optional<List<Content>> findByPage(String page);
+    public List<Content> findByPage(String page);
     public List<Content> findByPageIsNull();
 }

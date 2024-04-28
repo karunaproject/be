@@ -17,8 +17,8 @@ public class ContentService {
 
     public HashMap<String, String> getContentByPage(String page) {
         List<Content> allPages = contentRepository.findByPageIsNull();
-        Optional<List<Content>> pages = contentRepository.findByPage(page);
-        pages.ifPresent(allPages::addAll);
+        List<Content> pages = contentRepository.findByPage(page);
+        allPages.addAll(pages);
         HashMap<String, String> allContent = new HashMap<>();
         allPages.forEach(singlePage -> {
             allContent.put(singlePage.getKey(), singlePage.getValuePl());
