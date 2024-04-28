@@ -43,7 +43,7 @@ class ContentServiceTest {
     @Test
     void getContentByPageHome() {
         when(contentRepository.findByPageIsNull()).thenReturn(listForNullPages());
-        when(contentRepository.findByPage("home")).thenReturn(listForHome());
+        when(contentRepository.findByPageIgnoreCase("home")).thenReturn(listForHome());
 
         List<ContentDTO> result = contentService.getContentByPage("home");
 
