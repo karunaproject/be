@@ -5,10 +5,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface ContentRepository extends JpaRepository<Content, Long> {
-    public List<Content> findByPage(String page);
+    public List<Content> findByPageIgnoreCase(String page);
     public List<Content> findByPageIsNull();
 }

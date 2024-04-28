@@ -1,5 +1,6 @@
 package karuna.karuna_backend.Services;
 
+import karuna.karuna_backend.DTO.ContentDTO;
 import karuna.karuna_backend.Models.Content;
 import karuna.karuna_backend.Repositories.ContentRepository;
 import org.junit.jupiter.api.Test;
@@ -9,9 +10,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
@@ -26,8 +25,8 @@ class ContentServiceTest {
     ContentService contentService;
 
     @Test
-    void getContentByPageReturnEmptyHashMap() {
-        HashMap<String, String> result = contentService.getContentByPage("123");
+    void getContentByPageReturnEmptyList() {
+        List<ContentDTO> result = contentService.getContentByPage("123");
 
         assertEquals( 0, result.size());
     }
@@ -36,7 +35,7 @@ class ContentServiceTest {
     void getContentByPageNull() {
         when(contentRepository.findByPageIsNull()).thenReturn(listForNullPages());
 
-        HashMap<String, String> result = contentService.getContentByPage(null);
+        List<ContentDTO> result = contentService.getContentByPage(null);
 
         assertEquals(3, result.size());
     }
@@ -46,9 +45,9 @@ class ContentServiceTest {
         when(contentRepository.findByPageIsNull()).thenReturn(listForNullPages());
         when(contentRepository.findByPage("home")).thenReturn(listForHome());
 
-        HashMap<String, String> result = contentService.getContentByPage("home");
+        List<ContentDTO> result = contentService.getContentByPage("home");
 
-        assertEquals(3, result.size());
+        assertEquals(6, result.size());
     }
 
     private List<Content> listForNullPages() {
