@@ -1,12 +1,21 @@
 package karuna.karuna_backend.Models;
 
 import jakarta.annotation.Nullable;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+
 
 @Entity
-@Table(name="contents")
+@Table(name = "contents")
 @Getter
 @Setter
 @Builder
