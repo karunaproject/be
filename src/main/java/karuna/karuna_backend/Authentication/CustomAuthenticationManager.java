@@ -24,6 +24,7 @@ public class CustomAuthenticationManager {
     }
     @Bean
     public AuthenticationManager authManager(HttpSecurity http, PasswordEncoder passwordEncoder) throws Exception {
+        //TODO: Refactor into SecurityFilterChain extension
         AuthenticationManagerBuilder authenticationManagerBuilder =
                 http.getSharedObject(AuthenticationManagerBuilder.class);
 

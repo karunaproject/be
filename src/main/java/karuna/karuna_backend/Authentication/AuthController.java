@@ -1,6 +1,8 @@
 package karuna.karuna_backend.Authentication;
 import karuna.karuna_backend.Authentication.DTO.LoginRequestDto;
 import karuna.karuna_backend.Authentication.DTO.RegisterRequestDto;
+import karuna.karuna_backend.Authentication.DTO.WhoAmIDto;
+import karuna.karuna_backend.Authentication.Utils.AuthenticationUtil;
 import karuna.karuna_backend.Models.User;
 import karuna.karuna_backend.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,8 +45,13 @@ public class AuthController {
         return ResponseEntity.ok(jwt);
     }
 
+
     @GetMapping("/WhoAmI")
-    public String test(){
-        return "test";
+    public WhoAmIDto test() {
+        return WhoAmIDto.builder()
+                .username(AuthenticationUtil.getUsername())
+                .roles(AuthenticationUtil.getRoles())
+                .build();
+
     }
 }
