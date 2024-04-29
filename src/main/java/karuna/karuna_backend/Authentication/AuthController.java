@@ -1,17 +1,14 @@
 package karuna.karuna_backend.Authentication;
-import karuna.karuna_backend.Authentication.JWT.JwtTokenService;
+import karuna.karuna_backend.Authentication.DTO.LoginRequestDto;
+import karuna.karuna_backend.Authentication.DTO.RegisterRequestDto;
 import karuna.karuna_backend.Models.User;
 import karuna.karuna_backend.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 @RestController
@@ -29,16 +26,18 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> authenticateUser(@RequestBody String name) {
-        String jwt = service.authenticateUser(name, "123");
+    public ResponseEntity<?> authenticateUser(@RequestBody LoginRequestDto loginRequestDto) {
+        String jwt = service.authenticateUser(loginRequestDto.getUsername(),
+                loginRequestDto.getPassword());
+
         return ResponseEntity.ok(jwt);
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody String name) {
+    public ResponseEntity<?> registerUser(@RequestBody RegisterRequestDto registerRequstDto) {
         User user = User.builder()
-                .username(name)
-                .password(passwordEncoder.encode("123"))
+                .username(registerRequstDto.getUsername())
+                .password(passwordEncoder.encode(registerRequstDto.getPassword()))
                 .build();
         String jwt = service.registerUser(user);
         return ResponseEntity.ok(jwt);

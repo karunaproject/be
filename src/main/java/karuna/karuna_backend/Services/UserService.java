@@ -1,5 +1,6 @@
 package karuna.karuna_backend.Services;
 
+import jakarta.transaction.Transactional;
 import karuna.karuna_backend.Authentication.CustomUserDetails;
 import karuna.karuna_backend.Authentication.JWT.JwtTokenService;
 import karuna.karuna_backend.DTO.UserDTO;
@@ -62,6 +63,7 @@ public class UserService {
      * @param user the User to register.
      * @return the UserDTO representation of the registered user.
      */
+    @Transactional
     public String registerUser(User user)  {
             Role defaultRole = roleRepository.findByName("ROLE_USER")
                 .orElseThrow(() -> new RuntimeException("Default role not found."));

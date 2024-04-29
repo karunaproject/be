@@ -1,5 +1,6 @@
 package karuna.karuna_backend.Errors;
 
+import karuna.karuna_backend.Errors.DTO.CustomErrorResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,7 @@ public class CustomException extends RuntimeException{
     private  String key;
     private  String description;
 
-    public CustomExceptionDao mapToDao(){
-        return new CustomExceptionDao(key, description);
+    public CustomErrorResponse mapToErrorResponse(){
+        return new CustomErrorResponse(key, description);
     }
 }

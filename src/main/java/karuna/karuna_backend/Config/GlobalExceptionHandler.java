@@ -23,13 +23,13 @@ public class GlobalExceptionHandler{
     public ResponseEntity<Object> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
         CustomException customException = databaseExceptionHandler.handleIntegrityException(ex);
 
-        return new ResponseEntity<>(customException.mapToDao(), HttpStatus.CONFLICT);
+        return new ResponseEntity<>(customException.mapToErrorResponse(), HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(CustomAuthenticationException.class)
     public ResponseEntity<Object> handleCustomUsernameNotFoundEx(CustomAuthenticationException ex){
 
-        return new ResponseEntity<>(ex.mapToDao(), HttpStatus.CONFLICT);
+        return new ResponseEntity<>(ex.mapToErrorResponse(), HttpStatus.CONFLICT);
     }
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleGenericException(Exception ex) {
