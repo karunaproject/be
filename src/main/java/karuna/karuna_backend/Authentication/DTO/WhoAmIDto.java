@@ -22,24 +22,4 @@ import java.util.stream.Collectors;
 public class WhoAmIDto {
     private String username;
     private List<String> roles;
-
-    //TODO: Move this method into separate class
-    public void MapAuthenticationToDto(Authentication authentication){
-
-        Object principal = authentication.getPrincipal();
-
-        this.roles = authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.toList());
-
-        if (principal instanceof UserDetails userDetails) {
-            username = userDetails.getUsername();
-            Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
-        } else if (principal instanceof String) {
-            username = (String) principal;
-        }
-        else {
-            throw new CustomAuthenticationException("unknown_exception", "Something unexpected happened during token parse");
-        }
-    }
 }
