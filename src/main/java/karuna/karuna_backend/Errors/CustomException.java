@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
@@ -14,6 +13,11 @@ public class CustomException extends RuntimeException{
     private  String key;
     private  String description;
 
+    public CustomException(String key, String description){
+        super(description);
+        this.key=key;
+        this.description=description;
+    }
     public CustomErrorResponse mapToErrorResponse(){
         return new CustomErrorResponse(key, description);
     }

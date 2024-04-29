@@ -1,5 +1,6 @@
 package karuna.karuna_backend.Config;
 
+import jakarta.persistence.ElementCollection;
 import karuna.karuna_backend.Errors.AuthenticateExceptions.CustomAuthenticationException;
 import karuna.karuna_backend.Errors.CustomException;
 import karuna.karuna_backend.Errors.DatabaseExceptions.DatabaseExceptionHandler;

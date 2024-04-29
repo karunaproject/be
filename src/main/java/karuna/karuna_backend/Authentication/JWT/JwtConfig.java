@@ -7,6 +7,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
+import java.time.Duration;
+
 @Component
 @Getter
 @Setter
@@ -16,8 +18,8 @@ public class JwtConfig {
     private String signatureAlgorithm; // Defaulting to HS256
     private String secretKey ;
     private String tokenPrefix;
-    private int tokenExpirationTime;
-    private int refreshTokenExpirationTime;
+    private Duration tokenExpirationTime;
+    private Duration refreshTokenExpirationTime;
 
     public String getAuthorizationHeader() {
         return HttpHeaders.AUTHORIZATION;

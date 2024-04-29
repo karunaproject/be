@@ -9,8 +9,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
-public class DatabaseErrorResolver {
-    private final Map<String, ErrorCode> errorMappings;
+class DatabaseErrorResolver {
+    private static final Map<String, ErrorCode> errorMappings = new HashMap<>();
 
       enum ErrorCode{
         UNKNOWN_ERROR,
@@ -18,13 +18,7 @@ public class DatabaseErrorResolver {
         NOT_NULL_CONSTRAINT_VIOLATION
     }
 
-     DatabaseErrorResolver() {
-        errorMappings = new HashMap<>();
-
-    }
-
-    @PostConstruct
-    private void init(){
+   static{
         errorMappings.put("1062", ErrorCode.UNIQUE_CONSTRAINT_VIOLATION); // MySQL unique constraint code
         errorMappings.put("23505", ErrorCode.UNIQUE_CONSTRAINT_VIOLATION); // PostgreSQL unique constraint code
 

@@ -6,6 +6,7 @@ import karuna.karuna_backend.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,7 +30,6 @@ public class AuthController {
     public ResponseEntity<?> authenticateUser(@RequestBody LoginRequestDto loginRequestDto) {
         String jwt = service.authenticateUser(loginRequestDto.getUsername(),
                 loginRequestDto.getPassword());
-
         return ResponseEntity.ok(jwt);
     }
 
@@ -41,5 +41,10 @@ public class AuthController {
                 .build();
         String jwt = service.registerUser(user);
         return ResponseEntity.ok(jwt);
+    }
+
+    @GetMapping("/WhoAmI")
+    public String test(){
+        return "test";
     }
 }
