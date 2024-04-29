@@ -33,6 +33,7 @@ public class WebSecurityConfig{
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/posts/**").authenticated()
                         .requestMatchers("/**").permitAll()
 
                 )
