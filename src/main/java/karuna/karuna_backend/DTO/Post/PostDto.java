@@ -1,4 +1,4 @@
-package karuna.karuna_backend.DTO;
+package karuna.karuna_backend.DTO.Post;
 
 import java.time.OffsetDateTime;
 

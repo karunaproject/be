@@ -1,7 +1,7 @@
 package karuna.karuna_backend.Services;
 
-import karuna.karuna_backend.DTO.PostCreateDto;
-import karuna.karuna_backend.DTO.PostDto;
+import karuna.karuna_backend.DTO.Post.PostCreateDto;
+import karuna.karuna_backend.DTO.Post.PostDto;
 import karuna.karuna_backend.Errors.UserExceptions.UserNotFoundException;
 import karuna.karuna_backend.Mappers.PostMapper;
 import karuna.karuna_backend.Models.Post;

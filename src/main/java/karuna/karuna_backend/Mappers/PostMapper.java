@@ -1,6 +1,6 @@
 package karuna.karuna_backend.Mappers;
 
-import karuna.karuna_backend.DTO.PostDto;
+import karuna.karuna_backend.DTO.Post.PostDto;
 import karuna.karuna_backend.Models.Post;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
