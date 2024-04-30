@@ -2,7 +2,7 @@ package karuna.karuna_backend.Services;
 
 import karuna.karuna_backend.DTO.PostCreateDto;
 import karuna.karuna_backend.DTO.PostDto;
-import karuna.karuna_backend.Exceptions.UserNotFound;
+import karuna.karuna_backend.Errors.UserExceptions.UserNotFoundException;
 import karuna.karuna_backend.Models.Post;
 import karuna.karuna_backend.Models.User;
 import karuna.karuna_backend.Repositories.PostRepository;
@@ -82,9 +82,9 @@ class PostServiceTest {
             }
         };
         //when
-        when(userRepository.findByUsername(PRINCIPAL_NAME)).thenThrow(UserNotFound.class);
+        when(userRepository.findByUsername(PRINCIPAL_NAME)).thenThrow(UserNotFoundException.class);
 
         //then
-        assertThrows(UserNotFound.class, () -> postService.createPost(postCreateDto, principal));
+        assertThrows(UserNotFoundException.class, () -> postService.createPost(postCreateDto, principal));
     }
 }
