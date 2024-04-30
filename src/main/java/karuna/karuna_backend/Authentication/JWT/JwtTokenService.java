@@ -33,12 +33,15 @@ public class JwtTokenService {
 
     @PostConstruct
     private void init() {
-        SignatureAlgorithm algorithm = SignatureAlgorithm.forName(jwtConfig.getSignatureAlgorithm());
-
-        // Initialize cached values and resources
-        this.signingKey = Keys.secretKeyFor(algorithm);
-        this.tokenExpiration = jwtConfig.getTokenExpirationTime();
-        this.refreshTokenExpiration = jwtConfig.getRefreshTokenExpirationTime();
+        try {
+            SignatureAlgorithm algorithm = SignatureAlgorithm.forName(jwtConfig.getSignatureAlgorithm());
+            this.signingKey = Keys.secretKeyFor(algorithm);
+            this.tokenExpiration = jwtConfig.getTokenExpirationTime();
+            this.refreshTokenExpiration = jwtConfig.getRefreshTokenExpirationTime();
+            //TODO: Handle global catch
+        } catch (IllegalArgumentException ex) {
+            throw new IllegalStateException("JWT settings are invalid", ex);
+        }
     }
 
     @SafeVarargs
@@ -56,17 +59,13 @@ public class JwtTokenService {
 
     @SafeVarargs
     private String buildToken(CustomUserDetails user, Duration expirationDuration, Map<String, Object>... additionalClaims) {
-        long userId = user.getId();
-        String username = user.getUsername();
         long now = System.currentTimeMillis();
-        List<String> roles = user.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.toList());
-
         var jwtBuilder = Jwts.builder()
-                .setSubject(username)
-                .claim("userId", userId)
-                .claim("roles", roles)
+                .setSubject(user.getUsername())
+                .claim("userId", user.getId())
+                .claim("roles", user.getAuthorities().stream()
+                        .map(GrantedAuthority::getAuthority)
+                        .collect(Collectors.toList()))
                 .setIssuedAt(new Date(now))
                 .setExpiration(new Date(now + expirationDuration.toMillis()))
                 .signWith(signingKey);
@@ -89,11 +88,34 @@ public class JwtTokenService {
                 .setSigningKey(signingKey)
                 .build();
 
+        //This method throws mentioned above errors.
         Jws<Claims> claimsJws = jwtParser.parseClaimsJws(token);
+
         String username = claimsJws.getBody().getSubject();
         List<String> roles = claimsJws.getBody().get("roles", List.class);
 
         SecurityContextUtil.setSecurityContext(username, roles);
     }
 
+    private Claims getAllClaims(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(signingKey)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+    }
+
+    public Date getExpirationDate(String token) {
+        return getAllClaims(token).getExpiration();
+    }
+
+
+    public String getSubject(String token) {
+        return getAllClaims(token).getSubject();
+    }
+
+
+    public List<String> getRoles(String token) {
+        return getAllClaims(token).get("roles", List.class);
+    }
 }

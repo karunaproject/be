@@ -19,11 +19,7 @@ public class CustomAuthenticationManager {
         this.customUserDetailsService=customUserDetailsService;
     }
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-    @Bean
-    public AuthenticationManager authManager(HttpSecurity http, PasswordEncoder passwordEncoder) throws Exception {
+    public AuthenticationManager authManager(HttpSecurity http, @Autowired PasswordEncoder passwordEncoder) throws Exception {
         //TODO: Refactor into SecurityFilterChain extension
         AuthenticationManagerBuilder authenticationManagerBuilder =
                 http.getSharedObject(AuthenticationManagerBuilder.class);

@@ -17,17 +17,16 @@ public class DefaultRolesInitializer implements CommandLineRunner {
 
     @Override
     @Transactional
-    public void run(String... args) throws Exception {
-        if (roleRepository.findByName("ROLE_USER").isEmpty()) {
-            Role userRole = new Role();
-            userRole.setName("ROLE_USER");
-            roleRepository.save(userRole);
-        }
+    public void run(String... args) {
+        createRoleIfNotFound("ROLE_USER");
+        createRoleIfNotFound("ROLE_ADMIN");
+    }
 
-        if (roleRepository.findByName("ROLE_ADMIN").isEmpty()) {
-            Role userRole = new Role();
-            userRole.setName("ROLE_ADMIN");
-            roleRepository.save(userRole);
+    private void createRoleIfNotFound(String roleName) {
+        if (roleRepository.findByName(roleName).isEmpty()) {
+            Role role = new Role();
+            role.setName(roleName);
+            roleRepository.save(role);
         }
     }
 }

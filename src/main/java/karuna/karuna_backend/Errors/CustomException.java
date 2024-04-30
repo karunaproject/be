@@ -18,6 +18,9 @@ public class CustomException extends RuntimeException{
         this.key=key;
         this.description=description;
     }
+
+    //TODO: Refactor into separate class
+
     public CustomErrorResponse mapToErrorResponse(){
         return new CustomErrorResponse(key, description);
     }

@@ -43,6 +43,7 @@ public class User {
                 .build();
     }
 
+    //TODO: Refactor into separate class
     public CustomUserDetails mapToUserDetails(){
         return new CustomUserDetails(this);
     }
