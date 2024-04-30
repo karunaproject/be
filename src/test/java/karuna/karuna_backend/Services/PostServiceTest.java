@@ -75,12 +75,7 @@ class PostServiceTest {
     void shouldThrowUserNotFoundOnCreatePost() {
         //given
         PostCreateDto postCreateDto = new PostCreateDto(BODY);
-        Principal principal = new Principal() {
-            @Override
-            public String getName() {
-                return PRINCIPAL_NAME;
-            }
-        };
+        Principal principal = () -> PRINCIPAL_NAME;
         //when
         when(userRepository.findByUsername(PRINCIPAL_NAME)).thenThrow(UserNotFoundException.class);
 
