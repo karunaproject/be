@@ -10,7 +10,6 @@ import java.util.List;
 @Getter
 public class RegisterResponseDto {
     private String username;
-    private String jwt;
-    private Date expirationTime;
-    private List<String> roles;
+    //private String jwt;
+    private Date tokenExpirationTime;
 }
