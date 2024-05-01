@@ -1,5 +1,6 @@
 package karuna.karuna_backend.Authentication;
 import io.jsonwebtoken.Jwt;
+import jakarta.validation.Valid;
 import karuna.karuna_backend.Authentication.DTO.*;
 import karuna.karuna_backend.Authentication.JWT.JwtTokenService;
 import karuna.karuna_backend.Authentication.Utils.AuthenticationUtil;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,37 +41,30 @@ public class AuthController {
     public ResponseEntity<?> authenticateUser(@RequestBody LoginRequestDto loginRequestDto) {
         //TODO: Sanitize inputs, XSS prevention
         String jwt = service.authenticateUser(loginRequestDto.getUsername(), loginRequestDto.getPassword());
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Bearer " + jwt);
         LoginResponseDto body = LoginResponseDto.builder()
                 .username(jwtTokenService.getSubject(jwt))
                 .tokenExpirationTime(jwtTokenService.getExpirationDate(jwt))
                 .build();
 
-        return new ResponseEntity<>(body, headers, HttpStatus.OK);
+        return createJwtResponse(jwt, body, HttpStatus.OK);
     }
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody RegisterRequestDto registerRequestDto) {
 
-        // Sanitize inputs, XSS prevention
+        //TODO: Sanitize inputs, XSS prevention
         User user = User.builder()
                 .username(registerRequestDto.getUsername())
                 .password(passwordEncoder.encode(registerRequestDto.getPassword()))
                 .build();
 
         String jwt = service.registerUser(user);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Bearer " + jwt);
-
-        // Optional: Return minimal body information
         RegisterResponseDto body = RegisterResponseDto.builder()
                 .username(jwtTokenService.getSubject(jwt))
                 .tokenExpirationTime(jwtTokenService.getExpirationDate(jwt))
                 .build();
 
-        return new ResponseEntity<>(body, headers, HttpStatus.CREATED);
+        return createJwtResponse(jwt, body, HttpStatus.CREATED);
     }
 
 
@@ -79,5 +74,11 @@ public class AuthController {
     public UserDTO GetCurrentUserDetails() {
         return service.getUserByUsername(AuthenticationUtil.getUsername())
                 .orElse(null);
+    }
+
+    private ResponseEntity<?> createJwtResponse(String jwt, Object body, HttpStatus status) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + jwt);
+        return new ResponseEntity<>(body, headers, status);
     }
 }

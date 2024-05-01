@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LoginRequestDto {
+    //TODO: Implement hiberante validators, therefore add dependency
     private String username;
     private String password;
 }
