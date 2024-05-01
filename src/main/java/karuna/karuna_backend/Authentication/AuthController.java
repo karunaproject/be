@@ -43,7 +43,7 @@ public class AuthController {
         headers.add("Authorization", "Bearer " + jwt);
         LoginResponseDto body = LoginResponseDto.builder()
                 .username(jwtTokenService.getSubject(jwt))
-                .expirationTime(jwtTokenService.getExpirationDate(jwt))
+                .tokenExpirationTime(jwtTokenService.getExpirationDate(jwt))
                 .build();
 
         return new ResponseEntity<>(body, headers, HttpStatus.OK);
@@ -66,7 +66,7 @@ public class AuthController {
         // Optional: Return minimal body information
         RegisterResponseDto body = RegisterResponseDto.builder()
                 .username(jwtTokenService.getSubject(jwt))
-                .expirationTime(jwtTokenService.getExpirationDate(jwt))
+                .tokenExpirationTime(jwtTokenService.getExpirationDate(jwt))
                 .build();
 
         return new ResponseEntity<>(body, headers, HttpStatus.CREATED);
