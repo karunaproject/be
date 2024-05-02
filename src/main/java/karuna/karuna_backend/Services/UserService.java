@@ -5,6 +5,7 @@ import karuna.karuna_backend.Authentication.CustomUserDetails;
 import karuna.karuna_backend.Authentication.JWT.JwtTokenService;
 import karuna.karuna_backend.DTO.UserDTO;
 import karuna.karuna_backend.Errors.AuthenticateExceptions.CustomAuthenticationException;
+import karuna.karuna_backend.Errors.ErrorKeys.LoginPasswordAuthErrorKey;
 import karuna.karuna_backend.Models.Role;
 import karuna.karuna_backend.Models.User;
 import karuna.karuna_backend.Repositories.RoleRepository;
@@ -84,7 +85,7 @@ public class UserService {
 
         }
         catch (AuthenticationException ex) {
-            throw new CustomAuthenticationException("wrong_login_credentials",
+            throw new CustomAuthenticationException(LoginPasswordAuthErrorKey.WRONG_LOGIN_CREDENTIALS.name(),
                     "Provided login credentials are invalid");
         }
 
