@@ -8,6 +8,5 @@ import java.util.List;
 
 @Repository
 public interface ContentRepository extends JpaRepository<Content, Long> {
-    public List<Content> findByPageIgnoreCase(String page);
-    public List<Content> findByPageIsNull();
+    List<Content> findByPageIgnoreCaseOrPageNull(String page);
 }

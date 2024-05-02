@@ -6,7 +6,7 @@ import karuna.karuna_backend.Repositories.ContentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -15,19 +15,17 @@ public class ContentService {
 
     private final ContentRepository contentRepository;
 
-    public List<ContentDTO> getContentByPage(String page) {
-        List<Content> allPages = contentRepository.findByPageIsNull();
-        List<Content> pages = contentRepository.findByPageIgnoreCase(page);
-        allPages.addAll(pages);
-        List<ContentDTO> allContent = new ArrayList<>();
-        allPages.forEach(singlePage -> allContent.add(convertToDTO(singlePage)));
-        return allContent;
+    public ContentDTO getContentByPage(String page) {
+        List<Content> pages = contentRepository.findByPageIgnoreCaseOrPageNull(page);
+        HashMap<String, String> allContent = new HashMap<>();
+        pages.forEach(singlePage -> {
+            allContent.put(singlePage.getKey(), singlePage.getValuePl());
+        });
+        return convertToDTO(allContent);
     }
 
-    private ContentDTO convertToDTO(Content content) {
-        ContentDTO contentDTO = new ContentDTO();
-        contentDTO.setKey(content.getKey());
-        contentDTO.setValuePl(content.getValuePl());
+    private ContentDTO convertToDTO(HashMap<String, String> contents) {
+        ContentDTO contentDTO = new ContentDTO(contents);
         return contentDTO;
     }
 }

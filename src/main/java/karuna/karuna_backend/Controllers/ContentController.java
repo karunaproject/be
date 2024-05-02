@@ -12,12 +12,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/contents")
-public class ContentController {
+class ContentController {
 
     private final ContentService contentService;
 
@@ -28,7 +27,7 @@ public class ContentController {
             description = "Content for page",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ContentDTO.class)))
     @GetMapping("/{page}")
-    public List<ContentDTO> getContentByPage(@PathVariable String page) {
+    public ContentDTO getContentByPage(@PathVariable String page) {
         return contentService.getContentByPage(page);
     }
 

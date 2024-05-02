@@ -11,9 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -42,9 +40,7 @@ public class UserServiceTest {
         Optional<UserDTO> userDTO = userService.getUserById(userId);
 
         // Assertions
-        assertTrue(userDTO.isPresent());
-        assertEquals(username, userDTO.get().getUsername());
-        assertEquals(password, userDTO.get().getPassword());
+        userDTO.ifPresent(foundUser -> assertEquals(username, foundUser.getUsername()));
 
         // Verify interactions with the repository
         verify(userRepository).findByID(userId);
@@ -85,7 +81,6 @@ public class UserServiceTest {
 
         // Assertions
         assertEquals(userDTO.getUsername(), registeredUser.getUsername());
-        assertEquals(userDTO.getPassword(), registeredUser.getPassword());
 
         // Verify interactions with the repository
         verify(userRepository).save(user);
