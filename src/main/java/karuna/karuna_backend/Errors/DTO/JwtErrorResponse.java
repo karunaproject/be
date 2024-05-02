@@ -1,5 +1,6 @@
-package karuna.karuna_backend.Errors.DTO;
+    package karuna.karuna_backend.Errors.DTO;
 
-import karuna.karuna_backend.Errors.IErrorResponse;
+    import karuna.karuna_backend.Errors.ErrorKeys.JwtErrorKey;
+    import karuna.karuna_backend.Errors.IErrorResponse;
 
-public record JwtErrorResponse(String key, String description) implements IErrorResponse { }
+    public record JwtErrorResponse(JwtErrorKey key, String description) implements IErrorResponse { }

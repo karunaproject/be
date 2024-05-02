@@ -8,7 +8,9 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import karuna.karuna_backend.Authentication.JWT.JwtTokenService;
+import karuna.karuna_backend.Errors.AuthenticateExceptions.JwtAuthenticationException;
 import karuna.karuna_backend.Errors.DTO.AuthenticationErrorResponse;
+import karuna.karuna_backend.Errors.DTO.JwtErrorResponse;
 import karuna.karuna_backend.Errors.ErrorKeys.JwtErrorKey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -48,17 +50,17 @@ public class JwtFilter extends OncePerRequestFilter {
     }
 
     private void handleException(HttpServletResponse response, Exception e) throws IOException {
-        String errorMessageKey;
+        JwtErrorKey errorMessageKey;
         if (e instanceof ExpiredJwtException) {
-            errorMessageKey = JwtErrorKey.TOKEN_HAS_EXPIRED.name();
+            errorMessageKey = JwtErrorKey.TOKEN_HAS_EXPIRED;
         } else if (e instanceof SignatureException) {
-            errorMessageKey = JwtErrorKey.TOKEN_VERIFICATION_FAILURE.name();
+            errorMessageKey = JwtErrorKey.TOKEN_VERIFICATION_FAILURE;
         } else {
-            errorMessageKey = JwtErrorKey.UNKNOWN_ERROR.name();
+            errorMessageKey = JwtErrorKey.UNKNOWN_ERROR;
         }
 
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        AuthenticationErrorResponse responseDto = new AuthenticationErrorResponse(errorMessageKey, e.getMessage());
+        JwtErrorResponse responseDto = new JwtErrorResponse(errorMessageKey, e.getMessage());
         response.getWriter().write(objectMapper.writeValueAsString(responseDto));
     }
 }

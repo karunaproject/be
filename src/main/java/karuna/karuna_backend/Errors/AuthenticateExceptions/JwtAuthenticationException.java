@@ -11,6 +11,11 @@ public class JwtAuthenticationException extends CustomException {
 
     @Override
     public JwtErrorResponse mapToErrorResponse() {
-        return new JwtErrorResponse(super.getKey(), super.getDescription());
+
+        //TODO: Think of the way to make CustomException Generic and still extend Throwable Java.
+        if (!(getKey() instanceof JwtErrorKey)) {
+            throw new IllegalStateException("Key type mismatch in JwtException");
+        }
+        return new JwtErrorResponse((JwtErrorKey) getKey(), getDescription());
     }
 }

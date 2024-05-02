@@ -3,7 +3,9 @@ package karuna.karuna_backend.Errors.DatabaseExceptions;
 import karuna.karuna_backend.Errors.CustomException;
 import karuna.karuna_backend.Errors.DTO.AuthenticationErrorResponse;
 import karuna.karuna_backend.Errors.DTO.DataIntegrityErrorResponse;
+import karuna.karuna_backend.Errors.DTO.JwtErrorResponse;
 import karuna.karuna_backend.Errors.ErrorKeys.DataIntegrityErrorKey;
+import karuna.karuna_backend.Errors.ErrorKeys.JwtErrorKey;
 
 public class DatabaseIntegrityException extends CustomException {
     public DatabaseIntegrityException(DataIntegrityErrorKey key, String desc) {
@@ -12,6 +14,10 @@ public class DatabaseIntegrityException extends CustomException {
 
     @Override
     public DataIntegrityErrorResponse mapToErrorResponse(){
-        return new DataIntegrityErrorResponse(super.getKey(), super.getDescription());
+        //TODO: Think of the way to make CustomException Generic and still extend Throwable Java.
+        if (!(getKey() instanceof DataIntegrityErrorKey)) {
+            throw new IllegalStateException("Key type mismatch in JwtException");
+        }
+        return new DataIntegrityErrorResponse((DataIntegrityErrorKey) getKey(), getDescription());
     }
 }
