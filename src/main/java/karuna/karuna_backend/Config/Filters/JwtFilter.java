@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import karuna.karuna_backend.Authentication.JWT.JwtTokenService;
 import karuna.karuna_backend.Errors.DTO.AuthenticationErrorResponse;
+import karuna.karuna_backend.Errors.ErrorKeys.JwtErrorKey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -49,11 +50,11 @@ public class JwtFilter extends OncePerRequestFilter {
     private void handleException(HttpServletResponse response, Exception e) throws IOException {
         String errorMessageKey;
         if (e instanceof ExpiredJwtException) {
-            errorMessageKey = "token_has_expired";
+            errorMessageKey = JwtErrorKey.TOKEN_HAS_EXPIRED.name();
         } else if (e instanceof SignatureException) {
-            errorMessageKey = "token_verification_failure";
+            errorMessageKey = JwtErrorKey.TOKEN_VERIFICATION_FAILURE.name();
         } else {
-            errorMessageKey = "unknown_error";
+            errorMessageKey = JwtErrorKey.UNKNOWN_ERROR.name();
         }
 
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

@@ -6,12 +6,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@NoArgsConstructor
 @Getter
 @Setter
-public class CustomException extends RuntimeException{
-    private  String key;
-    private  String description;
+public abstract class CustomException extends RuntimeException{
+    private final String key;
+    private final String description;
 
     public CustomException(String key, String description){
         super(description);
@@ -19,9 +18,14 @@ public class CustomException extends RuntimeException{
         this.description=description;
     }
 
+    //Overloaded constructor for enum values
+    public CustomException(Enum<?> key, String description){
+        super(description);
+        this.key=key.name();
+        this.description=description;
+    }
+
     //TODO: Refactor into separate class
 
-    public CustomErrorResponse mapToErrorResponse(){
-        return new CustomErrorResponse(key, description);
-    }
+    public abstract IErrorResponse mapToErrorResponse();
 }
