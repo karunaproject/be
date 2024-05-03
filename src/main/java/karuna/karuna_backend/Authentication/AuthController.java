@@ -33,7 +33,6 @@ public class AuthController {
 
     private final UserService service;
     private final JwtTokenService jwtTokenService;
-    private final PasswordEncoder passwordEncoder;
 
     @Autowired
     public AuthController(UserService userService,
@@ -41,7 +40,6 @@ public class AuthController {
                           PasswordEncoder passwordEncoder)
     {
         this.service=userService;
-        this.passwordEncoder=passwordEncoder;
         this.jwtTokenService=jwtTokenService;
     }
 
@@ -77,12 +75,7 @@ public class AuthController {
                     schema = @Schema(implementation = DataIntegrityErrorResponse.class)))
     public ResponseEntity<?> registerUser(@RequestBody RegisterRequestDto registerRequestDto) {
 
-        //TODO: Sanitize inputs, XSS prevention
-        User user = User.builder()
-                .username(registerRequestDto.getUsername())
-                .password(passwordEncoder.encode(registerRequestDto.getPassword()))
-                .build();
-        String jwt = service.registerUser(user);
+        String jwt = service.registerUser(registerRequestDto.getUsername(), registerRequestDto.getPassword());
         RegisterResponseDto body = RegisterResponseDto.builder()
                 .username(jwtTokenService.getSubject(jwt))
                 .tokenExpirationTime(jwtTokenService.getExpirationDate(jwt))

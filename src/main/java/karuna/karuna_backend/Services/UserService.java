@@ -15,8 +15,10 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -27,17 +29,20 @@ public class UserService {
     private final JwtTokenService jwtTokenService;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
 
 
     @Autowired
     public UserService(UserRepository userRepository,
                        RoleRepository roleRepository,
                        AuthenticationManager authenticationManager,
-                       JwtTokenService jwtTokenService) {
+                       JwtTokenService jwtTokenService,
+                       PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.authenticationManager=authenticationManager;
         this.jwtTokenService=jwtTokenService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     /**
@@ -61,18 +66,24 @@ public class UserService {
     /**
      * Registers a new user in the repository.
      * This method saves the provided User object and returns a UserDTO representation of the saved user.
-     * @param user the User to register.
+     * @param username name of the user.
+     * @param password password of the user.
      * @return the UserDTO representation of the registered user.
      */
     @Transactional
-    public String registerUser(User user)  {
+    public String registerUser(String username, String password)  {
             Role defaultRole = roleRepository.findByName("ROLE_USER")
                 .orElseThrow(() -> new RuntimeException("Default role not found."));
 
-            user.getRoles().add(defaultRole);
-            User savedUser = userRepository.save(user);
+            //TODO: Sanitize inputs, XSS prevention
+            User user = User.builder()
+                    .username(username)
+                    .password(passwordEncoder.encode(password))
+                    .roles(List.of(defaultRole))
+                    .build();
 
-            return jwtTokenService.generateToken(savedUser.mapToUserDetails());
+            userRepository.save(user);
+            return jwtTokenService.generateToken(user.mapToUserDetails());
     }
 
     public String authenticateUser(String username, String password) throws AuthenticationException{
