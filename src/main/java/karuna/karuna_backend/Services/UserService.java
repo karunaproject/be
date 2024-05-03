@@ -92,6 +92,10 @@ public class UserService {
                     new UsernamePasswordAuthenticationToken(username, password)
             );
 
+            if (!(authentication.getPrincipal() instanceof CustomUserDetails)) {
+                throw new IllegalStateException("Principal is not an instance of CustomUserDetails");
+            }
+
             return jwtTokenService.generateToken((CustomUserDetails) authentication.getPrincipal());
 
         }
