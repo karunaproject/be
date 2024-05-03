@@ -17,7 +17,5 @@ public abstract class CustomException extends RuntimeException{
         this.description=description;
     }
 
-    //TODO: Refactor into separate class
-
     public abstract IErrorResponse mapToErrorResponse();
 }

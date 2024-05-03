@@ -39,14 +39,6 @@ public class SecurityContextUtil {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                 username, null, authorities);
 
-        try {
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-
-
-        }  //TODO: Handle exception globally
-         catch (Exception e) {
-            // Proper error handling (e.g., logging) should be done here.
-            throw new SecurityException("Failed to set security context", e);
-        }
+        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
     }
 }

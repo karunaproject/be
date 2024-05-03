@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class AuthenticationUtil {
@@ -14,37 +15,54 @@ public class AuthenticationUtil {
     private static final String ANONYMOUS_USER = "anonymousUser";
 
     /**
-     * Retrieves the username of the currently authenticated user from the security context.
+     * Retrieves the current {@link Authentication} object if it's valid.
+     * <p>
+     * This method checks if the authentication object from the security context is non-null,
+     * authenticated, and not marked as anonymous.
      *
-     * @return The username of the currently authenticated user, or {@code null} if the user is not authenticated
-     * or is recognized as an anonymous user.
+     * @return an {@link Optional} containing the {@link Authentication} object if valid, empty otherwise.
+     */
+    private static Optional<Authentication> getAuthentication() {
+        return Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
+                .filter(Authentication::isAuthenticated)
+                .filter(auth -> !ANONYMOUS_USER.equals(auth.getPrincipal()));
+    }
+
+    /**
+     * Retrieves the username of the currently authenticated user.
+     * <p>
+     * This method extracts the username from the authentication principal, which can be either
+     * a {@link UserDetails} object or a simple {@link String}.
+     *
+     * @return the username as a {@link String}, or {@code null} if the user is not authenticated.
      */
     public static String getUsername() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.isAuthenticated() && !ANONYMOUS_USER.equals(authentication.getPrincipal())) {
-            Object principal = authentication.getPrincipal();
-            if (principal instanceof UserDetails) {
-                return ((UserDetails) principal).getUsername();
-            } else if (principal instanceof String) {
-                return (String) principal;
-            }
-        }
-        return null; //TODO: or throw an exception if strict handling is required
+        return getAuthentication()
+                .map(auth -> {
+                    Object principal = auth.getPrincipal();
+                    if (principal instanceof UserDetails) {
+                        return ((UserDetails) principal).getUsername();
+                    } else if (principal instanceof String) {
+                        return (String) principal;
+                    }
+                    return null; // Consider whether you want to throw an exception here
+                })
+                .orElse(null); // or .orElseThrow(() -> new UsernameNotFoundException("User not authenticated"));
     }
 
     /**
      * Retrieves a list of role names associated with the currently authenticated user.
+     * <p>
+     * If the user is authenticated, this method returns a list of strings representing the role names.
+     * If the user is not authenticated or has no roles, it returns an empty list.
      *
-     * @return A list of role names if the user is authenticated, or an empty list if no roles are found
-     * or the user is not authenticated.
+     * @return a {@link List} of role names, never {@code null}.
      */
     public static List<String> getRoles() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.isAuthenticated()) {
-            return authentication.getAuthorities().stream()
-                    .map(GrantedAuthority::getAuthority)
-                    .collect(Collectors.toList());
-        }
-        return Collections.emptyList(); // empty list if no roles or not authenticated
+        return getAuthentication()
+                .map(auth -> auth.getAuthorities().stream()
+                        .map(GrantedAuthority::getAuthority)
+                        .collect(Collectors.toList()))
+                .orElse(Collections.emptyList());
     }
 }
