@@ -32,6 +32,16 @@ public class JwtFilter extends OncePerRequestFilter {
     public JwtFilter(JwtTokenService jwtTokenService){
         this.jwtTokenService=jwtTokenService;
     }
+
+    /**
+     * Internal filter method that executes once per request to authenticate users based on JWT.
+     *
+     * @param request The servlet request.
+     * @param response The servlet response.
+     * @param filterChain The filter chain allowing the request to proceed with the next filter in the chain.
+     * @throws ServletException If a servlet-specific error occurs.
+     * @throws IOException If an I/O error occurs during request processing.
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
@@ -49,6 +59,13 @@ public class JwtFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
+    /**
+     * Handles exceptions thrown during JWT token verification by setting appropriate HTTP response.
+     *
+     * @param response The servlet response to write the error details to.
+     * @param e The exception that was caught during JWT verification.
+     * @throws IOException If an error occurs during response writing.
+     */
     private void handleException(HttpServletResponse response, Exception e) throws IOException {
         JwtErrorKey errorMessageKey;
         if (e instanceof ExpiredJwtException) {

@@ -12,6 +12,13 @@ import java.util.stream.Collectors;
 public class AuthenticationUtil {
 
     private static final String ANONYMOUS_USER = "anonymousUser";
+
+    /**
+     * Retrieves the username of the currently authenticated user from the security context.
+     *
+     * @return The username of the currently authenticated user, or {@code null} if the user is not authenticated
+     * or is recognized as an anonymous user.
+     */
     public static String getUsername() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated() && !ANONYMOUS_USER.equals(authentication.getPrincipal())) {
@@ -25,6 +32,12 @@ public class AuthenticationUtil {
         return null; //TODO: or throw an exception if strict handling is required
     }
 
+    /**
+     * Retrieves a list of role names associated with the currently authenticated user.
+     *
+     * @return A list of role names if the user is authenticated, or an empty list if no roles are found
+     * or the user is not authenticated.
+     */
     public static List<String> getRoles() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated()) {

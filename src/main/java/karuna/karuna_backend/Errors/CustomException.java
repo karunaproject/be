@@ -11,13 +11,6 @@ public abstract class CustomException extends RuntimeException{
     private final Enum<?> key;
     private final String description;
 
-//    public CustomException(String key, String description){
-//        super(description);
-//        this.key=key;
-//        this.description=description;
-//    }
-
-    //Overloaded constructor for enum values
     public CustomException(Enum<?> key, String description){
         super(description);
         this.key=key;

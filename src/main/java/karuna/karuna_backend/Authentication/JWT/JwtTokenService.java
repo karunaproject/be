@@ -18,6 +18,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Service to handle JWT operations including token generation, parsing, and validation.
+ * This service uses configuration provided by {@link JwtConfig} to initialize and manage JWTs.
+ */
 @Service
 public class JwtTokenService {
 
@@ -31,6 +35,11 @@ public class JwtTokenService {
         this.jwtConfig = jwtConfig;
     }
 
+
+    /**
+     * Initializes the JWT settings, including signing key and token expiration times.
+     * This method is automatically invoked after the service's properties are set.
+     */
     @PostConstruct
     private void init() {
         try {
@@ -44,6 +53,13 @@ public class JwtTokenService {
         }
     }
 
+    /**
+     * Generates a JWT for a specified user. Can include additional claims if provided.
+     *
+     * @param user              The user details for whom the token is generated.
+     * @param additionalClaims  Additional claims to be included in the JWT.
+     * @return                  A JWT string representing the user's session.
+     */
     @SafeVarargs
     public final String generateToken(CustomUserDetails user, Map<String, Object>... additionalClaims) {
         if (additionalClaims.length > 0) {
@@ -53,10 +69,25 @@ public class JwtTokenService {
         }
     }
 
+    /**
+     * Generates a refresh token for a specified user.
+     *
+     * @param user The user details for whom the refresh token is generated.
+     * @return A refresh JWT string.
+     */
     public String generateRefreshToken(CustomUserDetails user) {
         return buildToken(user, refreshTokenExpiration);
     }
 
+
+    /**
+     * Internal method to build a JWT given the user details and token expiration.
+     *
+     * @param user               The user details for whom the token is generated.
+     * @param expirationDuration The duration after which the token will expire.
+     * @param additionalClaims   Optional additional claims to include in the token.
+     * @return                   A JWT string.
+     */
     @SafeVarargs
     private String buildToken(CustomUserDetails user, Duration expirationDuration, Map<String, Object>... additionalClaims) {
         long now = System.currentTimeMillis();
@@ -79,6 +110,14 @@ public class JwtTokenService {
         return jwtBuilder.compact();
     }
 
+    /**
+     * Verifies the JWT, checks its signature and parses the claims.
+     *
+     * @param token The JWT to be verified.
+     * @throws SignatureException if the JWT signature does not match.
+     * @throws ExpiredJwtException if the JWT has expired.
+     * @throws MalformedJwtException if the JWT is not correctly structured.
+     */
     public void verifyToken(String token) throws SignatureException, ExpiredJwtException, MalformedJwtException{
         //TODO: Implement -> refresh token logic. Refresh token should be used to extend normal token life time.
         //TODO: Implement -> Logout and blacklisting tokens, either way blacklist tokens in database or redis cache. Ideally use refresh tokens as blacklsited ones in order

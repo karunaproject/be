@@ -6,6 +6,10 @@ import org.springframework.transaction.annotation.Transactional;
 import karuna.karuna_backend.Models.Role;
 import karuna.karuna_backend.Repositories.RoleRepository;
 
+/**
+ * Component responsible for initializing default roles in the database.
+ * Implements {@link CommandLineRunner} to run this initialization code at application startup.
+ */
 @Component
 public class DefaultRolesInitializer implements CommandLineRunner {
 
@@ -15,6 +19,14 @@ public class DefaultRolesInitializer implements CommandLineRunner {
         this.roleRepository = roleRepository;
     }
 
+
+
+    /**
+     * Callback used to run the bean. It checks and creates default roles that are necessary for application operation.
+     * This method is invoked at application startup.
+     *
+     * @param args command line arguments passed to the application, not used in this method.
+     */
     @Override
     @Transactional
     public void run(String... args) {
@@ -22,6 +34,11 @@ public class DefaultRolesInitializer implements CommandLineRunner {
         createRoleIfNotFound("ROLE_ADMIN");
     }
 
+    /**
+     * Ensures that a given role exists in the database. If the role does not exist, it creates and saves it.
+     *
+     * @param roleName the name of the role to check and potentially create.
+     */
     private void createRoleIfNotFound(String roleName) {
         if (roleRepository.findByName(roleName).isEmpty()) {
             Role role = new Role();
