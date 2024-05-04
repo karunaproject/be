@@ -6,13 +6,16 @@ import io.jsonwebtoken.security.SignatureException;
 import jakarta.annotation.PostConstruct;
 import karuna.karuna_backend.Authentication.CustomUserDetails;
 import karuna.karuna_backend.Authentication.Utils.SecurityContextUtil;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
 
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.time.Duration;
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +30,10 @@ public class JwtTokenService {
 
     private final JwtConfig jwtConfig;
     private Key signingKey;
+    @Setter
     private Duration tokenExpiration;
+
+    @Setter
     private Duration refreshTokenExpiration;
 
     @Autowired
@@ -43,8 +49,10 @@ public class JwtTokenService {
      */
     private void init() {
         try {
-            SignatureAlgorithm algorithm = SignatureAlgorithm.forName(jwtConfig.getSignatureAlgorithm());
-            this.signingKey = Keys.secretKeyFor(algorithm);
+            String secretKey = jwtConfig.getSecretKey();
+            byte[] keyBytes = secretKey.getBytes(StandardCharsets.UTF_8);
+
+            this.signingKey = Keys.hmacShaKeyFor(keyBytes);
             this.tokenExpiration = jwtConfig.getTokenExpirationTime();
             this.refreshTokenExpiration = jwtConfig.getRefreshTokenExpirationTime();
             //TODO: Handle global catch
@@ -136,7 +144,7 @@ public class JwtTokenService {
         SecurityContextUtil.setSecurityContext(username, roles);
     }
 
-    private Claims getAllClaims(String token) {
+    public Claims getAllClaims(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(signingKey)
                 .build()

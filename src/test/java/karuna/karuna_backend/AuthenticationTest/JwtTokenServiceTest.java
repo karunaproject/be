@@ -1,7 +1,7 @@
 package karuna.karuna_backend.AuthenticationTest;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
@@ -10,86 +10,70 @@ import karuna.karuna_backend.Authentication.JWT.JwtConfig;
 import karuna.karuna_backend.Authentication.JWT.JwtTokenService;
 import karuna.karuna_backend.Models.Role;
 import karuna.karuna_backend.Models.User;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.security.Key;
 import java.time.Duration;
 import java.util.*;
 
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 public class JwtTokenServiceTest {
-
     @Mock
     private JwtConfig jwtConfig;
-
-    @InjectMocks
     private JwtTokenService jwtTokenService;
 
-
-    private CustomUserDetails user;
-    private Key signingKey;
+    private CustomUserDetails userDetails;
 
     @BeforeEach
-    void setUp()  {
-        when(jwtConfig.getSignatureAlgorithm()).thenReturn("HS256");
-        when(jwtConfig.getTokenExpirationTime()).thenReturn(Duration.ofHours(2));
-        when(jwtConfig.getSecretKey()).thenReturn("secret123");
+    void setUp(){
+        when(jwtConfig.getSecretKey()).thenReturn("sGkXqJf3chLX7T52V7kPOj+KSLPZBEyeU9HxniZb2Sw");
+        when(jwtConfig.getTokenExpirationTime()).thenReturn(Duration.ofHours(1));
+        when(jwtConfig.getRefreshTokenExpirationTime()).thenReturn(Duration.ofHours(1));
 
-
-        SignatureAlgorithm algorithm = SignatureAlgorithm.forName(jwtConfig.getSignatureAlgorithm());
-        this.signingKey = Keys.secretKeyFor(algorithm);
-
-        try {
-
-            Method postConstructMethod = JwtTokenService.class.getDeclaredMethod("init");
-            postConstructMethod.setAccessible(true);
-            postConstructMethod.invoke(jwtTokenService);
-        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-            // Handle any exceptions that may occur
-            e.printStackTrace();
-        }
-        List<Role> roles = Collections.singletonList(
-                Role.builder()
-                        .name("ROLE_USER")
-                        .build()
-        );
-
-        user = new CustomUserDetails(User.builder()
-                .username("test123")
-                .roles(roles)
-                .build());
+        jwtTokenService = new JwtTokenService(jwtConfig);
+        User user = User.builder()
+                .username("username")
+                .password("password")
+                .roles(Collections.singletonList(new Role("ROLE_USER")))
+                .build();
+        userDetails = new CustomUserDetails(user);
     }
-
     @Test
-    void testTokenIsGenerated() {
-        String token = jwtTokenService.generateToken(user);
+    public void testGeneratedToken() {
+        String token = jwtTokenService.generateToken(userDetails);
         assertNotNull(token, "Token should not be null");
+        assertDoesNotThrow(() -> jwtTokenService.verifyToken(token), "Token should be valid and verification should not throw any exception");
+        assertEquals("username", jwtTokenService.getSubject(token), "Subject should match the username");
+        List<String> roles = jwtTokenService.getRoles(token);
+        assertTrue(roles.contains("ROLE_USER"), "Token should contain the correct role");
     }
-
     @Test
-    void testTokenContents() {
-        String token = jwtTokenService.generateToken(user);
+    public void testGeneratedTokenWithClaims(){
+        Map<String, Object> additionalClaims = new HashMap<>();
+        additionalClaims.put("test", "test");
+        String token = jwtTokenService.generateToken(userDetails, additionalClaims);
 
-        Jws<Claims> claims = Jwts.parserBuilder().
-                setSigningKey(signingKey)
-                .build()
-                .parseClaimsJws(token);
-        assertEquals(user.getUsername(), claims.getBody().getSubject(), "Username should match");
-        assertEquals(claims.getBody().get("roles", List.class), user.getAuthorities(), "User roles should match those in jwt claims");
-        assertTrue(claims.getBody().getExpiration().after(new Date()), "Token should have correct expiration");
+        assertEquals("test", jwtTokenService.getAllClaims(token).get("test"), "Additional claims were not set properly");
+        assertNotNull(token, "Token should not be null");
+        assertDoesNotThrow(() -> jwtTokenService.verifyToken(token), "Token should be valid and verification should not throw any exception");
     }
+    @Test
+    public void testTokenExpiration() {
+        jwtTokenService.setTokenExpiration(Duration.ofMillis(1));
+        String token = jwtTokenService.generateToken(userDetails);
+        try {
+            Thread.sleep(2);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        assertThrows(ExpiredJwtException.class, () -> jwtTokenService.verifyToken(token), "Token should be expired");
+    }
+
 }

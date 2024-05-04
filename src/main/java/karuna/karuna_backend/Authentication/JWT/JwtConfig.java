@@ -15,7 +15,6 @@ import java.time.Duration;
 @NoArgsConstructor
 @ConfigurationProperties(prefix = "application.jwt")
 public class JwtConfig {
-    private String signatureAlgorithm; // Defaulting to HS256
     private String secretKey ;
     private String tokenPrefix;
     private Duration tokenExpirationTime;
