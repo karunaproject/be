@@ -30,10 +30,7 @@ public class JwtTokenService {
 
     private final JwtConfig jwtConfig;
     private Key signingKey;
-    @Setter
     private Duration tokenExpiration;
-
-    @Setter
     private Duration refreshTokenExpiration;
 
     @Autowired

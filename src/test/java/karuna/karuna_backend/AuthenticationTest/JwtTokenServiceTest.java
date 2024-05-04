@@ -38,6 +38,7 @@ public class JwtTokenServiceTest {
         when(jwtConfig.getRefreshTokenExpirationTime()).thenReturn(Duration.ofHours(1));
 
         jwtTokenService = new JwtTokenService(jwtConfig);
+
         User user = User.builder()
                 .username("username")
                 .password("password")
@@ -66,7 +67,9 @@ public class JwtTokenServiceTest {
     }
     @Test
     public void testTokenExpiration() {
-        jwtTokenService.setTokenExpiration(Duration.ofMillis(1));
+        when(jwtConfig.getTokenExpirationTime()).thenReturn(Duration.ofMillis(1));
+        jwtTokenService = new JwtTokenService(jwtConfig);
+
         String token = jwtTokenService.generateToken(userDetails);
         try {
             Thread.sleep(2);
