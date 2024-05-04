@@ -33,6 +33,7 @@ public class JwtTokenService {
     @Autowired
     public JwtTokenService(JwtConfig jwtConfig) {
         this.jwtConfig = jwtConfig;
+        init();
     }
 
 
@@ -40,7 +41,6 @@ public class JwtTokenService {
      * Initializes the JWT settings, including signing key and token expiration times.
      * This method is automatically invoked after the service's properties are set.
      */
-    @PostConstruct
     private void init() {
         try {
             SignatureAlgorithm algorithm = SignatureAlgorithm.forName(jwtConfig.getSignatureAlgorithm());
