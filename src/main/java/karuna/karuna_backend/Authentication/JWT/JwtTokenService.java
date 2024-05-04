@@ -3,6 +3,7 @@ package karuna.karuna_backend.Authentication.JWT;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
+import io.jsonwebtoken.security.WeakKeyException;
 import jakarta.annotation.PostConstruct;
 import karuna.karuna_backend.Authentication.CustomUserDetails;
 import karuna.karuna_backend.Authentication.Utils.SecurityContextUtil;
@@ -52,9 +53,9 @@ public class JwtTokenService {
             this.signingKey = Keys.hmacShaKeyFor(keyBytes);
             this.tokenExpiration = jwtConfig.getTokenExpirationTime();
             this.refreshTokenExpiration = jwtConfig.getRefreshTokenExpirationTime();
-            //TODO: Handle global catch
-        } catch (IllegalArgumentException ex) {
-            throw new IllegalStateException("JWT settings are invalid", ex);
+            //TODO: Handle global catch/logger
+        } catch (WeakKeyException ex) {
+            throw new WeakKeyException("Secure key is too short");
         }
     }
 
