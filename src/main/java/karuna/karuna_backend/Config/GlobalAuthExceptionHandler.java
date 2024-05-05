@@ -7,6 +7,7 @@ import karuna.karuna_backend.Errors.DTO.AuthenticationErrorResponse;
 import karuna.karuna_backend.Errors.DTO.DataIntegrityErrorResponse;
 import karuna.karuna_backend.Errors.DatabaseExceptions.DatabaseExceptionHandler;
 import karuna.karuna_backend.Errors.DatabaseExceptions.DatabaseIntegrityException;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -17,13 +18,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 /* !!!!!! ControllerAdvice class is handled GLOBALLY IN SWAGGER, every single ExceptionHandler will be
  updated in swagger docs even if specific endpoint does not return every single status codes provided below !!!!!!! */
 @RestControllerAdvice(assignableTypes = AuthController.class)
+@AllArgsConstructor
 public class GlobalAuthExceptionHandler {
     private final DatabaseExceptionHandler databaseExceptionHandler;
-
-    @Autowired
-    public GlobalAuthExceptionHandler(DatabaseExceptionHandler databaseExceptionHandler){
-        this.databaseExceptionHandler = databaseExceptionHandler;
-    }
 
     @ResponseStatus(HttpStatus.CONFLICT)
     @Hidden
@@ -42,8 +39,8 @@ public class GlobalAuthExceptionHandler {
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler(Exception.class)
-    public String handleGenericException(Exception ex) {
+    @ExceptionHandler(RuntimeException.class)
+    public String handleGenericException(RuntimeException ex) {
         return "An error occurred" + ex.getMessage();
     }
 }

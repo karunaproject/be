@@ -42,10 +42,11 @@ public class JwtTokenServiceTest {
     @Test
     public void testGeneratedToken() {
         String token = jwtTokenService.generateToken(userDetails);
+        List<String> roles = jwtTokenService.getRoles(token);
+
         assertNotNull(token, "Token should not be null");
         assertDoesNotThrow(() -> jwtTokenService.verifyToken(token), "Token should be valid and verification should not throw any exception");
         assertEquals("username", jwtTokenService.getSubject(token), "Subject should match the username");
-        List<String> roles = jwtTokenService.getRoles(token);
         assertTrue(roles.contains("ROLE_USER"), "Token should contain the correct role");
     }
     @Test

@@ -2,6 +2,7 @@ package karuna.karuna_backend.Config;
 
 
 import karuna.karuna_backend.Config.Filters.JwtFilter;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,10 +14,10 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 @Configuration
 @EnableWebSecurity
+@AllArgsConstructor
 public class WebSecurityConfig {
 
-    @Autowired
-    private JwtFilter jwtFilter;
+    private final JwtFilter jwtFilter;
     /**
      * Configures the security filter chain for HTTP requests to enforce security policies.
      * This method customizes the HttpSecurity configuration to create a stateless application environment

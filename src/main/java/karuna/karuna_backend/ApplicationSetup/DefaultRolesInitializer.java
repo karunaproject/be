@@ -1,5 +1,6 @@
 package karuna.karuna_backend.ApplicationSetup;
 
+import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,15 +12,10 @@ import karuna.karuna_backend.Repositories.RoleRepository;
  * Implements {@link CommandLineRunner} to run this initialization code at application startup.
  */
 @Component
+@AllArgsConstructor
 public class DefaultRolesInitializer implements CommandLineRunner {
 
     private final RoleRepository roleRepository;
-
-    public DefaultRolesInitializer(RoleRepository roleRepository) {
-        this.roleRepository = roleRepository;
-    }
-
-
 
     /**
      * Callback used to run the bean. It checks and creates default roles that are necessary for application operation.
@@ -40,10 +36,6 @@ public class DefaultRolesInitializer implements CommandLineRunner {
      * @param roleName the name of the role to check and potentially create.
      */
     private void createRoleIfNotFound(String roleName) {
-        if (roleRepository.findByName(roleName).isEmpty()) {
-            Role role = new Role();
-            role.setName(roleName);
-            roleRepository.save(role);
-        }
+        roleRepository.findByName(roleName).orElseGet(() -> roleRepository.save(new Role(roleName)));
     }
 }

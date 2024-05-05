@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 @Service
 public class JwtTokenService {
 
-    private static final ZoneId TIME_ZONE = ZoneId.of("Europe/Warsaw");
+    private static final ZoneId TIME_ZONE = ZoneId.of("UTC");
     private final JwtConfig jwtConfig;
     private Key signingKey;
     private Duration tokenExpiration;
