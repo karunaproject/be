@@ -1,6 +1,8 @@
 package karuna.karuna_backend.Config;
 
 
+import karuna.karuna_backend.Config.Filters.JwtFilter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -8,13 +10,13 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
-
-import static org.springframework.security.config.Customizer.withDefaults;
-
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 @Configuration
 @EnableWebSecurity
-public class WebSecurityConfig{
+@RequiredArgsConstructor
+public class WebSecurityConfig {
 
+    private final JwtFilter jwtFilter;
     /**
      * Configures the security filter chain for HTTP requests to enforce security policies.
      * This method customizes the HttpSecurity configuration to create a stateless application environment
@@ -28,23 +30,23 @@ public class WebSecurityConfig{
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(AbstractHttpConfigurer::disable) //TODO: Configure CSRF
-                .sessionManagement(sessionConfigurer -> sessionConfigurer
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )
-                .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/**").permitAll()
+                .csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(
+                                "/login",
+                                "/register",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/v3/api-docs/**",
+                                "/swagger-resources/**")
+                        .permitAll()
+                        .anyRequest().authenticated())
 
-                )
-                .formLogin(withDefaults())
-                .httpBasic(withDefaults());
-
-
-
-
-
-
-
+                .addFilterBefore(jwtFilter, BasicAuthenticationFilter.class);
         return http.build();
     }
+
+
 }
