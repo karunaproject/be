@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import karuna.karuna_backend.DTO.VisitorMessage.VisitorMessageCreateDto;
 import karuna.karuna_backend.DTO.VisitorMessage.VisitorMessageDto;
@@ -24,13 +25,19 @@ class VisitorMessageController {
     private final VisitorMessageService visitorMessageService;
 
     @Operation(summary = "Create visitor message", description = "Getting body from json (body of request) and saving it to database as visitor message with current date")
-    @ApiResponse(
-            responseCode = "201",
-            description = "Visitor message content",
-            content = @Content(mediaType = "application/json", schema = @Schema(implementation = VisitorMessageDto.class)))
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "Visitor message content",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = VisitorMessageDto.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Visitor message content is too long")
+    })
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     VisitorMessageDto sendMessage(@RequestBody @Valid VisitorMessageCreateDto visitorMessageCreateDto) {
+        //TODO: NEW VALIDATION AFTER CONTACT WITH CLIENT
         return visitorMessageService.sendMessage(visitorMessageCreateDto);
     }
 }
