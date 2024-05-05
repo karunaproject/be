@@ -29,8 +29,7 @@ public class JwtTokenServiceTest {
     @BeforeEach
     void setUp(){
         when(jwtConfig.getSecretKey()).thenReturn("sGkXqJf3chLX7T52V7kPOj+KSLPZBEyeU9HxniZb2Sw");
-        when(jwtConfig.getTokenExpirationTime()).thenReturn(Duration.ofHours(1));
-        when(jwtConfig.getRefreshTokenExpirationTime()).thenReturn(Duration.ofHours(1));
+        when(jwtConfig.getTokenExpirationTime()).thenReturn(Duration.ofHours(1));;
 
         jwtTokenService = new JwtTokenService(jwtConfig);
         User user = User.builder()

@@ -14,6 +14,9 @@ import org.springframework.stereotype.Service;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.time.Duration;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -26,10 +29,10 @@ import java.util.stream.Collectors;
 @Service
 public class JwtTokenService {
 
+    private static final ZoneId TIME_ZONE = ZoneId.of("Europe/Warsaw");
     private final JwtConfig jwtConfig;
     private Key signingKey;
     private Duration tokenExpiration;
-    private Duration refreshTokenExpiration;
 
     @Autowired
     public JwtTokenService(JwtConfig jwtConfig) {
@@ -49,7 +52,6 @@ public class JwtTokenService {
 
             this.signingKey = Keys.hmacShaKeyFor(keyBytes);
             this.tokenExpiration = jwtConfig.getTokenExpirationTime();
-            this.refreshTokenExpiration = jwtConfig.getRefreshTokenExpirationTime();
             //TODO: Handle global catch/logger
         } catch (WeakKeyException ex) {
             throw new WeakKeyException("Secure key is too short");
@@ -65,43 +67,35 @@ public class JwtTokenService {
      */
     @SafeVarargs
     public final String generateToken(CustomUserDetails user, Map<String, Object>... additionalClaims) {
+        OffsetDateTime now = OffsetDateTime.now(TIME_ZONE);
+        OffsetDateTime expirationTime = now.plus(tokenExpiration.toMillis(), ChronoUnit.MILLIS);
+
         if (additionalClaims.length > 0) {
-            return buildToken(user, tokenExpiration, additionalClaims[0]);
+            return buildToken(user, now, expirationTime, additionalClaims[0]);
         } else {
-            return buildToken(user, tokenExpiration);
+            return buildToken(user, now, expirationTime);
         }
     }
-
-    /**
-     * Generates a refresh token for a specified user.
-     *
-     * @param user The user details for whom the refresh token is generated.
-     * @return A refresh JWT string.
-     */
-    public String generateRefreshToken(CustomUserDetails user) {
-        return buildToken(user, refreshTokenExpiration);
-    }
-
 
     /**
      * Internal method to build a JWT given the user details and token expiration.
      *
      * @param user               The user details for whom the token is generated.
-     * @param expirationDuration The duration after which the token will expire.
+     * @param issuedAt           Time when token was created.
+     * @param expiresAt          Time when token expires.
      * @param additionalClaims   Optional additional claims to include in the token.
      * @return                   A JWT string.
      */
     @SafeVarargs
-    private String buildToken(CustomUserDetails user, Duration expirationDuration, Map<String, Object>... additionalClaims) {
-        long now = System.currentTimeMillis();
+    private String buildToken(CustomUserDetails user, OffsetDateTime issuedAt, OffsetDateTime expiresAt, Map<String, Object>... additionalClaims) {
         var jwtBuilder = Jwts.builder()
                 .setSubject(user.getUsername())
                 .claim("userId", user.getId())
                 .claim("roles", user.getAuthorities().stream()
                         .map(GrantedAuthority::getAuthority)
                         .collect(Collectors.toList()))
-                .setIssuedAt(new Date(now))
-                .setExpiration(new Date(now + expirationDuration.toMillis()))
+                .setIssuedAt(Date.from(issuedAt.toInstant()))
+                .setExpiration(Date.from(expiresAt.toInstant()))
                 .signWith(signingKey);
 
         // If additional claims are provided, add them to the token
@@ -147,8 +141,9 @@ public class JwtTokenService {
                 .getBody();
     }
 
-    public Date getExpirationDate(String token) {
-        return getAllClaims(token).getExpiration();
+    public OffsetDateTime getExpirationDate(String token) {
+        Date expirationDate = getAllClaims(token).getExpiration();
+        return expirationDate.toInstant().atZone(TIME_ZONE).toOffsetDateTime();
     }
 
 

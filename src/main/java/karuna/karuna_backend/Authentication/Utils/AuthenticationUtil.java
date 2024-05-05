@@ -65,7 +65,7 @@ public final class AuthenticationUtil {
         return getAuthentication()
                 .map(auth -> auth.getAuthorities().stream()
                         .map(GrantedAuthority::getAuthority)
-                        .collect(Collectors.toList()))
+                        .toList())
                 .orElse(Collections.emptyList());
     }
 }
