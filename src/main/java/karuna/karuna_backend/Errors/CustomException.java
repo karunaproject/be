@@ -1,19 +1,17 @@
 package karuna.karuna_backend.Errors;
 
-import karuna.karuna_backend.DTO.CustomErrorResponse;
 import lombok.Getter;
 
 @Getter
-public class CustomException extends RuntimeException{
-    private CustomExceptionKey key;
-    private String description;
+public abstract class CustomException extends RuntimeException{
+    private final Enum<?> key;
+    private final String description;
 
-    public CustomException(CustomExceptionKey key, String description){
+    public CustomException(Enum<?> key, String description){
         super(description);
-        this.key = key;
-        this.description = description;
+        this.key=key;
+        this.description=description;
     }
-    public CustomErrorResponse mapToErrorResponse(){
-        return new CustomErrorResponse(key, description);
-    }
+
+    public abstract IErrorResponse mapToErrorResponse();
 }
