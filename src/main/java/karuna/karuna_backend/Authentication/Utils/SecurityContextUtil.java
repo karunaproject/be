@@ -1,5 +1,7 @@
 package karuna.karuna_backend.Authentication.Utils;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -13,7 +15,8 @@ import java.util.stream.Collectors;
  * Utility class to manipulate the Spring Security Context.
  * Provides methods to programmatically set the security context using a username and roles.
  */
-public class SecurityContextUtil {
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class SecurityContextUtil {
 
     /**
      * Sets the security context with a specific username and a list of roles.

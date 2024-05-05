@@ -50,7 +50,7 @@ public class UserService {
      * @param id the ID of the user to retrieve.
      * @return an Optional containing the UserDTO if the user is found, or an empty Optional if not found.
      */
-    public Optional<UserDTO> getUserById(int id){
+    public Optional<UserDTO> getUserById(long id){
         Optional<User> optionalUser = userRepository.findById(id);
         return optionalUser.map(User::dto);
 

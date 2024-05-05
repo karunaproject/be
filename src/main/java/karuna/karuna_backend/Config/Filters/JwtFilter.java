@@ -7,9 +7,8 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import karuna.karuna_backend.Authentication.JWT.JwtConfig;
 import karuna.karuna_backend.Authentication.JWT.JwtTokenService;
-import karuna.karuna_backend.Errors.AuthenticateExceptions.JwtAuthenticationException;
-import karuna.karuna_backend.Errors.DTO.AuthenticationErrorResponse;
 import karuna.karuna_backend.Errors.DTO.JwtErrorResponse;
 import karuna.karuna_backend.Errors.ErrorKeys.JwtErrorKey;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +23,12 @@ public class JwtFilter extends OncePerRequestFilter {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     private final JwtTokenService jwtTokenService;
-
-    private String errorMessageKey;
-    private String errorMessageDescription;
+    private final JwtConfig jwtConfig;
 
     @Autowired
-    public JwtFilter(JwtTokenService jwtTokenService){
+    public JwtFilter(JwtTokenService jwtTokenService, JwtConfig jwtConfig){
         this.jwtTokenService=jwtTokenService;
+        this.jwtConfig=jwtConfig;
     }
 
     /**
@@ -46,9 +44,9 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
-        String header = request.getHeader("Authorization");
-        if (header != null && header.startsWith("Bearer ")) {
-            String token = header.replace("Bearer ", "");
+        String header = request.getHeader(jwtConfig.getAuthorizationHeader());
+        if (header != null && header.startsWith(jwtConfig.getTokenPrefix())) {
+            String token = header.replace(jwtConfig.getTokenPrefix(), "");
             try {
                 jwtTokenService.verifyToken(token);
             } catch (Exception e) {

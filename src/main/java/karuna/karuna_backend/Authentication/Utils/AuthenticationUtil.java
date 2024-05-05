@@ -1,5 +1,7 @@
 package karuna.karuna_backend.Authentication.Utils;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -10,7 +12,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class AuthenticationUtil {
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class AuthenticationUtil {
 
     private static final String ANONYMOUS_USER = "anonymousUser";
 

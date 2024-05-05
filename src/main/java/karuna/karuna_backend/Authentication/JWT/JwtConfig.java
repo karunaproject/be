@@ -23,4 +23,5 @@ public class JwtConfig {
     public String getAuthorizationHeader() {
         return HttpHeaders.AUTHORIZATION;
     }
+    public String getTokenPrefix() {return tokenPrefix + " ";}
 }

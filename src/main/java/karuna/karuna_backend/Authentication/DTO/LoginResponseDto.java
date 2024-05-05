@@ -2,9 +2,7 @@ package karuna.karuna_backend.Authentication.DTO;
 
 import lombok.Builder;
 import lombok.Getter;
-
 import java.util.Date;
-import java.util.List;
 
 @Builder
 @Getter

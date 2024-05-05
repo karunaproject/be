@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import karuna.karuna_backend.Authentication.DTO.*;
+import karuna.karuna_backend.Authentication.JWT.JwtConfig;
 import karuna.karuna_backend.Authentication.JWT.JwtTokenService;
 import karuna.karuna_backend.Authentication.Utils.AuthenticationUtil;
 import karuna.karuna_backend.DTO.UserDTO;
@@ -15,6 +16,7 @@ import karuna.karuna_backend.Errors.DTO.DataIntegrityErrorResponse;
 import karuna.karuna_backend.Errors.DTO.JwtErrorResponse;
 import karuna.karuna_backend.Models.User;
 import karuna.karuna_backend.Services.UserService;
+import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -29,19 +31,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
+@AllArgsConstructor
 public class AuthController {
 
     private final UserService service;
     private final JwtTokenService jwtTokenService;
-
-    @Autowired
-    public AuthController(UserService userService,
-                          JwtTokenService jwtTokenService,
-                          PasswordEncoder passwordEncoder)
-    {
-        this.service=userService;
-        this.jwtTokenService=jwtTokenService;
-    }
+    private final JwtConfig jwtConfig;
 
     @PostMapping("/login")
     @Operation(summary = "Validates the provided authentication token",
@@ -54,7 +49,7 @@ public class AuthController {
                     schema = @Schema(implementation = AuthenticationErrorResponse.class)))
     public ResponseEntity<?> authenticateUser(@RequestBody LoginRequestDto loginRequestDto) {
         //TODO: Sanitize inputs, XSS prevention
-        String jwt = service.authenticateUser(loginRequestDto.getUsername(), loginRequestDto.getPassword());
+        String jwt = service.authenticateUser(loginRequestDto.username(), loginRequestDto.password());
         LoginResponseDto body = LoginResponseDto.builder()
                 .username(jwtTokenService.getSubject(jwt))
                 .tokenExpirationTime(jwtTokenService.getExpirationDate(jwt))
@@ -75,7 +70,7 @@ public class AuthController {
                     schema = @Schema(implementation = DataIntegrityErrorResponse.class)))
     public ResponseEntity<?> registerUser(@RequestBody RegisterRequestDto registerRequestDto) {
 
-        String jwt = service.registerUser(registerRequestDto.getUsername(), registerRequestDto.getPassword());
+        String jwt = service.registerUser(registerRequestDto.username(), registerRequestDto.password());
         RegisterResponseDto body = RegisterResponseDto.builder()
                 .username(jwtTokenService.getSubject(jwt))
                 .tokenExpirationTime(jwtTokenService.getExpirationDate(jwt))
@@ -103,7 +98,7 @@ public class AuthController {
 
     private ResponseEntity<?> createJwtResponse(String jwt, Object body, HttpStatus status) {
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Bearer " + jwt);
+        headers.add(jwtConfig.getAuthorizationHeader(), jwtConfig.getTokenPrefix() + jwt);
         return new ResponseEntity<>(body, headers, status);
     }
 }
