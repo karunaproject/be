@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
+import karuna.karuna_backend.DTO.CustomErrorResponse;
 import karuna.karuna_backend.DTO.VisitorMessage.VisitorMessageCreateDto;
 import karuna.karuna_backend.DTO.VisitorMessage.VisitorMessageDto;
 import karuna.karuna_backend.Services.VisitorMessageService;
@@ -32,7 +33,8 @@ class VisitorMessageController {
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = VisitorMessageDto.class))),
             @ApiResponse(
                     responseCode = "400",
-                    description = "Visitor message content is too long")
+                    description = "Visitor message content is too long",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = CustomErrorResponse.class)))
     })
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
