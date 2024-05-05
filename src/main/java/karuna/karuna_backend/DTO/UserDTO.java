@@ -13,5 +13,7 @@ import lombok.AllArgsConstructor;
 @Builder
 public class UserDTO {
     private String username;
+
+    //TODO: remove this field
     private String password;
 }
