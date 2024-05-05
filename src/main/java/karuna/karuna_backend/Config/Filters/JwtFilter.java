@@ -11,6 +11,7 @@ import karuna.karuna_backend.Authentication.JWT.JwtConfig;
 import karuna.karuna_backend.Authentication.JWT.JwtTokenService;
 import karuna.karuna_backend.Errors.DTO.JwtErrorResponse;
 import karuna.karuna_backend.Errors.ErrorKeys.JwtErrorKey;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -18,18 +19,14 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 @Component
+@RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     private final JwtTokenService jwtTokenService;
     private final JwtConfig jwtConfig;
-
-    @Autowired
-    public JwtFilter(JwtTokenService jwtTokenService, JwtConfig jwtConfig){
-        this.jwtTokenService=jwtTokenService;
-        this.jwtConfig=jwtConfig;
-    }
+    
 
     /**
      * Internal filter method that executes once per request to authenticate users based on JWT.

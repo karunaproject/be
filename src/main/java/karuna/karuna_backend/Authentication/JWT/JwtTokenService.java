@@ -34,7 +34,7 @@ public class JwtTokenService {
     private Key signingKey;
     private Duration tokenExpiration;
 
-    @Autowired
+
     public JwtTokenService(JwtConfig jwtConfig) {
         this.jwtConfig = jwtConfig;
         init();
