@@ -12,7 +12,6 @@ import karuna.karuna_backend.Errors.DTO.AuthenticationErrorResponse;
 import karuna.karuna_backend.Errors.DTO.DataIntegrityErrorResponse;
 import karuna.karuna_backend.Errors.DTO.JwtErrorResponse;
 import karuna.karuna_backend.Services.UserService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

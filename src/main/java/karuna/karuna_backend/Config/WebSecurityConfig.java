@@ -2,9 +2,7 @@ package karuna.karuna_backend.Config;
 
 
 import karuna.karuna_backend.Config.Filters.JwtFilter;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

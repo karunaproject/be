@@ -1,11 +1,6 @@
 package karuna.karuna_backend.Errors;
 
-import karuna.karuna_backend.Errors.DTO.CustomErrorResponse;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 @Getter
 public abstract class CustomException extends RuntimeException{
     private final Enum<?> key;

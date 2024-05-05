@@ -6,7 +6,6 @@ import io.jsonwebtoken.security.SignatureException;
 import io.jsonwebtoken.security.WeakKeyException;
 import karuna.karuna_backend.Authentication.CustomUserDetails;
 import karuna.karuna_backend.Authentication.Utils.SecurityContextUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 

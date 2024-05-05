@@ -1,6 +1,6 @@
 package karuna.karuna_backend.Models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import karuna.karuna_backend.Authentication.CustomUserDetails;
 import karuna.karuna_backend.DTO.UserDTO;
