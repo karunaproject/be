@@ -27,6 +27,7 @@ public class DatabaseExceptionHandler{
      * @return A {@link DatabaseIntegrityException} that represents a more specific error based on the resolved code.
      */
     public DatabaseIntegrityException handleIntegrityException(DataIntegrityViolationException e){
+        //TODO: Create integration tests after infrastructure refactorization
         //TODO: Refactor into a little bit more flexible version
         DataIntegrityErrorKey errorCode = errorResolver.resolveErrorCode(e);
         return switch (errorCode) {
