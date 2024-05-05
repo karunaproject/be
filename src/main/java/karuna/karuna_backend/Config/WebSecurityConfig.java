@@ -43,10 +43,7 @@ public class WebSecurityConfig {
                                 "/swagger-resources/**")
                         .permitAll()
                         .anyRequest().authenticated())
-
                 .addFilterBefore(jwtFilter, BasicAuthenticationFilter.class);
         return http.build();
     }
-
-
 }
