@@ -14,7 +14,7 @@ public class LoginPasswordAuthenticationException extends CustomException {
         public AuthenticationErrorResponse mapToErrorResponse(){
             //TODO: Think of the way to make CustomException Generic and still extend Throwable Java.
             if (!(getKey() instanceof LoginPasswordAuthErrorKey)) {
-                throw new IllegalStateException("Key type mismatch in JwtException");
+                throw new IllegalStateException("Key type mismatch in LoginPasswordAuthenticationException");
             }
             return new AuthenticationErrorResponse((LoginPasswordAuthErrorKey) getKey(), getDescription());
     }

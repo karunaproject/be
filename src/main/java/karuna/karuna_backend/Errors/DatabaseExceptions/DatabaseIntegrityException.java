@@ -16,7 +16,7 @@ public class DatabaseIntegrityException extends CustomException {
     public DataIntegrityErrorResponse mapToErrorResponse(){
         //TODO: Think of the way to make CustomException Generic and still extend Throwable Java.
         if (!(getKey() instanceof DataIntegrityErrorKey)) {
-            throw new IllegalStateException("Key type mismatch in JwtException");
+            throw new IllegalStateException("Key type mismatch in DatabaseIntegerityException");
         }
         return new DataIntegrityErrorResponse((DataIntegrityErrorKey) getKey(), getDescription());
     }
