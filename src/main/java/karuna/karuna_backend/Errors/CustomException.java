@@ -14,6 +14,6 @@ public class CustomException extends RuntimeException{
         this.description = description;
     }
     public CustomErrorResponse mapToErrorResponse(){
-        return new CustomErrorResponse(key.name(), description);
+        return new CustomErrorResponse(key, description);
     }
 }

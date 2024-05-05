@@ -13,6 +13,6 @@ public class RestExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     CustomErrorResponse handleMethodArgumentNotValidException(MethodArgumentNotValidException methodArgumentNotValidException) {
-        return new CustomErrorResponse(CustomExceptionKey.VALIDATION.name(), methodArgumentNotValidException.getBindingResult().getAllErrors().get(0).getDefaultMessage());
+        return new CustomErrorResponse(CustomExceptionKey.UNIQUE_CONSTRAINT_VIOLATION, methodArgumentNotValidException.getBindingResult().getAllErrors().get(0).getDefaultMessage());
     }
 }
