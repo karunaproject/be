@@ -13,6 +13,6 @@ public class RestExceptionHandler {
     @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     CustomErrorResponse handleUserNotFound(UserNotFoundException userNotFoundException) {
-        return userNotFoundException.mapToErrorResponse();
+        return (CustomErrorResponse) userNotFoundException.mapToErrorResponse();
     }
 }
