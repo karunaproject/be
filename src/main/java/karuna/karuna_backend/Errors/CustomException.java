@@ -1,6 +1,7 @@
 package karuna.karuna_backend.Errors;
 
 import lombok.Getter;
+
 @Getter
 public abstract class CustomException extends RuntimeException{
     private final Enum<?> key;
