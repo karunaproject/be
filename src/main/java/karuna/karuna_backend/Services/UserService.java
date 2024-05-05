@@ -10,6 +10,7 @@ import karuna.karuna_backend.Models.Role;
 import karuna.karuna_backend.Models.User;
 import karuna.karuna_backend.Repositories.RoleRepository;
 import karuna.karuna_backend.Repositories.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
 
@@ -30,20 +32,6 @@ public class UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
-
-
-    @Autowired
-    public UserService(UserRepository userRepository,
-                       RoleRepository roleRepository,
-                       AuthenticationManager authenticationManager,
-                       JwtTokenService jwtTokenService,
-                       PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
-        this.authenticationManager=authenticationManager;
-        this.jwtTokenService=jwtTokenService;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     /**
      * Retrieves a user by their ID.
