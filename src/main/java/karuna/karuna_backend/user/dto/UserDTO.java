@@ -6,14 +6,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-public class UserDTO {
-    private String username;
+import java.util.List;
 
-    //TODO: remove this field
-    private String password;
+public record UserDTO(
+        long id,
+        String username,
+        String password,
+        List<String> roles
+) {
 }

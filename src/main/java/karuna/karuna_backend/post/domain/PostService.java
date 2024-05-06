@@ -23,7 +23,7 @@ public class PostService {
                 .orElseThrow(() -> new UserNotFoundException("Can not found user: %s".formatted(username)));
         Post post = Post.builder()
                 .body(postCreateDto.body())
-                .author(user.getUsername())
+                .author(user.username())
                 .build();
         return PostMapper.toDto(postRepository.save(post));
     }

@@ -1,4 +1,4 @@
-package karuna.karuna_backend.security.config;
+package karuna.karuna_backend.user.exception;
 
 import io.swagger.v3.oas.annotations.Hidden;
 import karuna.karuna_backend.exception.database.DatabaseExceptionHandler;

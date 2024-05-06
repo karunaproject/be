@@ -7,6 +7,7 @@ import karuna.karuna_backend.security.exception.LoginPasswordAuthenticationExcep
 import karuna.karuna_backend.security.jwt.JwtTokenService;
 import karuna.karuna_backend.user.dto.UserDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -18,7 +19,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
+@RequiredArgsConstructor(onConstructor = @__(@Lazy))
 public class UserService {
 
 

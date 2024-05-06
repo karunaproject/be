@@ -1,6 +1,6 @@
 package karuna.karuna_backend.security;
 
-import karuna.karuna_backend.user.domain.User;
+import karuna.karuna_backend.user.dto.UserDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -10,26 +10,26 @@ import java.util.Collection;
 @RequiredArgsConstructor
 public class CustomUserDetails implements UserDetails {
 
-    private final User user;
+    private final UserDTO user;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return user.getRoles().stream()
-                .map(role -> new SimpleGrantedAuthority(role.getName()))
+        return user.roles().stream()
+                .map(SimpleGrantedAuthority::new)
                 .toList();
     }
 
     @Override
     public String getPassword() {
-        return user.getPassword();
+        return user.password();
     }
 
     @Override
     public String getUsername() {
-       return user.getUsername();
+       return user.username();
     }
 
-    public long getId() {return user.getId();}
+    public long getId() {return user.id();}
 
     @Override
     public boolean isAccountNonExpired() {

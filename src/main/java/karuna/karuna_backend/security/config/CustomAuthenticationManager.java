@@ -1,5 +1,6 @@
-package karuna.karuna_backend.security;
+package karuna.karuna_backend.security.config;
 
+import karuna.karuna_backend.security.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

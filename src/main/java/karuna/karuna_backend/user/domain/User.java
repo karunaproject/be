@@ -50,15 +50,12 @@ class User {
     private List<Role> roles = new ArrayList<>();
 
     UserDTO dto(){
-        return UserDTO.builder()
-                .username(this.username)
-                .password(this.password)
-                .build();
+        return new UserDTO(id, username, password, roles.stream().map(Role::getName).toList());
     }
 
     //TODO: Refactor into separate class
     CustomUserDetails mapToUserDetails(){
-        return new CustomUserDetails(this);
+        return new CustomUserDetails(this.dto());
     }
 
 }

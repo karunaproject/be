@@ -1,5 +1,6 @@
-package karuna.karuna_backend.exception;
+package karuna.karuna_backend.user.exception;
 
+import karuna.karuna_backend.exception.CustomExceptionKey;
 import karuna.karuna_backend.exception.dto.CustomErrorResponse;
 import karuna.karuna_backend.user.exception.UserNotFoundException;
 import org.springframework.http.HttpStatus;
