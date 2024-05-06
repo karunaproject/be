@@ -3,13 +3,14 @@ package karuna.karuna_backend.security;
 import karuna.karuna_backend.user.domain.UserService;
 import karuna.karuna_backend.user.dto.UserDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
+@RequiredArgsConstructor(onConstructor = @__(@Lazy))
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserService userService;
