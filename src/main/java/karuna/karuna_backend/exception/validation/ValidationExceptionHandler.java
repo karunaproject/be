@@ -2,7 +2,6 @@ package karuna.karuna_backend.exception.validation;
 
 import karuna.karuna_backend.exception.CustomExceptionKey;
 import karuna.karuna_backend.exception.dto.CustomErrorResponse;
-import karuna.karuna_backend.user.exception.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
