@@ -14,17 +14,10 @@
             <column name="body" type="TEXT">
                 <constraints nullable="false"/>
             </column>
-            <column name="user_id" type="BIGINT">
+            <column name="author" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
         </createTable>
-    </changeSet>
-
-    <changeSet id="add_foreign_key_user_id" author="MrRevo">
-        <addForeignKeyConstraint baseTableName="posts" baseColumnNames="user_id"
-                                 referencedTableName="users" referencedColumnNames="ID"
-                                 constraintName="fk_post_user"
-                                 onDelete="SET NULL" onUpdate="CASCADE"/>
     </changeSet>
 
 </databaseChangeLog>

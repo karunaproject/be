@@ -1,0 +1,6 @@
+package karuna.karuna_backend.exception.dto;
+
+import karuna.karuna_backend.exception.IErrorResponse;
+import karuna.karuna_backend.exception.keys.DataIntegrityErrorKey;
+
+public record DataIntegrityErrorResponse(DataIntegrityErrorKey key, String description) implements IErrorResponse { }
