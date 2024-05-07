@@ -5,8 +5,8 @@ import karuna.karuna_backend.visitor.message.dto.VisitorMessageDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-@Service
 @RequiredArgsConstructor
+@Service
 public class VisitorMessageService {
 
     private final VisitorMessageRepository visitorMessageRepository;
