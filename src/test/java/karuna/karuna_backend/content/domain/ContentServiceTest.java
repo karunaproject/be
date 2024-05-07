@@ -18,6 +18,7 @@ class ContentServiceTest {
         //when
         ContentDTO contentDTO = contentService.getContentByPage(page);
         //then
+        assertEquals(1, contentDTO.contents().keySet().size());
         assertEquals(Constants.VALUE_PL, contentDTO.contents().get(Constants.KEY));
     }
 
