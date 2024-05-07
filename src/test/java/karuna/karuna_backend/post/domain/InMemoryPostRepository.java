@@ -1,4 +1,4 @@
-package karuna.karuna_backend.visitor.message.domain;
+package karuna.karuna_backend.post.domain;
 
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-class InMemoryVisitorMessageRepository implements VisitorMessageRepository{
+class InMemoryPostRepository implements PostRepository {
 
     @Override
     public void flush() {
@@ -19,17 +19,17 @@ class InMemoryVisitorMessageRepository implements VisitorMessageRepository{
     }
 
     @Override
-    public <S extends VisitorMessage> S saveAndFlush(S entity) {
+    public <S extends Post> S saveAndFlush(S entity) {
         return null;
     }
 
     @Override
-    public <S extends VisitorMessage> List<S> saveAllAndFlush(Iterable<S> entities) {
+    public <S extends Post> List<S> saveAllAndFlush(Iterable<S> entities) {
         return null;
     }
 
     @Override
-    public void deleteAllInBatch(Iterable<VisitorMessage> entities) {
+    public void deleteAllInBatch(Iterable<Post> entities) {
 
     }
 
@@ -44,67 +44,67 @@ class InMemoryVisitorMessageRepository implements VisitorMessageRepository{
     }
 
     @Override
-    public VisitorMessage getOne(Long aLong) {
+    public Post getOne(Long aLong) {
         return null;
     }
 
     @Override
-    public VisitorMessage getById(Long aLong) {
+    public Post getById(Long aLong) {
         return null;
     }
 
     @Override
-    public VisitorMessage getReferenceById(Long aLong) {
+    public Post getReferenceById(Long aLong) {
         return null;
     }
 
     @Override
-    public <S extends VisitorMessage> Optional<S> findOne(Example<S> example) {
+    public <S extends Post> Optional<S> findOne(Example<S> example) {
         return Optional.empty();
     }
 
     @Override
-    public <S extends VisitorMessage> List<S> findAll(Example<S> example) {
+    public <S extends Post> List<S> findAll(Example<S> example) {
         return null;
     }
 
     @Override
-    public <S extends VisitorMessage> List<S> findAll(Example<S> example, Sort sort) {
+    public <S extends Post> List<S> findAll(Example<S> example, Sort sort) {
         return null;
     }
 
     @Override
-    public <S extends VisitorMessage> Page<S> findAll(Example<S> example, Pageable pageable) {
+    public <S extends Post> Page<S> findAll(Example<S> example, Pageable pageable) {
         return null;
     }
 
     @Override
-    public <S extends VisitorMessage> long count(Example<S> example) {
+    public <S extends Post> long count(Example<S> example) {
         return 0;
     }
 
     @Override
-    public <S extends VisitorMessage> boolean exists(Example<S> example) {
+    public <S extends Post> boolean exists(Example<S> example) {
         return false;
     }
 
     @Override
-    public <S extends VisitorMessage, R> R findBy(Example<S> example, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
+    public <S extends Post, R> R findBy(Example<S> example, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
         return null;
     }
 
     @Override
-    public <S extends VisitorMessage> S save(S entity) {
-        return (S) new VisitorMessage(1L, OffsetDateTime.now(), entity.getBody(), entity.getContact());
+    public <S extends Post> S save(S entity) {
+        return (S) new Post(1L, OffsetDateTime.now(), entity.getBody(), entity.getAuthor());
     }
 
     @Override
-    public <S extends VisitorMessage> List<S> saveAll(Iterable<S> entities) {
+    public <S extends Post> List<S> saveAll(Iterable<S> entities) {
         return null;
     }
 
     @Override
-    public Optional<VisitorMessage> findById(Long aLong) {
+    public Optional<Post> findById(Long aLong) {
         return Optional.empty();
     }
 
@@ -114,12 +114,12 @@ class InMemoryVisitorMessageRepository implements VisitorMessageRepository{
     }
 
     @Override
-    public List<VisitorMessage> findAll() {
+    public List<Post> findAll() {
         return null;
     }
 
     @Override
-    public List<VisitorMessage> findAllById(Iterable<Long> longs) {
+    public List<Post> findAllById(Iterable<Long> longs) {
         return null;
     }
 
@@ -134,7 +134,7 @@ class InMemoryVisitorMessageRepository implements VisitorMessageRepository{
     }
 
     @Override
-    public void delete(VisitorMessage entity) {
+    public void delete(Post entity) {
 
     }
 
@@ -144,7 +144,7 @@ class InMemoryVisitorMessageRepository implements VisitorMessageRepository{
     }
 
     @Override
-    public void deleteAll(Iterable<? extends VisitorMessage> entities) {
+    public void deleteAll(Iterable<? extends Post> entities) {
 
     }
 
@@ -154,12 +154,12 @@ class InMemoryVisitorMessageRepository implements VisitorMessageRepository{
     }
 
     @Override
-    public List<VisitorMessage> findAll(Sort sort) {
+    public List<Post> findAll(Sort sort) {
         return null;
     }
 
     @Override
-    public Page<VisitorMessage> findAll(Pageable pageable) {
+    public Page<Post> findAll(Pageable pageable) {
         return null;
     }
 }
