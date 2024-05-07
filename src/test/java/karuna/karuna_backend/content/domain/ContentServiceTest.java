@@ -1,8 +1,8 @@
 package karuna.karuna_backend.content.domain;
 
 
+import karuna.karuna_backend.Constants;
 import karuna.karuna_backend.content.dto.ContentDTO;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

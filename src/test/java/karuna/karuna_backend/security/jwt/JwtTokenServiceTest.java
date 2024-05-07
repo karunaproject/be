@@ -2,6 +2,7 @@ package karuna.karuna_backend.security.jwt;
 
 
 import io.jsonwebtoken.ExpiredJwtException;
+import karuna.karuna_backend.Constants;
 import karuna.karuna_backend.security.CustomUserDetails;
 import karuna.karuna_backend.user.dto.UserDTO;
 import org.junit.jupiter.api.Test;
@@ -18,12 +19,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class JwtTokenServiceTest {
 
-    private static final String USERNAME = "USERNAME";
-    private static final String PASSWORD = "PASSWORD";
-    private static final String ROLE_USER = "ROLE_USER";
-
     private JwtTokenService jwtTokenService = JwtTokenTestConfiguration.jwtTokenService();
-    private CustomUserDetails userDetails = new CustomUserDetails(new UserDTO(1L, USERNAME, PASSWORD, List.of(ROLE_USER)));
+    private CustomUserDetails userDetails = new CustomUserDetails(new UserDTO(1L, Constants.USERNAME, Constants.PASSWORD, List.of(Constants.ROLE_USER)));
 
     @Test
     public void testGeneratedToken() {
@@ -32,7 +29,7 @@ class JwtTokenServiceTest {
 
         assertNotNull(token, "Token should not be null");
         assertDoesNotThrow(() -> jwtTokenService.verifyToken(token), "Token should be valid and verification should not throw any exception");
-        assertEquals(USERNAME, jwtTokenService.getSubject(token), "Subject should match the username");
+        assertEquals(Constants.USERNAME, jwtTokenService.getSubject(token), "Subject should match the username");
         assertTrue(roles.contains("ROLE_USER"), "Token should contain the correct role");
     }
     @Test
