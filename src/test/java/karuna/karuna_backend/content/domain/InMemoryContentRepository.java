@@ -19,7 +19,7 @@ class InMemoryContentRepository implements ContentRepository{
 
     @Override
     public Optional<Content> getByPageAndKey(String page, String key) {
-        return Optional.empty();
+        return Optional.of(new Content(1L, Constants.PAGE, Constants.KEY, Constants.VALUE_PL));
     }
 
     @Override
@@ -104,7 +104,7 @@ class InMemoryContentRepository implements ContentRepository{
 
     @Override
     public <S extends Content> S save(S entity) {
-        return null;
+        return entity;
     }
 
     @Override
