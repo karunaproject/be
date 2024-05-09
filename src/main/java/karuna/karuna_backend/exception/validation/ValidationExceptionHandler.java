@@ -1,5 +1,6 @@
 package karuna.karuna_backend.exception.validation;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import karuna.karuna_backend.exception.CustomExceptionKey;
 import karuna.karuna_backend.exception.dto.CustomErrorResponse;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,7 @@ class ValidationExceptionHandler {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
+    @Hidden
     CustomErrorResponse handleMethodArgumentNotValidException(MethodArgumentNotValidException methodArgumentNotValidException) {
         return new CustomErrorResponse(CustomExceptionKey.UNIQUE_CONSTRAINT_VIOLATION, methodArgumentNotValidException.getBindingResult().getAllErrors().get(0).getDefaultMessage());
     }
