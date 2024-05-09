@@ -45,6 +45,8 @@ class WebSecurityConfig {
                                 "/v3/api-docs/**",
                                 "/swagger-resources/**")
                         .permitAll()
+                        .requestMatchers(HttpMethod.GET, "/contents/**")
+                        .permitAll()
                         .requestMatchers(HttpMethod.PUT, "/contents")
                         .hasRole("ROLE_ADMIN")
                         .anyRequest().authenticated())
