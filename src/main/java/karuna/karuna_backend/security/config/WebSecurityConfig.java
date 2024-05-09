@@ -48,7 +48,7 @@ class WebSecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/contents/**")
                         .permitAll()
                         .requestMatchers(HttpMethod.PUT, "/contents")
-                        .hasRole("ROLE_ADMIN")
+                        .hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtFilter, BasicAuthenticationFilter.class);
         return http.build();
