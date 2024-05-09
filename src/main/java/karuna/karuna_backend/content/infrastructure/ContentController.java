@@ -39,7 +39,7 @@ class ContentController {
             responseCode = "200",
             description = "Updated contents",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = MassContentWrapper.class)))
-    @PutMapping
+    @PutMapping("/specific-path")
     MassContentWrapper massUpdateContent(@RequestBody MassContentWrapper massContentWrapper) {
         return contentService.massUpdateContent(massContentWrapper);
     }
