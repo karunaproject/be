@@ -18,6 +18,11 @@ class InMemoryContentRepository implements ContentRepository{
     }
 
     @Override
+    public Optional<Content> findByPageAndKey(String page, String key) {
+        return Optional.empty();
+    }
+
+    @Override
     public void flush() {
 
     }
