@@ -43,7 +43,7 @@ public class ContentService {
 
     public ContentResponseDTO addOrUpdateContent(ContentCreateDTO contentCreateDTO) {
         Optional<Content> contentOptional = contentRepository.findByPageAndKey(contentCreateDTO.page(), contentCreateDTO.key());
-        AtomicReference<Content> contentAtomic = null;
+        AtomicReference<Content> contentAtomic = new AtomicReference<>(null);
         contentOptional.ifPresentOrElse(
                 target -> {
                     target.setValuePl(contentCreateDTO.value());
