@@ -4,6 +4,7 @@ import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
 import karuna.karuna_backend.content.dto.ContentCreateDTO;
 import karuna.karuna_backend.content.dto.ContentDTO;
+import karuna.karuna_backend.content.dto.ContentResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 @RequiredArgsConstructor
@@ -39,29 +41,23 @@ public class ContentService {
         return contentDTO;
     }
 
-    public ContentCreateDTO addOrUpdateContent(ContentCreateDTO contentCreateDTO, String page) {
-        String key = contentCreateDTO.getKey();
-        String value = contentCreateDTO.getValue();
-        List<Content> existingContent = contentRepository.findByPageIgnoreCaseOrPageNull(page);
-        Optional<Content> existingContentWithKey = existingContent.stream()
-                .filter(content -> key.equals(content.getKey()))
-                .findFirst();
-
-        existingContentWithKey.ifPresentOrElse(
-                content -> {
-                    content.setValuePl(value);
-                    contentRepository.save(content);
+    public ContentResponseDTO addOrUpdateContent(ContentCreateDTO contentCreateDTO) {
+        Optional<Content> contentOptional = contentRepository.findByPageAndKey(contentCreateDTO.page(), contentCreateDTO.key());
+        AtomicReference<Content> contentAtomic = null;
+        contentOptional.ifPresentOrElse(
+                target -> {
+                    target.setValuePl(contentCreateDTO.value());
+                    contentAtomic.set(contentRepository.save(target));
                 },
                 () -> {
                     Content newContent = Content.builder()
-                            .page(page)
-                            .key(key)
-                            .valuePl(value)
+                            .page(contentCreateDTO.page())
+                            .key(contentCreateDTO.key())
+                            .valuePl(contentCreateDTO.value())
                             .build();
-                    contentRepository.save(newContent);
-                }
-        );
-
-        return contentCreateDTO;
+                    contentAtomic.set(contentRepository.save(newContent));
+                });
+        Content content = contentAtomic.get();
+        return new ContentResponseDTO(content.getId(), content.getPage(), content.getKey(), content.getValuePl());
     }
 }

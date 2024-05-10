@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import karuna.karuna_backend.content.domain.ContentService;
 import karuna.karuna_backend.content.dto.ContentCreateDTO;
 import karuna.karuna_backend.content.dto.ContentDTO;
+import karuna.karuna_backend.content.dto.ContentResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,12 +39,11 @@ class ContentController {
 
     @Operation(summary = "Add or update Content", description = "Add Content or update it if row with same page and key exist.")
     @ApiResponse(
-            responseCode = "200",
+            responseCode = "201",
             description = "Added or updated if Content exist",
-            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ContentCreateDTO.class)))
-    @PostMapping("/{page}")
-    ContentCreateDTO addOrUpdateContent(@PathVariable String page,
-                                        @RequestBody ContentCreateDTO contentCreateDTO) {
-        return contentService.addOrUpdateContent(contentCreateDTO, page);
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ContentResponseDTO.class)))
+    @PostMapping
+    ContentResponseDTO addOrUpdateContent(@RequestBody ContentCreateDTO contentCreateDTO) {
+        return contentService.addOrUpdateContent(contentCreateDTO);
     }
 }
