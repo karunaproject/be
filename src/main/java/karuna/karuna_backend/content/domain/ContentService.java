@@ -8,16 +8,11 @@ import karuna.karuna_backend.content.dto.MassContentDto;
 import karuna.karuna_backend.content.dto.MassContentWrapper;
 import karuna.karuna_backend.content.dto.MassContentWrapperRequest;
 import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Service;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -51,10 +46,11 @@ public class ContentService {
     }
 
     public MassContentWrapper massAddContent(MassContentWrapperRequest massContentWrapperRequest){
-        return massContentOperation(massContentWrapperRequest, this::AddContentIfNotInDb);
+        return massContentOperation(massContentWrapperRequest, this::addContentIfNotInDb);
     }
 
     private MassContentWrapper massContentOperation(MassContentWrapperRequest request, Predicate<MassContentDto> predicate){
+        //TODO: Sanitize inputs for XSS
         Map<Boolean, List<MassContentDto>> partitionedContent = request.contents().stream()
                 .collect(Collectors.partitioningBy(predicate));
         List<MassContentDto> validContent = partitionedContent.get(true);
@@ -62,7 +58,7 @@ public class ContentService {
         return new MassContentWrapper(validContent, invalidContent);
     }
 
-    private boolean AddContentIfNotInDb(MassContentDto massContentDto) {
+    private boolean addContentIfNotInDb(MassContentDto massContentDto) {
         //TODO: Consider if batching would not be a better approach
         return contentRepository.getByPageAndKey(massContentDto.page(), massContentDto.key())
                 .map(content -> false)
