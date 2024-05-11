@@ -5,6 +5,7 @@ import karuna.karuna_backend.Constants;
 import karuna.karuna_backend.content.dto.ContentDTO;
 import karuna.karuna_backend.content.dto.MassContentDto;
 import karuna.karuna_backend.content.dto.MassContentWrapper;
+import karuna.karuna_backend.content.dto.MassContentWrapperRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.core.parameters.P;
 
@@ -30,12 +31,12 @@ class ContentServiceTest {
     @Test
     void shouldMassUpdateContent() {
         //given
-        MassContentWrapper massContentWrapper = new MassContentWrapper(List.of(new MassContentDto(Constants.PAGE, Constants.KEY, Constants.VALUE_PL)));
+        MassContentWrapperRequest massContentWrapperRequest = new MassContentWrapperRequest(List.of(new MassContentDto(Constants.PAGE, Constants.KEY, Constants.VALUE_PL)));
         //when
-        MassContentWrapper massContentWrapperResponse = contentService.massUpdateContent(massContentWrapper);
+        MassContentWrapper massContentWrapperResponse = contentService.massUpdateContent(massContentWrapperRequest);
         //then
-        assertEquals(1, massContentWrapperResponse.contents().size());
-        MassContentDto massContentDto = massContentWrapperResponse.contents().get(0);
+        assertEquals(1, massContentWrapperResponse.validContents().size());
+        MassContentDto massContentDto = massContentWrapperResponse.validContents().get(0);
         assertEquals(Constants.PAGE, massContentDto.page());
         assertEquals(Constants.KEY, massContentDto.key());
         assertEquals(Constants.VALUE_PL, massContentDto.valuePl());

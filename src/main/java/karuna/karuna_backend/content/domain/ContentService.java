@@ -2,18 +2,24 @@ package karuna.karuna_backend.content.domain;
 
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
+import jakarta.transaction.Transactional;
 import karuna.karuna_backend.content.dto.ContentDTO;
 import karuna.karuna_backend.content.dto.MassContentDto;
 import karuna.karuna_backend.content.dto.MassContentWrapper;
+import karuna.karuna_backend.content.dto.MassContentWrapperRequest;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -39,30 +45,55 @@ public class ContentService {
         return convertToDTO(allContent);
     }
 
+
+    public MassContentWrapper massUpdateContent(MassContentWrapperRequest massContentWrapperRequest) {
+        return massContentOperation(massContentWrapperRequest, this::filterNotExistedInDatabaseAndUpdatedExisted);
+    }
+
+    public MassContentWrapper massAddContent(MassContentWrapperRequest massContentWrapperRequest){
+        return massContentOperation(massContentWrapperRequest, this::AddContentIfNotInDb);
+    }
+
+    private MassContentWrapper massContentOperation(MassContentWrapperRequest request, Predicate<MassContentDto> predicate){
+        Map<Boolean, List<MassContentDto>> partitionedContent = request.contents().stream()
+                .collect(Collectors.partitioningBy(predicate));
+        List<MassContentDto> validContent = partitionedContent.get(true);
+        List<MassContentDto> invalidContent = partitionedContent.get(false);
+        return new MassContentWrapper(validContent, invalidContent);
+    }
+
+    private boolean AddContentIfNotInDb(MassContentDto massContentDto) {
+        //TODO: Consider if batching would not be a better approach
+        return contentRepository.getByPageAndKey(massContentDto.page(), massContentDto.key())
+                .map(content -> false)
+                .orElseGet(() -> {
+                    Content newContent = mapDtoToContent(massContentDto);
+                    contentRepository.save(newContent);
+                    return true;
+                });
+    }
+
+    @Transactional
+    private boolean filterNotExistedInDatabaseAndUpdatedExisted(MassContentDto massContentDto) {
+        //TODO: Consider if batching would not be a better approach
+        return contentRepository.getByPageAndKey(massContentDto.page(), massContentDto.key())
+                .map(content -> {
+                    content.setValuePl(massContentDto.valuePl());
+                    contentRepository.save(content);
+                    return true;
+                }).orElse(false);
+    }
+
+    private Content mapDtoToContent(MassContentDto dto){
+        return Content.builder()
+                .page(dto.page())
+                .key(dto.key())
+                .valuePl(dto.valuePl())
+                .build();
+    }
+
     private ContentDTO convertToDTO(HashMap<String, String> contents) {
         ContentDTO contentDTO = new ContentDTO(contents);
         return contentDTO;
-    }
-
-    public MassContentWrapper massUpdateContent(MassContentWrapper massContentWrapper) {
-        return new MassContentWrapper(massContentWrapper.contents().stream()
-                .map(this::filterNotExistedInDatabaseAndUpdatedExisted)
-                .filter(content -> !Objects.equals(NOT_EXISTED, content.getPage()))
-                .map(contentRepository::save)
-                .map(mapToDto())
-                .toList());
-    }
-
-    @NotNull
-    private static Function<Content, MassContentDto> mapToDto() {
-        return content -> new MassContentDto(content.getPage(), content.getKey(), content.getValuePl());
-    }
-
-    @NotNull
-    private Content filterNotExistedInDatabaseAndUpdatedExisted(MassContentDto massContentDto) {
-        Content content = contentRepository.getByPageAndKey(massContentDto.page(), massContentDto.key()).orElse(Content.builder()
-                .page(NOT_EXISTED).build());
-        content.setValuePl(massContentDto.valuePl());
-        return content;
     }
 }

@@ -7,13 +7,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import karuna.karuna_backend.content.domain.ContentService;
 import karuna.karuna_backend.content.dto.ContentDTO;
 import karuna.karuna_backend.content.dto.MassContentWrapper;
+import karuna.karuna_backend.content.dto.MassContentWrapperRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -40,8 +36,14 @@ class ContentController {
             description = "Updated contents",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = MassContentWrapper.class)))
     @PutMapping
-    MassContentWrapper massUpdateContent(@RequestBody MassContentWrapper massContentWrapper) {
-        return contentService.massUpdateContent(massContentWrapper);
+    MassContentWrapper massUpdateContent(@RequestBody MassContentWrapperRequest massContentWrapperRequest) {
+        return contentService.massUpdateContent(massContentWrapperRequest);
+    }
+
+    //TODO: Implement swagger docs
+    @PostMapping
+    MassContentWrapper massAddContent(@RequestBody MassContentWrapperRequest massContentWrapperRequest){
+        return contentService.massAddContent(massContentWrapperRequest);
     }
 
 }
