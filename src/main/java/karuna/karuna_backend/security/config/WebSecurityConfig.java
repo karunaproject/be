@@ -47,7 +47,10 @@ class WebSecurityConfig {
                         .permitAll()
                         .requestMatchers(HttpMethod.GET, "/contents/**")
                         .permitAll()
+                        //TODO: Refactor this into controller logic because it's getting kinda messy
                         .requestMatchers(HttpMethod.PUT, "/contents/**")
+                        .hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/contents/**")
                         .hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtFilter, BasicAuthenticationFilter.class);
