@@ -42,7 +42,7 @@ class ContentController {
 
     @Operation(summary = "Mass add content", description ="Getting json (REQUEST BODY) and adding all content by list")
     @ApiResponse(
-            responseCode = "200",
+            responseCode = "201",
             description = "Added contents",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = MassContentWrapper.class)))
     @PostMapping
