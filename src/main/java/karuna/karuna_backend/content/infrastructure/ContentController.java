@@ -40,7 +40,11 @@ class ContentController {
         return contentService.massUpdateContent(massContentWrapperRequest);
     }
 
-    //TODO: Implement swagger docs
+    @Operation(summary = "Mass add content", description ="Getting json (REQUEST BODY) and adding all content by list")
+    @ApiResponse(
+            responseCode = "200",
+            description = "Added contents",
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = MassContentWrapper.class)))
     @PostMapping
     MassContentWrapper massAddContent(@RequestBody MassContentWrapperRequest massContentWrapperRequest){
         return contentService.massAddContent(massContentWrapperRequest);
