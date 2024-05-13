@@ -28,7 +28,6 @@ class UserServiceTest {
     @BeforeEach
     void setUp() {
         UserTestConfiguration.clearDatabase();
-        System.out.println("BEFORE");
     }
 
     @Test
