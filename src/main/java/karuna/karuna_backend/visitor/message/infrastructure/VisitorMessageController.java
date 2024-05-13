@@ -7,16 +7,21 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import karuna.karuna_backend.exception.dto.CustomErrorResponse;
+import karuna.karuna_backend.visitor.message.domain.VisitorMessageRepository;
 import karuna.karuna_backend.visitor.message.domain.VisitorMessageService;
 import karuna.karuna_backend.visitor.message.dto.VisitorMessageCreateDto;
 import karuna.karuna_backend.visitor.message.dto.VisitorMessageDto;
+import karuna.karuna_backend.visitor.message.dto.VisitorMessageRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/visitors/messages")
@@ -24,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 class VisitorMessageController {
 
     private final VisitorMessageService visitorMessageService;
+    private final VisitorMessageRepository visitorMessageRepository;
 
     @Operation(summary = "Create visitor message", description = "Getting body from json (body of request) and saving it to database as visitor message with current date")
     @ApiResponses({
@@ -41,5 +47,17 @@ class VisitorMessageController {
     VisitorMessageDto sendMessage(@RequestBody @Valid VisitorMessageCreateDto visitorMessageCreateDto) {
         //TODO: NEW VALIDATION AFTER CONTACT WITH CLIENT
         return visitorMessageService.sendMessage(visitorMessageCreateDto);
+    }
+
+    @Operation(summary = "Get messageS", description = "Returns a list of messages with pagination and limted body length")
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "List od messages",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = VisitorMessageDto.class))),
+    })
+    @GetMapping
+    List<VisitorMessageDto> getMessages(@RequestBody VisitorMessageRequest visitorMessageRequest) {
+        return VisitorMessageService.getMessages(visitorMessageRequest);
     }
 }

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-class InMemoryVisitorMessageRepository implements VisitorMessageRepository{
+class InMemoryVisitorMessageRepository implements VisitorMessageRepository {
 
     @Override
     public void flush() {
@@ -160,6 +160,11 @@ class InMemoryVisitorMessageRepository implements VisitorMessageRepository{
 
     @Override
     public Page<VisitorMessage> findAll(Pageable pageable) {
+        return null;
+    }
+
+    @Override
+    public List<VisitorMessage> findAllByOrderByDateDesc() {
         return null;
     }
 }
