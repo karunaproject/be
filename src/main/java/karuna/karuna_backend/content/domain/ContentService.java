@@ -29,11 +29,6 @@ public class ContentService {
         pages.forEach(singlePage -> {
             allContent.put(singlePage.getKey(), singlePage.getValuePl());
         });
-        return convertToDTO(allContent);
-    }
-
-    private ContentDTO convertToDTO(HashMap<String, String> contents) {
-        ContentDTO contentDTO = new ContentDTO(contents);
-        return contentDTO;
+        return ContentMapper.mapToDto(allContent);
     }
 }
