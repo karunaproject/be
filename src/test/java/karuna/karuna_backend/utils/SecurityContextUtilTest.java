@@ -27,7 +27,7 @@ public class SecurityContextUtilTest {
     }
 
     @Test
-    public void testSetSecurityContext() {
+    void testSetSecurityContext() {
         List<String> roles = Arrays.asList("ROLE_USER", "ROLE_ADMIN");
         SecurityContextUtil.setSecurityContext("username", roles);
 
@@ -43,14 +43,14 @@ public class SecurityContextUtilTest {
     }
 
     @Test
-    public void testSetSecurityContextWithNullUsername() {
+    void testSetSecurityContextWithNullUsername() {
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
                 SecurityContextUtil.setSecurityContext(null, List.of("ROLE_USER")), "Exception should be thrown"
         );
     }
 
     @Test
-    public void testSetSecurityContextWithNullRoles() {
+    void testSetSecurityContextWithNullRoles() {
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
                 SecurityContextUtil.setSecurityContext("username", null),"Exception should be thrown"
         );

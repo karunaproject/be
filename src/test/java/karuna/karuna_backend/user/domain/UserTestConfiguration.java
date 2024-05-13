@@ -9,7 +9,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserTestConfiguration {
 
+    private static UserRepository userRepository = new InMemoryUserRepository();
+
     static UserService userService() {
-        return new UserService(new TestAuthManager(), new JwtTokenService(new TestJwtConfig()), new InMemoryUserRepository(), new InMemoryRoleRepository(), new BCryptPasswordEncoder());
+        return new UserService(new TestAuthManager(), new JwtTokenService(new TestJwtConfig()), userRepository, new InMemoryRoleRepository(), new BCryptPasswordEncoder());
+    }
+
+    static void clearDatabase() {
+        userRepository.deleteAll();
     }
 }
