@@ -1,7 +1,7 @@
 package karuna.karuna_backend.exception.validation;
 
 import io.swagger.v3.oas.annotations.Hidden;
-import karuna.karuna_backend.exception.dto.CustomErrorResponse;
+import karuna.karuna_backend.exception.dto.ValidationErrorResponse;
 import karuna.karuna_backend.exception.keys.FailedValidationErrorKey;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
@@ -18,9 +18,9 @@ class GlobalValidationExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @Hidden
-    CustomErrorResponse handleMethodArgumentNotValidException(MethodArgumentNotValidException methodArgumentNotValidException) {
+    ValidationErrorResponse handleMethodArgumentNotValidException(MethodArgumentNotValidException methodArgumentNotValidException) {
         String message = methodArgumentNotValidException.getBindingResult().getAllErrors().get(0).getDefaultMessage();
-        return new CustomErrorResponse(getKey(methodArgumentNotValidException), message);
+        return new ValidationErrorResponse(getKey(methodArgumentNotValidException), message);
     }
 
     private FailedValidationErrorKey getKey(MethodArgumentNotValidException methodArgumentNotValidException) {
