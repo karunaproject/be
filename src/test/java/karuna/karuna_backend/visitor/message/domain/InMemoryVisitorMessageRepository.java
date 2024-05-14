@@ -164,7 +164,7 @@ class InMemoryVisitorMessageRepository implements VisitorMessageRepository {
     }
 
     @Override
-    public List<VisitorMessage> findAllByOrderByDateDesc() {
+    public List<VisitorMessage> findAllByOrderByCreatedAtDesc() {
         return null;
     }
 }

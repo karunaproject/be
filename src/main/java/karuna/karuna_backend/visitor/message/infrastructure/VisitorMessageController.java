@@ -29,7 +29,6 @@ import java.util.List;
 class VisitorMessageController {
 
     private final VisitorMessageService visitorMessageService;
-    private final VisitorMessageRepository visitorMessageRepository;
 
     @Operation(summary = "Create visitor message", description = "Getting body from json (body of request) and saving it to database as visitor message with current date")
     @ApiResponses({
