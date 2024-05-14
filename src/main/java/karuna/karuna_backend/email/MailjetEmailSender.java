@@ -3,9 +3,8 @@ package karuna.karuna_backend.email;
 import com.mailjet.client.errors.MailjetException;
 import com.mailjet.client.MailjetClient;
 import com.mailjet.client.MailjetRequest;
-import com.mailjet.client.MailjetResponse;
-import com.mailjet.client.ClientOptions;
 import com.mailjet.client.resource.Emailv31;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -14,7 +13,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 class MailjetEmailSender implements EmailSender {
+
+    private final EmailConfig emailConfig;
 
     @Override
     public void sendEmail(String to, String subject, String contentText, String contentHtml) {
@@ -29,17 +31,17 @@ class MailjetEmailSender implements EmailSender {
     }
 
     @NotNull
-    private static MailjetClient buildMailjetClient() {
+    private MailjetClient buildMailjetClient() {
         return new MailjetClient(System.getenv("MJ_APIKEY_PUBLIC"), System.getenv("MJ_APIKEY_PRIVATE"));
     }
 
-    private static MailjetRequest configureRequest(String to, String subject, String contentText, String contentHtml) {
+    private MailjetRequest configureRequest(String to, String subject, String contentText, String contentHtml) {
         return new MailjetRequest(Emailv31.resource)
                 .property(Emailv31.MESSAGES, new JSONArray()
                         .put(new JSONObject()
                                 .put(Emailv31.Message.FROM, new JSONObject()
-                                        .put("Email", "KARUNA@KASTRUJEMYBEZDOMNOSC.PL")
-                                        .put("Name", "KARUNA@KASTRUJEMYBEZDOMNOSC.PL"))
+                                        .put("Email", emailConfig.getFrom())
+                                        .put("Name", emailConfig.getFrom()))
                                 .put(Emailv31.Message.TO, new JSONArray()
                                         .put(new JSONObject()
                                                 .put("Email", to)
