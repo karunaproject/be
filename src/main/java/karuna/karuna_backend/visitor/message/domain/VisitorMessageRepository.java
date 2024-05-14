@@ -7,5 +7,5 @@ import java.util.List;
 
 @Repository
 public interface VisitorMessageRepository extends JpaRepository<VisitorMessage, Long> {
-    List<VisitorMessage> findAllByOrderByDateDesc();
+    List<VisitorMessage> findAllByOrderByCreatedAtDesc();
 }
