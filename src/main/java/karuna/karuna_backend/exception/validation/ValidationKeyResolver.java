@@ -17,19 +17,19 @@ public class ValidationKeyResolver {
         if (Objects.nonNull(annotationType)) {
             switch (annotationType.toLowerCase()) {
                 case "size":
-                    return FailedValidationErrorKey.SIZE_INVALID;
+                    return FailedValidationErrorKey.INVALID_SIZE;
                 case "notblank":
-                    return FailedValidationErrorKey.INVALID_BLANK_FIELD;
+                    return FailedValidationErrorKey.VALUE_IS_BLANK;
                 case "notnull":
-                    return FailedValidationErrorKey.INVALID_NULL_FIELD;
+                    return FailedValidationErrorKey.VALUE_IS_NULL;
                 case "min":
-                    return FailedValidationErrorKey.MIN_NOT_REACHED;
+                    return FailedValidationErrorKey.VALUE_TOO_SHORT;
                 case "max":
-                    return FailedValidationErrorKey.MORE_THAN_MAX;
+                    return FailedValidationErrorKey.VALUE_TOO_LONG;
                 case "email":
-                    return FailedValidationErrorKey.EMAIL_INVALID;
+                    return FailedValidationErrorKey.INVALID_EMAIL_PATTERN;
                 case "pattern":
-                    return FailedValidationErrorKey.PATTERN_INVALID;
+                    return FailedValidationErrorKey.INVALID_PATTERN;
             }
         }
         return FailedValidationErrorKey.UNKNOWN;

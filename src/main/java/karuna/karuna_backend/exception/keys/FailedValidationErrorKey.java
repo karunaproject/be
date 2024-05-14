@@ -3,22 +3,22 @@ package karuna.karuna_backend.exception.keys;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(description = "Defines validation error types. " +
-        "SIZE_INVALID: Invalid size of field. " +
-        "PATTERN_INVALID: Invalid pattern of field. " +
-        "EMAIL_INVALID: Invalid email format. " +
-        "MORE_THAN_MAX: Value exceeds maximum allowed. " +
-        "MIN_NOT_REACHED: Value does not meet minimum required. " +
-        "INVALID_NULL_FIELD: Field cannot be null. " +
-        "INVALID_BLANK_FIELD: Field cannot be blank. " +
+        "INVALID_SIZE: Invalid size of field. " +
+        "INVALID_PATTERN: Invalid pattern of field. " +
+        "INVALID_EMAIL_PATTERN: Invalid email format. " +
+        "VALUE_TOO_LONG: Value exceeds maximum allowed. " +
+        "VALUE_TOO_SHORT: Value does not meet minimum required. " +
+        "VALUE_IS_NULL: Field cannot be null. " +
+        "VALUE_IS_BLANK: Field cannot be blank. " +
         "UNKNOWN: Unknown validation error."
 )
 public enum FailedValidationErrorKey {
-    SIZE_INVALID,
-    PATTERN_INVALID,
-    EMAIL_INVALID,
-    MORE_THAN_MAX,
-    MIN_NOT_REACHED,
-    INVALID_NULL_FIELD,
-    INVALID_BLANK_FIELD,
+    INVALID_SIZE,
+    INVALID_PATTERN,
+    INVALID_EMAIL_PATTERN,
+    VALUE_TOO_LONG,
+    VALUE_TOO_SHORT,
+    VALUE_IS_NULL,
+    VALUE_IS_BLANK,
     UNKNOWN
 }
