@@ -2,6 +2,7 @@ package karuna.karuna_backend.visitor.message.domain;
 
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
@@ -164,7 +165,7 @@ class InMemoryVisitorMessageRepository implements VisitorMessageRepository {
     }
 
     @Override
-    public List<VisitorMessage> findAllByOrderByCreatedAtDesc() {
+    public List<VisitorMessage> findAllByOrderByCreatedAtDesc(PageRequest pageRequest) {
         return null;
     }
 }
