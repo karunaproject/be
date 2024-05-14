@@ -20,6 +20,7 @@ public class VisitorMessageService {
         return VisitorMessageMapper.toDto(visitorMessageRepository.save(visitorMessage));
     }
 
+
     public List<VisitorMessageDto> getMessages(VisitorMessageRequest visitorMessageRequest) {
         PageRequest pageRequest = PageRequest.of(visitorMessageRequest.offset(), visitorMessageRequest.limit());
         List<VisitorMessage> messages = visitorMessageRepository.findAllByOrderByCreatedAtDesc(pageRequest);
@@ -30,7 +31,6 @@ public class VisitorMessageService {
         });
         List<VisitorMessageDto> messagedtos = messages.stream()
                 .map(VisitorMessageMapper::toDto).toList();
-
         return messagedtos;
     }
 }

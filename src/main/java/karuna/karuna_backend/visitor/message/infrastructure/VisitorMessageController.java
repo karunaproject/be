@@ -7,7 +7,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import karuna.karuna_backend.exception.dto.CustomErrorResponse;
-import karuna.karuna_backend.visitor.message.domain.VisitorMessageRepository;
 import karuna.karuna_backend.visitor.message.domain.VisitorMessageService;
 import karuna.karuna_backend.visitor.message.dto.VisitorMessageCreateDto;
 import karuna.karuna_backend.visitor.message.dto.VisitorMessageDto;
@@ -48,7 +47,8 @@ class VisitorMessageController {
         return visitorMessageService.sendMessage(visitorMessageCreateDto);
     }
 
-    @Operation(summary = "Get messageS", description = "Returns a list of messages with pagination and limted body length")
+
+    @Operation(summary = "Get messages", description = "Returns a list of messages with pagination and limited body length")
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
