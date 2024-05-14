@@ -24,7 +24,7 @@ class MailjetEmailSender implements EmailSender {
             client.post(request);
             log.info("Success sent message!");
         } catch (MailjetException ex) {
-            log.error("Error while sending email", ex);
+            throw new EmailSendException(to);
         }
     }
 
