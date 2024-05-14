@@ -20,7 +20,7 @@ public class VisitorMessageService {
     }
 
     public List<VisitorMessageDto> getMessages(VisitorMessageRequest visitorMessageRequest) {
-        List<VisitorMessage> messages = VisitorMessageRepository.findAllByOrderByDateDesc();
+        List<VisitorMessage> messages = visitorMessageRepository.findAllByOrderByDateDesc();
         messages.forEach(message -> {
             if (message.getBody().length() > visitorMessageRequest.bodyLenLimit()) {
                 message.setBody(message.getBody().substring(0, visitorMessageRequest.bodyLenLimit()));

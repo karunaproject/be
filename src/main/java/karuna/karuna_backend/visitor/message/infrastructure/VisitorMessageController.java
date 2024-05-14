@@ -58,6 +58,6 @@ class VisitorMessageController {
     })
     @GetMapping
     List<VisitorMessageDto> getMessages(@RequestBody VisitorMessageRequest visitorMessageRequest) {
-        return VisitorMessageService.getMessages(visitorMessageRequest);
+        return visitorMessageService.getMessages(visitorMessageRequest);
     }
 }
