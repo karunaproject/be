@@ -17,7 +17,7 @@ class GlobalValidationExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @Hidden
     ValidationErrorResponse handleMethodArgumentNotValidException(MethodArgumentNotValidException methodArgumentNotValidException) {
-        String message = methodArgumentNotValidException.getBindingResult().getAllErrors().get(0).getDefaultMessage();
+        String message = methodArgumentNotValidException.getBindingResult().getAllErrors().getFirst().getDefaultMessage();
         return new ValidationErrorResponse(ValidationKeyResolver.getKey(methodArgumentNotValidException), message);
     }
 }
