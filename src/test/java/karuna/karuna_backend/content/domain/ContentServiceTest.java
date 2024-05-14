@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ContentServiceTest {
 
-    private ContentService contentService = ContentTestConfiguration.contentService();
+    private final ContentService contentService = ContentTestConfiguration.contentService();
 
     @Test
     void shouldNotGetContentByPage() {

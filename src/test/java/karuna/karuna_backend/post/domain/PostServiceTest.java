@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class PostServiceTest {
 
-    private PostService postService = PostTestConfiguration.postService();
+    private final PostService postService = PostTestConfiguration.postService();
 
     @Test
     void shouldCreatePost() {
