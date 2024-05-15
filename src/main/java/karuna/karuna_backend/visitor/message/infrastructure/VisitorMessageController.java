@@ -10,6 +10,7 @@ import karuna.karuna_backend.exception.dto.CustomErrorResponse;
 import karuna.karuna_backend.visitor.message.domain.VisitorMessageService;
 import karuna.karuna_backend.visitor.message.dto.VisitorMessageCreateDto;
 import karuna.karuna_backend.visitor.message.dto.VisitorMessageDto;
+import karuna.karuna_backend.visitor.message.dto.VisitorMessageDtoList;
 import karuna.karuna_backend.visitor.message.dto.VisitorMessageRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -53,10 +54,10 @@ class VisitorMessageController {
             @ApiResponse(
                     responseCode = "200",
                     description = "List od messages",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = VisitorMessageDto.class))),
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = VisitorMessageDtoList.class))),
     })
     @GetMapping
-    List<VisitorMessageDto> getMessages(@RequestBody VisitorMessageRequest visitorMessageRequest) {
+    VisitorMessageDtoList getMessages(@RequestBody VisitorMessageRequest visitorMessageRequest) {
         return visitorMessageService.getMessages(visitorMessageRequest);
     }
 }
