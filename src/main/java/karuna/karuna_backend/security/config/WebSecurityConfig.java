@@ -42,7 +42,8 @@ class WebSecurityConfig {
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
                                 "/v3/api-docs/**",
-                                "/swagger-resources/**")
+                                "/swagger-resources/**",
+                                "visitors/messages")
                         .permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtFilter, BasicAuthenticationFilter.class);
