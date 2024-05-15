@@ -30,8 +30,7 @@ public class VisitorMessageService {
                 message.setBody(message.getBody().substring(0, visitorMessageRequest.bodyLenLimit()));
             }
         });
-        List<VisitorMessageDto> messagesDto = messages.stream()
-                .map(VisitorMessageMapper::toDto).toList();
-        return new VisitorMessageDtoList(messagesDto);
+        return new VisitorMessageDtoList(messages.stream()
+                .map(VisitorMessageMapper::toDto).toList());
     }
 }
