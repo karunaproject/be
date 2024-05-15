@@ -1,4 +1,4 @@
-package karuna.karuna_backend.email;
+package karuna.karuna_backend.exception.email;
 
 public class EmailSendException extends RuntimeException {
 

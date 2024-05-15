@@ -1,6 +1,5 @@
 package karuna.karuna_backend.exception.email;
 
-import karuna.karuna_backend.email.EmailSendException;
 import karuna.karuna_backend.exception.dto.EmailErrorResponse;
 import karuna.karuna_backend.exception.keys.EmailSendKey;
 import org.springframework.http.HttpStatus;

@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import karuna.karuna_backend.exception.dto.CustomErrorResponse;
+import karuna.karuna_backend.exception.dto.EmailErrorResponse;
 import karuna.karuna_backend.visitor.message.domain.VisitorMessageService;
 import karuna.karuna_backend.visitor.message.dto.VisitorMessageCreateDto;
 import karuna.karuna_backend.visitor.message.dto.VisitorMessageDto;
@@ -34,7 +35,11 @@ class VisitorMessageController {
             @ApiResponse(
                     responseCode = "400",
                     description = "Visitor message content is too long",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = CustomErrorResponse.class)))
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = CustomErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Can not send email",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = EmailErrorResponse.class)))
     })
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
