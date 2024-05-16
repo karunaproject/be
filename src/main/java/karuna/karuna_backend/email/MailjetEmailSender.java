@@ -33,7 +33,7 @@ class MailjetEmailSender implements EmailSender {
 
     @NotNull
     private MailjetClient buildMailjetClient() {
-        return new MailjetClient(System.getenv("MJ_APIKEY_PUBLIC"), System.getenv("MJ_APIKEY_PRIVATE"));
+        return new MailjetClient(emailConfig.getApiKey(), emailConfig.getSecretKey());
     }
 
     private MailjetRequest configureRequest(String to, String subject, String contentText, String contentHtml) {

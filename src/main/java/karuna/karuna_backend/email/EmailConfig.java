@@ -14,4 +14,6 @@ import org.springframework.stereotype.Component;
 class EmailConfig {
 
     private String from;
+    private String apiKey;
+    private String secretKey;
 }
