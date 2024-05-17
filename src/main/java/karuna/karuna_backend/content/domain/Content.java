@@ -1,6 +1,7 @@
 package karuna.karuna_backend.content.domain;
 
 import jakarta.annotation.Nullable;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,10 +29,15 @@ class Content {
     private Long id;
 
     @Nullable
+    @Column(unique = true)
     private String page;
+
     @NotNull
+    @Column(unique = true)
     private String key;
+
     @NotNull
+    @Column(columnDefinition = "TEXT")
     private String valuePl;
 
 }
