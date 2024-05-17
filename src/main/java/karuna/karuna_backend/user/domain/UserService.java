@@ -7,7 +7,6 @@ import karuna.karuna_backend.security.exception.LoginPasswordAuthenticationExcep
 import karuna.karuna_backend.security.jwt.JwtTokenService;
 import karuna.karuna_backend.user.dto.UserDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -36,13 +35,13 @@ public class UserService {
      */
     public Optional<UserDTO> getUserById(long id){
         Optional<User> optionalUser = userRepository.findById(id);
-        return optionalUser.map(User::dto);
+        return optionalUser.map(UserMapper::toDto);
 
     }
 
     public Optional<UserDTO> getUserByUsername(String username){
         Optional<User> optionalUser = userRepository.findByUsername(username);
-        return optionalUser.map(User::dto);
+        return optionalUser.map(UserMapper::toDto);
 
     }
 
@@ -67,7 +66,7 @@ public class UserService {
                     .build();
 
             userRepository.save(user);
-            return jwtTokenService.generateToken(user.mapToUserDetails());
+            return jwtTokenService.generateToken(UserMapper.toUserDetails(user));
     }
 
     public String authenticateUser(String username, String password) throws AuthenticationException{
