@@ -27,10 +27,6 @@ public class ContentService {
         List<Content> pages = contentRepository.findByPageIgnoreCaseOrPageNull(page);
         HashMap<String, String> allContent = new HashMap<>();
         pages.forEach(singlePage -> allContent.put(singlePage.getKey(), singlePage.getValuePl()));
-        return convertToDTO(allContent);
-    }
-
-    private ContentDTO convertToDTO(HashMap<String, String> contents) {
-        return new ContentDTO(contents);
+        return ContentMapper.mapToDto(allContent);
     }
 }
