@@ -87,7 +87,4 @@ public class ContentService {
                 .build();
     }
 
-    private ContentDTO convertToDTO(HashMap<String, String> contents) {
-        return new ContentDTO(contents);
-    }
 }
