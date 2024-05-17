@@ -11,8 +11,8 @@ import karuna.karuna_backend.exception.dto.ValidationErrorResponse;
 import karuna.karuna_backend.visitor.message.domain.VisitorMessageService;
 import karuna.karuna_backend.visitor.message.dto.VisitorMessageCreateDto;
 import karuna.karuna_backend.visitor.message.dto.VisitorMessageDto;
-import karuna.karuna_backend.visitor.message.dto.VisitorMessageDtoList;
 import karuna.karuna_backend.visitor.message.dto.VisitorMessageRequest;
+import karuna.karuna_backend.visitor.message.dto.VisitorMessageWrapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/visitors/messages")
@@ -59,10 +58,14 @@ class VisitorMessageController {
             @ApiResponse(
                     responseCode = "200",
                     description = "List od messages",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = VisitorMessageDtoList.class))),
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = VisitorMessageWrapper.class))),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Forbidden: You don't have permission to access this resource",
+                    content = @Content(mediaType = "application/json"))
     })
     @GetMapping
-    VisitorMessageDtoList getMessages(@RequestBody VisitorMessageRequest visitorMessageRequest) {
+    VisitorMessageWrapper getMessages(@RequestBody VisitorMessageRequest visitorMessageRequest) {
         return visitorMessageService.getMessages(visitorMessageRequest);
     }
 }

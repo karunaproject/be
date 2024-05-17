@@ -3,8 +3,8 @@ package karuna.karuna_backend.visitor.message.domain;
 import karuna.karuna_backend.email.EmailSender;
 import karuna.karuna_backend.visitor.message.dto.VisitorMessageCreateDto;
 import karuna.karuna_backend.visitor.message.dto.VisitorMessageDto;
-import karuna.karuna_backend.visitor.message.dto.VisitorMessageDtoList;
 import karuna.karuna_backend.visitor.message.dto.VisitorMessageRequest;
+import karuna.karuna_backend.visitor.message.dto.VisitorMessageWrapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -26,7 +26,7 @@ public class VisitorMessageService {
     }
 
 
-    public VisitorMessageDtoList getMessages(VisitorMessageRequest visitorMessageRequest) {
+    public VisitorMessageWrapper getMessages(VisitorMessageRequest visitorMessageRequest) {
         PageRequest pageRequest = PageRequest.of(visitorMessageRequest.offset(), visitorMessageRequest.limit());
         List<VisitorMessage> messages = visitorMessageRepository.findAllByOrderByCreatedAtDesc(pageRequest);
         messages.forEach(message -> {
@@ -34,7 +34,8 @@ public class VisitorMessageService {
                 message.setBody(message.getBody().substring(0, visitorMessageRequest.bodyLenLimit()));
             }
         });
-        return new VisitorMessageDtoList(messages.stream()
-                .map(VisitorMessageMapper::toDto).toList());
+        return new VisitorMessageWrapper(messages.stream()
+                .map(VisitorMessageMapper::toDto)
+                .toList());
     }
 }
