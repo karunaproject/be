@@ -13,16 +13,16 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class PostServiceTest {
 
-    private PostService postService = PostTestConfiguration.postService();
+    private final PostService postService = PostTestConfiguration.postService();
 
     @Test
     void shouldCreatePost() {
-        //given
+        //given: Give PostCreateDto with body = BODY and user with name = NAME
         PostCreateDto postCreateDto = new PostCreateDto(Constants.BODY);
         Principal principal = () -> Constants.NAME;
-        //when
+        //when: When create post, returns created post
         PostDto postDto = postService.createPost(postCreateDto, principal);
-        //then
+        //then: Assert if database give id and correctly save data
         assertEquals(1L, postDto.id());
         assertNotNull(postDto.creteadAt());
         assertEquals(Constants.BODY, postDto.body());

@@ -43,7 +43,8 @@ class WebSecurityConfig {
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
                                 "/v3/api-docs/**",
-                                "/swagger-resources/**")
+                                "/swagger-resources/**",
+                                "/visitors/messages/**")
                         .permitAll()
                         .requestMatchers(HttpMethod.GET, "/visitors/messages").hasRole("ADMIN")
                         .anyRequest().authenticated())

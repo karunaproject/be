@@ -7,14 +7,23 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 
 class InMemoryContentRepository implements ContentRepository{
+
+    private HashMap<Long, Content> database = new HashMap<>();
+
     @Override
     public List<Content> findByPageIgnoreCaseOrPageNull(String page) {
-        return List.of(new Content(1L, Constants.PAGE, Constants.KEY, Constants.VALUE_PL));
+        return database.entrySet().stream()
+                .map(Map.Entry::getValue)
+                .filter(entity -> Objects.equals(entity.getPage(), page))
+                .toList();
     }
 
     @Override
