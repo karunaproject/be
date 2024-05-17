@@ -7,11 +7,15 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
 
 import java.time.OffsetDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 
 class InMemoryPostRepository implements PostRepository {
+
+    private HashMap<Long, Post> database = new HashMap<>();
 
     @Override
     public void flush() {
@@ -95,7 +99,17 @@ class InMemoryPostRepository implements PostRepository {
 
     @Override
     public <S extends Post> S save(S entity) {
-        return (S) new Post(1L, OffsetDateTime.now(), entity.getBody(), entity.getAuthor());
+        long id = database.size() + 1;
+        if (entity.getID() == 0) {
+            entity.setID(id);
+        } else {
+            id = entity.getID();
+        }
+        if (Objects.isNull(entity.getCreatedAt())) {
+            entity.setCreatedAt(OffsetDateTime.now());
+        }
+        database.put(id, entity);
+        return entity;
     }
 
     @Override

@@ -2,13 +2,13 @@ package karuna.karuna_backend.content.domain;
 
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
-import jakarta.transaction.Transactional;
 import karuna.karuna_backend.content.dto.ContentDTO;
 import karuna.karuna_backend.content.dto.MassContentDto;
 import karuna.karuna_backend.content.dto.MassContentWrapper;
 import karuna.karuna_backend.content.dto.MassContentWrapperRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,8 +19,6 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class ContentService {
-
-    private static final String NOT_EXISTED = "NOT_EXISTED";
 
     private final ContentRepository contentRepository;
     private final LoadingCache<String, ContentDTO> cache = Caffeine.newBuilder()
@@ -37,7 +35,7 @@ public class ContentService {
         pages.forEach(singlePage -> {
             allContent.put(singlePage.getKey(), singlePage.getValuePl());
         });
-        return convertToDTO(allContent);
+        return ContentMapper.mapToDto(allContent);
     }
 
 
@@ -69,7 +67,6 @@ public class ContentService {
                 });
     }
 
-    @Transactional
     private boolean filterNotExistedInDatabaseAndUpdatedExisted(MassContentDto massContentDto) {
         //TODO: Consider if batching would not be a better approach
         return contentRepository.getByPageAndKey(massContentDto.page(), massContentDto.key())
@@ -88,7 +85,4 @@ public class ContentService {
                 .build();
     }
 
-    private ContentDTO convertToDTO(HashMap<String, String> contents) {
-        return new ContentDTO(contents);
-    }
 }

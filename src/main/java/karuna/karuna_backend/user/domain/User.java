@@ -41,21 +41,12 @@ class User {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name="user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name="role_id", referencedColumnName = "id")
     )
     @Builder.Default
     private List<Role> roles = new ArrayList<>();
-
-    UserDTO dto(){
-        return new UserDTO(id, username, password, roles.stream().map(Role::getName).toList());
-    }
-
-    //TODO: Refactor into separate class
-    CustomUserDetails mapToUserDetails(){
-        return new CustomUserDetails(this.dto());
-    }
 
 }

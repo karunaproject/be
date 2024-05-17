@@ -1,5 +1,6 @@
 package karuna.karuna_backend.visitor.message.domain;
 
+import karuna.karuna_backend.TestEmailSender;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -7,7 +8,7 @@ import lombok.NoArgsConstructor;
 class VisitorMessageTestConfiguration {
 
     static VisitorMessageService visitorMessageService() {
-        return new VisitorMessageService(new InMemoryVisitorMessageRepository());
+        return new VisitorMessageService(new InMemoryVisitorMessageRepository(), new TestEmailSender());
     }
 
 }
