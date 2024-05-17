@@ -12,6 +12,8 @@ import org.springframework.security.core.parameters.P;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ContentServiceTest {
 
@@ -41,4 +43,47 @@ class ContentServiceTest {
         assertEquals(Constants.VALUE_PL, massContentDto.valuePl());
     }
 
+    @Test
+    void shouldReturnInvalidElementsOnMassUpdateContent() {
+        //when: Mass update content and return list of valid and invalid data
+        MassContentWrapperRequest massContentWrapperRequest = new MassContentWrapperRequest(List.of(new MassContentDto(Constants.PAGE, Constants.KEY, Constants.VALUE_PL)));
+        MassContentWrapper massContentWrapper = contentService.massUpdateContent(massContentWrapperRequest);
+        //then: Check if data moved to invalid
+        assertFalse(massContentWrapper.invalidContents().isEmpty());
+        assertTrue(massContentWrapper.validContents().isEmpty());
+    }
+
+    @Test
+    void shouldReturnValidElementsOnMassUpdateContent() {
+        //given: Create content
+        MassContentWrapperRequest massContentWrapperRequest = new MassContentWrapperRequest(List.of(new MassContentDto(Constants.PAGE, Constants.KEY, Constants.VALUE_PL)));
+        contentService.massAddContent(massContentWrapperRequest);
+        //when: Mass update content and return list of valid and invalid data
+        MassContentWrapper massContentWrapper = contentService.massUpdateContent(massContentWrapperRequest);
+        //then: Check if data moved to valid
+        assertTrue(massContentWrapper.invalidContents().isEmpty());
+        assertFalse(massContentWrapper.validContents().isEmpty());
+    }
+
+    @Test
+    void shouldReturnValidElementsOnMassAddContent() {
+        //when: Create content and return valid and invalid data
+        MassContentWrapperRequest massContentWrapperRequest = new MassContentWrapperRequest(List.of(new MassContentDto(Constants.PAGE, Constants.KEY, Constants.VALUE_PL)));
+        MassContentWrapper massContentWrapper = contentService.massAddContent(massContentWrapperRequest);
+        //then: Check if data moved to valid
+        assertTrue(massContentWrapper.invalidContents().isEmpty());
+        assertFalse(massContentWrapper.validContents().isEmpty());
+    }
+
+    @Test
+    void shouldReturnInvalidElementsOnMassAddContent() {
+        //given: Create content
+        MassContentWrapperRequest massContentWrapperRequest = new MassContentWrapperRequest(List.of(new MassContentDto(Constants.PAGE, Constants.KEY, Constants.VALUE_PL)));
+        contentService.massAddContent(massContentWrapperRequest);
+        //when: Create content and return valid and invalid data
+        MassContentWrapper massContentWrapper = contentService.massAddContent(massContentWrapperRequest);
+        //then: Check if data moved to invalid
+        assertFalse(massContentWrapper.invalidContents().isEmpty());
+        assertTrue(massContentWrapper.validContents().isEmpty());
+    }
 }
