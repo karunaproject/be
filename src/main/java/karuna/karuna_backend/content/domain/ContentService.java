@@ -61,7 +61,7 @@ public class ContentService {
         return contentRepository.getByPageAndKey(massContentDto.page(), massContentDto.key())
                 .map(content -> false)
                 .orElseGet(() -> {
-                    Content newContent = mapDtoToContent(massContentDto);
+                    Content newContent = ContentMapper.mapToEntity(massContentDto);
                     contentRepository.save(newContent);
                     return true;
                 });
@@ -77,12 +77,6 @@ public class ContentService {
                 }).orElse(false);
     }
 
-    private Content mapDtoToContent(MassContentDto dto){
-        return Content.builder()
-                .page(dto.page())
-                .key(dto.key())
-                .valuePl(dto.valuePl())
-                .build();
-    }
+
 
 }
