@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import karuna.karuna_backend.content.domain.ContentService;
 import karuna.karuna_backend.content.dto.ContentDTO;
 import karuna.karuna_backend.content.dto.MassContentWrapper;
@@ -32,20 +33,30 @@ class ContentController {
     }
 
     @Operation(summary = "Mass update content", description = "Getting json (REQUEST BODY) and updating all content by list")
-    @ApiResponse(
-            responseCode = "200",
-            description = "Updated contents",
-            content = @Content(mediaType = "application/json", schema = @Schema(implementation = MassContentWrapper.class)))
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Updated contents",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = MassContentWrapper.class))),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Unauthorized, user is not admin")
+    })
     @PutMapping
     MassContentWrapper massUpdateContent(@RequestBody MassContentWrapperRequest massContentWrapperRequest) {
         return contentService.massUpdateContent(massContentWrapperRequest);
     }
 
     @Operation(summary = "Mass add content", description = "Getting json (REQUEST BODY) and adding all content by list")
-    @ApiResponse(
-            responseCode = "201",
-            description = "Added contents",
-            content = @Content(mediaType = "application/json", schema = @Schema(implementation = MassContentWrapper.class)))
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "Added contents",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = MassContentWrapper.class))),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Unauthorized, user is not admin")
+    })
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     MassContentWrapper massAddContent(@RequestBody MassContentWrapperRequest massContentWrapperRequest) {
