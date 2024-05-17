@@ -11,15 +11,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class VisitorMessageServiceTest {
 
-    private VisitorMessageService visitorMessageService = VisitorMessageTestConfiguration.visitorMessageService();
+    private final VisitorMessageService visitorMessageService = VisitorMessageTestConfiguration.visitorMessageService();
 
     @Test
     void shouldSendMessage() {
-        //given
+        //given: Give create dto with body = BODY and contact = CONTACT
         VisitorMessageCreateDto visitorMessageCreateDto = new VisitorMessageCreateDto(Constants.BODY, Constants.CONTACT);
-        //when
+        //when: When send message save it to database and return dto
         VisitorMessageDto visitorMessageDto = visitorMessageService.sendMessage(visitorMessageCreateDto);
-        //then
+        //then: Assert if database add id and save correctly data
         assertEquals(1L, visitorMessageDto.id());
         Assertions.assertNotNull(visitorMessageDto.createdAt());
         assertEquals(Constants.BODY, visitorMessageDto.body());
