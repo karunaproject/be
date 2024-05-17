@@ -20,8 +20,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ContentService {
 
-    private static final String NOT_EXISTED = "NOT_EXISTED";
-
     private final ContentRepository contentRepository;
     private final LoadingCache<String, ContentDTO> cache = Caffeine.newBuilder()
             .expireAfterWrite(1, TimeUnit.HOURS)
