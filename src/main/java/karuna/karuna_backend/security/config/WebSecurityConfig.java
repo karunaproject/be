@@ -43,12 +43,18 @@ class WebSecurityConfig {
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
                                 "/v3/api-docs/**",
-                                "/swagger-resources/**",
-                                "/visitors/messages/**")
+                                "/swagger-resources/**")
                         .permitAll()
+                        .requestMatchers(HttpMethod.POST, "/visitors/messages").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.GET, "/visitors/messages").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtFilter, BasicAuthenticationFilter.class);
         return http.build();
     }
 }
+
+
+
+
+
+
