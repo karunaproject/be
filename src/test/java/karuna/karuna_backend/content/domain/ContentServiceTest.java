@@ -6,6 +6,8 @@ import karuna.karuna_backend.content.dto.ContentDTO;
 import karuna.karuna_backend.content.dto.MassContentDto;
 import karuna.karuna_backend.content.dto.MassContentWrapper;
 import karuna.karuna_backend.content.dto.MassContentWrapperRequest;
+import karuna.karuna_backend.user.domain.UserTestConfiguration;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.core.parameters.P;
 
@@ -18,6 +20,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class ContentServiceTest {
 
     private final ContentService contentService = ContentTestConfiguration.contentService();
+
+    @BeforeEach
+    void setUp() {
+        ContentTestConfiguration.clearDatabase();
+    }
+
 
     @Test
     void shouldNotGetContentByPage() {
@@ -36,8 +44,8 @@ class ContentServiceTest {
         //when
         MassContentWrapper massContentWrapperResponse = contentService.massUpdateContent(massContentWrapperRequest);
         //then
-        assertEquals(1, massContentWrapperResponse.validContents().size());
-        MassContentDto massContentDto = massContentWrapperResponse.validContents().get(0);
+        assertEquals(1, massContentWrapperResponse.invalidContents().size());
+        MassContentDto massContentDto = massContentWrapperResponse.invalidContents().get(0);
         assertEquals(Constants.PAGE, massContentDto.page());
         assertEquals(Constants.KEY, massContentDto.key());
         assertEquals(Constants.VALUE_PL, massContentDto.valuePl());

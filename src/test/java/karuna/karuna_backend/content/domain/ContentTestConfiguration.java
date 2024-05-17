@@ -6,7 +6,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 class ContentTestConfiguration {
 
+    private static final ContentRepository contentRepository = new InMemoryContentRepository();
+
     static ContentService contentService() {
-        return new ContentService(new InMemoryContentRepository());
+        return new ContentService(contentRepository);
+    }
+
+    static void clearDatabase() {
+        contentRepository.deleteAll();
     }
 }
