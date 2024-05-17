@@ -1,5 +1,6 @@
 package karuna.karuna_backend.user.domain;
 
+import jakarta.validation.ConstraintViolationException;
 import karuna.karuna_backend.Constants;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -7,21 +8,24 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
 
+import java.time.OffsetDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 
 class InMemoryUserRepository implements UserRepository {
+
+    private HashMap<Long, User> database = new HashMap<>();
+
     @Override
     public Optional<User> findByUsername(String username) {
-        return Optional.of(User.builder()
-                .id(1L)
-                .username(Constants.USERNAME)
-                .password(Constants.PASSWORD)
-                .roles(List.of(Role.builder()
-                        .name(Constants.ROLE_USER)
-                        .build()))
-                .build());
+        return database.entrySet().stream()
+                .map(Map.Entry::getValue)
+                .filter(entity -> Objects.equals(entity.getUsername(), username))
+                .findFirst();
     }
 
     @Override
@@ -106,12 +110,22 @@ class InMemoryUserRepository implements UserRepository {
 
     @Override
     public <S extends User> S save(S entity) {
-        return (S) User.builder()
-                .id(1L)
-                .username(entity.getUsername())
-                .password(entity.getPassword())
-                .roles(entity.getRoles())
-                .build();
+        long id = database.size() + 1;
+        if (entity.getId() == 0) {
+            entity.setId(id);
+        }
+        checkUniqueUsername(entity.getUsername());
+        database.put(id, entity);
+        return entity;
+    }
+
+    private void checkUniqueUsername(String username) {
+        Optional<User> userOptional = database.values().stream()
+                .filter(entity -> Objects.equals(entity.getUsername(), username))
+                .findFirst();
+        if (userOptional.isPresent()) {
+            throw new ConstraintViolationException("Username already in use!", null);
+        }
     }
 
     @Override
@@ -121,14 +135,7 @@ class InMemoryUserRepository implements UserRepository {
 
     @Override
     public Optional<User> findById(Long aLong) {
-        return Optional.of(User.builder()
-                        .id(1L)
-                        .username(Constants.USERNAME)
-                        .password(Constants.PASSWORD)
-                        .roles(List.of(Role.builder()
-                                        .name(Constants.ROLE_USER)
-                                .build()))
-                .build());
+        return Optional.ofNullable(database.get(aLong));
     }
 
     @Override
@@ -173,7 +180,7 @@ class InMemoryUserRepository implements UserRepository {
 
     @Override
     public void deleteAll() {
-
+        database.clear();
     }
 
     @Override

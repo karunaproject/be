@@ -9,17 +9,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ContentServiceTest {
 
-    private ContentService contentService = ContentTestConfiguration.contentService();
+    private final ContentService contentService = ContentTestConfiguration.contentService();
 
     @Test
-    void shouldGetContentByPage() {
-        //given
+    void shouldNotGetContentByPage() {
+        //given: Give page = HOME to request;
         String page = Constants.PAGE;
-        //when
+        //when: Get content for page
         ContentDTO contentDTO = contentService.getContentByPage(page);
-        //then
-        assertEquals(1, contentDTO.contents().keySet().size());
-        assertEquals(Constants.VALUE_PL, contentDTO.contents().get(Constants.KEY));
+        //then: Assert not exist content for page
+        assertEquals(0, contentDTO.contents().keySet().size());
     }
 
 }

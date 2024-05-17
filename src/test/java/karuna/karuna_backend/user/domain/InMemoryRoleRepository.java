@@ -7,16 +7,28 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 
 class InMemoryRoleRepository implements RoleRepository {
+
+    private HashMap<Long, Role> database = new HashMap<>();
+
+    InMemoryRoleRepository() {
+        database.put(1L, new Role(Constants.ROLE_USER));
+        database.put(2L, new Role(Constants.ROLE_ADMIN));
+    }
+
     @Override
     public Optional<Role> findByName(String name) {
-        return Optional.of(Role.builder()
-                        .name(Constants.ROLE_USER)
-                .build());
+        return database.entrySet().stream()
+                .map(Map.Entry::getValue)
+                .filter(entity -> Objects.equals(entity.getName(), name))
+                .findFirst();
     }
 
     @Override
