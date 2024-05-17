@@ -40,7 +40,7 @@ class ContentController {
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = MassContentWrapper.class))),
             @ApiResponse(
                     responseCode = "403",
-                    description = "Unauthorized, user is not admin")
+                    description = "Forbidden: You don't have permission to access this resource")
     })
     @PutMapping
     MassContentWrapper massUpdateContent(@RequestBody MassContentWrapperRequest massContentWrapperRequest) {
@@ -55,7 +55,7 @@ class ContentController {
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = MassContentWrapper.class))),
             @ApiResponse(
                     responseCode = "403",
-                    description = "Unauthorized, user is not admin")
+                    description = "Forbidden: You don't have permission to access this resource")
     })
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
