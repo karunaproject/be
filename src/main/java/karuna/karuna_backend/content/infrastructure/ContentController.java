@@ -9,6 +9,7 @@ import karuna.karuna_backend.content.dto.ContentDTO;
 import karuna.karuna_backend.content.dto.MassContentWrapper;
 import karuna.karuna_backend.content.dto.MassContentWrapperRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -40,13 +41,14 @@ class ContentController {
         return contentService.massUpdateContent(massContentWrapperRequest);
     }
 
-    @Operation(summary = "Mass add content", description ="Getting json (REQUEST BODY) and adding all content by list")
+    @Operation(summary = "Mass add content", description = "Getting json (REQUEST BODY) and adding all content by list")
     @ApiResponse(
             responseCode = "201",
             description = "Added contents",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = MassContentWrapper.class)))
     @PostMapping
-    MassContentWrapper massAddContent(@RequestBody MassContentWrapperRequest massContentWrapperRequest){
+    @ResponseStatus(HttpStatus.CREATED)
+    MassContentWrapper massAddContent(@RequestBody MassContentWrapperRequest massContentWrapperRequest) {
         return contentService.massAddContent(massContentWrapperRequest);
     }
 
