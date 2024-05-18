@@ -34,7 +34,7 @@ class VisitorMessageController {
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = VisitorMessageDto.class))),
             @ApiResponse(
                     responseCode = "400",
-                    description = "Visitor message content is too long",
+                    description = "Validation error",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ValidationErrorResponse.class))),
             @ApiResponse(
                     responseCode = "500",

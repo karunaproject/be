@@ -6,6 +6,7 @@ import karuna.karuna_backend.content.dto.ContentDTO;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ContentServiceTest {
 
@@ -13,12 +14,11 @@ class ContentServiceTest {
 
     @Test
     void shouldNotGetContentByPage() {
-        //given: Give page = HOME to request;
-        String page = Constants.PAGE;
         //when: Get content for page
+        String page = Constants.PAGE;
         ContentDTO contentDTO = contentService.getContentByPage(page);
-        //then: Assert not exist content for page
-        assertEquals(0, contentDTO.contents().keySet().size());
+        //then: Check if not exist content for page
+        assertTrue(contentDTO.contents().isEmpty());
     }
 
 }

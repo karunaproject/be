@@ -20,8 +20,7 @@ class InMemoryContentRepository implements ContentRepository{
 
     @Override
     public List<Content> findByPageIgnoreCaseOrPageNull(String page) {
-        return database.entrySet().stream()
-                .map(Map.Entry::getValue)
+        return database.values().stream()
                 .filter(entity -> Objects.equals(entity.getPage(), page))
                 .toList();
     }

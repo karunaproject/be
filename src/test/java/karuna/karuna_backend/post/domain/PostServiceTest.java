@@ -16,12 +16,11 @@ class PostServiceTest {
 
     @Test
     void shouldCreatePost() {
-        //given: Give PostCreateDto with body = BODY and user with name = NAME
+        //when: When create post, returns created post
         PostCreateDto postCreateDto = new PostCreateDto(Constants.BODY);
         Principal principal = () -> Constants.NAME;
-        //when: When create post, returns created post
         PostDto postDto = postService.createPost(postCreateDto, principal);
-        //then: Assert if database give id and correctly save data
+        //then: Check if  database give id and correctly save data
         assertEquals(1L, postDto.id());
         assertNotNull(postDto.createdAt());
         assertEquals(Constants.BODY, postDto.body());

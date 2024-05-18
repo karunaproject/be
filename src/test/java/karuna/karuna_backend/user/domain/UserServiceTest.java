@@ -39,7 +39,7 @@ class UserServiceTest {
         long id = 1L;
         //when: When getting user returns dto
         Optional<UserDTO> userDTOOptional = userService.getUserById(id);
-        //then: Assert is current user
+        //then: Check if is current user
         assertTrue(userDTOOptional.isPresent());
         UserDTO userDTO = userDTOOptional.get();
         assertEquals(1L, userDTO.id());
@@ -50,11 +50,10 @@ class UserServiceTest {
 
     @Test
     void shouldNotFoundUserById() {
-        //given: Give id = 1
-        long id = 1;
         //when: When getting user return empty optional
+        long id = 1;
         Optional<UserDTO> userDTOOptional = userService.getUserById(id);
-        //then: Assert optional is empty
+        //then: Check if optional is empty
         assertTrue(userDTOOptional.isEmpty());
     }
 
@@ -66,7 +65,7 @@ class UserServiceTest {
         userService.registerUser(username, password);
         //when: When getting user returns dto
         Optional<UserDTO> userDTOOptional = userService.getUserByUsername(Constants.USERNAME);
-        //then: Assert is current user
+        //then: Check if is current user
         assertTrue(userDTOOptional.isPresent());
         UserDTO userDTO = userDTOOptional.get();
         assertEquals(1L, userDTO.id());
@@ -77,21 +76,19 @@ class UserServiceTest {
 
     @Test
     void shouldNotFoundUserByUsername() {
-        //given: Give username = USERNAME
-        String username = Constants.USERNAME;
         //when: When getting user return empty optional
+        String username = Constants.USERNAME;
         Optional<UserDTO> userDTOOptional = userService.getUserByUsername(username);
-        //then: Assert optional is empty
+        //then: Check if optional is empty
         assertTrue(userDTOOptional.isEmpty());
     }
     @Test
     void shouldRegisterUser() {
-        //given: Give username = USERNAME and password = PASSWORD
+        //when: When user service register user returns token
         String username = Constants.USERNAME;
         String password = Constants.PASSWORD;
-        //when: When user service register user returns token
         String token = userService.registerUser(username, password);
-        //then: Assert token have username in subject
+        //then: Check if token have username in subject
         assertNotNull(token);
         String subject = extractSubject(token);
         assertEquals(Constants.USERNAME, subject);
@@ -126,7 +123,7 @@ class UserServiceTest {
         userService.registerUser(username, password);
         //when: When user service authenticate user returns token
         String token = userService.authenticateUser(username, password);
-        //then: Assert token have username in subject
+        //then: Check if  token have username in subject
         assertNotNull(token);
         String subject = extractSubject(token);
         assertEquals(Constants.USERNAME, subject);

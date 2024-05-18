@@ -25,8 +25,7 @@ class InMemoryRoleRepository implements RoleRepository {
 
     @Override
     public Optional<Role> findByName(String name) {
-        return database.entrySet().stream()
-                .map(Map.Entry::getValue)
+        return database.values().stream()
                 .filter(entity -> Objects.equals(entity.getName(), name))
                 .findFirst();
     }
