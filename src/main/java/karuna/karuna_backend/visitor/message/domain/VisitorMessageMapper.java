@@ -18,4 +18,11 @@ class VisitorMessageMapper {
     static VisitorMessageDto toDto(VisitorMessage visitorMessage) {
         return new VisitorMessageDto(visitorMessage.getID(), visitorMessage.getCreatedAt(), visitorMessage.getBody(), visitorMessage.getContact());
     }
+
+    static VisitorMessage shortenMessageBody(VisitorMessage message, int bodyLenLimit) {
+        if (message.getBody().length() > bodyLenLimit) {
+            message.setBody(message.getBody().substring(0, bodyLenLimit));
+        }
+        return message;
+    }
 }

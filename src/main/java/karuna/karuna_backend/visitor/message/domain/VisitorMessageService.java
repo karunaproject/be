@@ -29,11 +29,8 @@ public class VisitorMessageService {
     public VisitorMessageWrapper getMessages(VisitorMessageRequest visitorMessageRequest) {
         PageRequest pageRequest = PageRequest.of(visitorMessageRequest.offset(), visitorMessageRequest.limit());
         List<VisitorMessage> messages = visitorMessageRepository.findAllByOrderByCreatedAtDesc(pageRequest);
-        messages.forEach(message -> {
-            if (message.getBody().length() > visitorMessageRequest.bodyLenLimit()) {
-                message.setBody(message.getBody().substring(0, visitorMessageRequest.bodyLenLimit()));
-            }
-        });
+        messages.forEach(message ->
+            VisitorMessageMapper.shortenMessageBody(message, visitorMessageRequest.bodyLenLimit()));
         return new VisitorMessageWrapper(messages.stream()
                 .map(VisitorMessageMapper::toDto)
                 .toList());
