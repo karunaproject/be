@@ -2,13 +2,10 @@ package karuna.karuna_backend.user.exception;
 
 import io.swagger.v3.oas.annotations.Hidden;
 import karuna.karuna_backend.exception.database.DatabaseExceptionKeyTranslator;
-import karuna.karuna_backend.exception.database.DatabaseIntegrityException;
 import karuna.karuna_backend.exception.dto.AuthenticationErrorResponse;
-import karuna.karuna_backend.exception.dto.DataIntegrityErrorResponse;
 import karuna.karuna_backend.security.exception.LoginPasswordAuthenticationException;
 import karuna.karuna_backend.user.infrastructure.AuthController;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
