@@ -9,6 +9,7 @@ import karuna.karuna_backend.content.domain.ContentService;
 import karuna.karuna_backend.content.dto.ContentDTO;
 import karuna.karuna_backend.content.dto.MassContentWrapper;
 import karuna.karuna_backend.content.dto.MassContentWrapperRequest;
+import karuna.karuna_backend.exception.dto.DataIntegrityErrorResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -40,7 +41,11 @@ class ContentController {
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = MassContentWrapper.class))),
             @ApiResponse(
                     responseCode = "403",
-                    description = "Forbidden: You don't have permission to access this resource")
+                    description = "Forbidden: You don't have permission to access this resource"),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Data integrity error",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = DataIntegrityErrorResponse.class)))
     })
     @PutMapping
     MassContentWrapper massUpdateContent(@RequestBody MassContentWrapperRequest massContentWrapperRequest) {
@@ -55,7 +60,11 @@ class ContentController {
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = MassContentWrapper.class))),
             @ApiResponse(
                     responseCode = "403",
-                    description = "Forbidden: You don't have permission to access this resource")
+                    description = "Forbidden: You don't have permission to access this resource"),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Data integrity error",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = DataIntegrityErrorResponse.class)))
     })
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
