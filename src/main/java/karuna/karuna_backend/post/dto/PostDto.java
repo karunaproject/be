@@ -4,7 +4,7 @@ import java.time.OffsetDateTime;
 
 public record PostDto(
         long id,
-        OffsetDateTime creteadAt,
+        OffsetDateTime createdAt,
         String body,
         String author
 ) {
