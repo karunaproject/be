@@ -45,7 +45,6 @@ class WebSecurityConfig {
                                 "/v3/api-docs/**",
                                 "/swagger-resources/**")
                         .permitAll()
-                        .requestMatchers(HttpMethod.POST, "/visitors/messages").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.GET, "/visitors/messages").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtFilter, BasicAuthenticationFilter.class);
