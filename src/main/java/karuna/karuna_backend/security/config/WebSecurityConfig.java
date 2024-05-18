@@ -5,6 +5,7 @@ import karuna.karuna_backend.security.config.filters.JwtFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -45,6 +46,13 @@ class WebSecurityConfig {
                                 "/swagger-resources/**",
                                 "/visitors/messages/**")
                         .permitAll()
+                        .requestMatchers(HttpMethod.GET, "/contents/**")
+                        .permitAll()
+                        //TODO: Refactor this into controller logic because it's getting kinda messy
+                        .requestMatchers(HttpMethod.PUT, "/contents/**")
+                        .hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/contents/**")
+                        .hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtFilter, BasicAuthenticationFilter.class);
         return http.build();

@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
 
+import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,10 +21,16 @@ class InMemoryContentRepository implements ContentRepository{
 
     @Override
     public List<Content> findByPageIgnoreCaseOrPageNull(String page) {
-        return database.entrySet().stream()
-                .map(Map.Entry::getValue)
+        return database.values().stream()
                 .filter(entity -> Objects.equals(entity.getPage(), page))
                 .toList();
+    }
+
+    @Override
+    public Optional<Content> getByPageAndKey(String page, String key) {
+        return database.values().stream()
+                .filter(entity -> Objects.equals(entity.getPage(), page) && Objects.equals(entity.getKey(), key))
+                .findFirst();
     }
 
     @Override
@@ -108,7 +115,14 @@ class InMemoryContentRepository implements ContentRepository{
 
     @Override
     public <S extends Content> S save(S entity) {
-        return null;
+        long id = database.size() + 1;
+        if (entity.getId() == null) {
+            entity.setId(id);
+        } else {
+            id = entity.getId();
+        }
+        database.put(id, entity);
+        return entity;
     }
 
     @Override
@@ -163,7 +177,7 @@ class InMemoryContentRepository implements ContentRepository{
 
     @Override
     public void deleteAll() {
-
+        database.clear();
     }
 
     @Override
