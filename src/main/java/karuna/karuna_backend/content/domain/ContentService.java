@@ -35,9 +35,7 @@ public class ContentService {
     private ContentDTO getContentByPageFromDatabase(String page) {
         List<Content> pages = contentRepository.findByPageIgnoreCaseOrPageNull(page);
         HashMap<String, String> allContent = new HashMap<>();
-        pages.forEach(singlePage -> {
-            allContent.put(singlePage.getKey(), singlePage.getValuePl());
-        });
+        pages.forEach(singlePage -> allContent.put(singlePage.getKey(), singlePage.getValuePl()));
         return ContentMapper.mapToDto(allContent);
     }
 
