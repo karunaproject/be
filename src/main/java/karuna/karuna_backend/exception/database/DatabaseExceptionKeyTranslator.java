@@ -1,6 +1,7 @@
 package karuna.karuna_backend.exception.database;
 
 import karuna.karuna_backend.exception.keys.DataIntegrityErrorKey;
+import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 
@@ -10,14 +11,10 @@ import org.springframework.stereotype.Component;
  * into more specific {@link DatabaseIntegrityException} instances based on the error code resolved.
  */
 @Component
-public class DatabaseExceptionHandler{
+@RequiredArgsConstructor
+public class DatabaseExceptionKeyTranslator {
 
     private final DatabaseErrorResolver errorResolver;
-
-    public DatabaseExceptionHandler(DatabaseErrorResolver errorResolver) {
-        this.errorResolver = errorResolver;
-    }
-
 
     /**
      * Handles a {@link DataIntegrityViolationException} by resolving the specific error code
@@ -35,6 +32,8 @@ public class DatabaseExceptionHandler{
                     "Unique key was violated during query execution, record probably already exists in the database");
             case NOT_NULL_CONSTRAINT_VIOLATION -> new DatabaseIntegrityException(errorCode,
                     "Required field cannot be null");
+            case VALUE_TOO_LONG -> new DatabaseIntegrityException(errorCode,
+                    "Required field length is less");
             default -> new DatabaseIntegrityException(errorCode,
                     "Unknown database error occurred during executing the query");
         };

@@ -1,7 +1,7 @@
 package karuna.karuna_backend.user.exception;
 
 import io.swagger.v3.oas.annotations.Hidden;
-import karuna.karuna_backend.exception.database.DatabaseExceptionHandler;
+import karuna.karuna_backend.exception.database.DatabaseExceptionKeyTranslator;
 import karuna.karuna_backend.exception.database.DatabaseIntegrityException;
 import karuna.karuna_backend.exception.dto.AuthenticationErrorResponse;
 import karuna.karuna_backend.exception.dto.DataIntegrityErrorResponse;
@@ -19,16 +19,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice(assignableTypes = AuthController.class)
 @RequiredArgsConstructor
 class GlobalAuthExceptionHandler {
-    private final DatabaseExceptionHandler databaseExceptionHandler;
-
-    @ResponseStatus(HttpStatus.CONFLICT)
-    @Hidden
-    @ExceptionHandler(DataIntegrityViolationException.class)
-    DataIntegrityErrorResponse handleDataIntegrityViolation(DataIntegrityViolationException ex) {
-        DatabaseIntegrityException databaseException = databaseExceptionHandler.handleIntegrityException(ex);
-
-        return databaseException.mapToErrorResponse();
-    }
+    private final DatabaseExceptionKeyTranslator databaseExceptionKeyTranslator;
 
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @Hidden
