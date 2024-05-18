@@ -11,6 +11,7 @@ import karuna.karuna_backend.content.dto.MassContentWrapper;
 import karuna.karuna_backend.content.dto.MassContentWrapperRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -43,6 +44,7 @@ class ContentController {
                     description = "Forbidden: You don't have permission to access this resource")
     })
     @PutMapping
+    @PreAuthorize("hasRole('ADMIN')")
     MassContentWrapper massUpdateContent(@RequestBody MassContentWrapperRequest massContentWrapperRequest) {
         return contentService.massUpdateContent(massContentWrapperRequest);
     }
@@ -59,6 +61,7 @@ class ContentController {
     })
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasRole('ADMIN')")
     MassContentWrapper massAddContent(@RequestBody MassContentWrapperRequest massContentWrapperRequest) {
         return contentService.massAddContent(massContentWrapperRequest);
     }
