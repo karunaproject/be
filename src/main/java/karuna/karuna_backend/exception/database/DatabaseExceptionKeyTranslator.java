@@ -33,7 +33,7 @@ public class DatabaseExceptionKeyTranslator {
             case NOT_NULL_CONSTRAINT_VIOLATION -> new DatabaseIntegrityException(errorCode,
                     "Required field cannot be null");
             case VALUE_TOO_LONG -> new DatabaseIntegrityException(errorCode,
-                    "Required field length is less");
+                    "Maximum field's length is lower than provided");
             default -> new DatabaseIntegrityException(errorCode,
                     "Unknown database error occurred during executing the query");
         };
