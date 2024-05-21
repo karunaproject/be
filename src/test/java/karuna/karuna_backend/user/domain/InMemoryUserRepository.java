@@ -22,8 +22,7 @@ class InMemoryUserRepository implements UserRepository {
 
     @Override
     public Optional<User> findByUsername(String username) {
-        return database.entrySet().stream()
-                .map(Map.Entry::getValue)
+        return database.values().stream()
                 .filter(entity -> Objects.equals(entity.getUsername(), username))
                 .findFirst();
     }

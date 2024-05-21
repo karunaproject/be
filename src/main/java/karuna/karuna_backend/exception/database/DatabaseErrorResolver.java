@@ -25,6 +25,9 @@ class DatabaseErrorResolver {
 
         errorMappings.put("1048", DataIntegrityErrorKey.NOT_NULL_CONSTRAINT_VIOLATION);  // MySQL NOT NULL constraint
         errorMappings.put("23502", DataIntegrityErrorKey.NOT_NULL_CONSTRAINT_VIOLATION); // PostgreSQL NOT NULL constraint
+
+        errorMappings.put("1470", DataIntegrityErrorKey.VALUE_TOO_LONG); //MYSQL invalid length constraint
+        errorMappings.put("22001", DataIntegrityErrorKey.VALUE_TOO_LONG); //PostgreSQL invalid length constraint
     }
 
     /**

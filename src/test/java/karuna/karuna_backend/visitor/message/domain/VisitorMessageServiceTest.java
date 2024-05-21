@@ -15,11 +15,10 @@ class VisitorMessageServiceTest {
 
     @Test
     void shouldSendMessage() {
-        //given: Give create dto with body = BODY and contact = CONTACT
-        VisitorMessageCreateDto visitorMessageCreateDto = new VisitorMessageCreateDto(Constants.BODY, Constants.CONTACT);
         //when: When send message save it to database and return dto
+        VisitorMessageCreateDto visitorMessageCreateDto = new VisitorMessageCreateDto(Constants.BODY, Constants.CONTACT);
         VisitorMessageDto visitorMessageDto = visitorMessageService.sendMessage(visitorMessageCreateDto);
-        //then: Assert if database add id and save correctly data
+        //then: Check if database add id and save correctly data
         assertEquals(1L, visitorMessageDto.id());
         Assertions.assertNotNull(visitorMessageDto.createdAt());
         assertEquals(Constants.BODY, visitorMessageDto.body());
