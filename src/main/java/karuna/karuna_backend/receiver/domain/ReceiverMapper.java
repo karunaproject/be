@@ -11,11 +11,11 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 class ReceiverMapper {
 
-    static ReceiversDTO mapToDto(List<Receiver> receivers){
+    static ReceiversDTO mapToDto(List<Receiver> receivers) {
         return new ReceiversDTO(receivers.stream().map(Receiver::getEmail).collect(Collectors.toSet()));
     }
 
-    static ReceiverDTO mapToDto(Receiver receiver){
+    static ReceiverDTO mapToDto(Receiver receiver) {
         return new ReceiverDTO(receiver.getId(), receiver.getEmail());
     }
 }

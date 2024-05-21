@@ -17,11 +17,9 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class ReceiverService {
 
-    private  final ReceiverRepository receiverRepository;
+    private final ReceiverRepository receiverRepository;
 
-    private final LoadingCache<String, ReceiversDTO> cache= Caffeine.newBuilder()
-            .expireAfterWrite(1, TimeUnit.HOURS)
-            .build(this::getAllReceiversFromDatabase);
+    private final LoadingCache<String, ReceiversDTO> cache = Caffeine.newBuilder().expireAfterWrite(1, TimeUnit.HOURS).build(this::getAllReceiversFromDatabase);
 
     public ReceiversDTO getAllReceivers() {
         return cache.get("allReceivers");
@@ -29,10 +27,10 @@ public class ReceiverService {
 
     public ReceiverDTO addReceiver(String email) {
         ReceiverDTO receiverDTO;
-        if(!cache.get("allReceivers").receivers().contains(email)){
+        if (!cache.get("allReceivers").receivers().contains(email)) {
             receiverDTO = ReceiverMapper.mapToDto(receiverRepository.save(Receiver.builder().email(email).build()));
             cache.get("allReceivers").receivers().add(receiverDTO.email());
-        }else {
+        } else {
             receiverDTO = receiverRepository.findByEmailIgnoreCase(email);
         }
         return receiverDTO;
@@ -40,10 +38,10 @@ public class ReceiverService {
 
     @Transactional
     public ResponseEntity<?> deleteReceiver(String email) {
-        if(cache.get("allReceivers").receivers().contains(email)){
+        if (cache.get("allReceivers").receivers().contains(email)) {
             receiverRepository.deleteByEmailIgnoreCase(email);
             cache.invalidate("allReceivers");
-        }else {
+        } else {
             return new ResponseEntity<>("Recipient not found.", HttpStatus.NOT_FOUND);
         }
 

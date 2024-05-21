@@ -46,7 +46,6 @@ class ReceiverController {
             description = "Incorrect email",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ConstraintViolationResponse.class))
     )
-        //TODO if authorization fail return 401 error
     ReceiverDTO addReceiver(@RequestBody @Valid ReceiverCreateDto email) {
         return receiverService.addReceiver(email.email());
     }
@@ -63,11 +62,7 @@ class ReceiverController {
             description = "Recipient not found.",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = String.class))
     )
-    //TODO if authorization fail return 401 error
     ResponseEntity<?> deleteReceiver(@RequestBody ReceiverCreateDto email, Principal principal) {
         return receiverService.deleteReceiver(email.email());
     }
-
-
-    //TODO replace hardcoded email from As Visitor I can send message with email notification #8 with emails from database
 }
