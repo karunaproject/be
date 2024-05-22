@@ -2,7 +2,6 @@ package karuna.karuna_backend.visitor.message.domain;
 
 import karuna.karuna_backend.email.EmailSender;
 import karuna.karuna_backend.receiver.domain.ReceiverService;
-import karuna.karuna_backend.receiver.dto.ReceiversDTO;
 import karuna.karuna_backend.visitor.message.dto.VisitorMessageCreateDto;
 import karuna.karuna_backend.visitor.message.dto.VisitorMessageDto;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +21,7 @@ public class VisitorMessageService {
         VisitorMessage visitorMessage = VisitorMessageMapper.toModel(visitorMessageCreateDto);
         VisitorMessage savedVisitorMessage = visitorMessageRepository.save(visitorMessage);
         JSONArray recipients = new JSONArray();
-        ReceiversDTO receiversDTO = receiverService.getAllReceivers();
-        for (String email : receiversDTO.receivers()) {
+        for (String email : receiverService.getAllReceivers().receivers()) {
             recipients.put(new JSONObject().put("Email", email).put("Name", email));
         }
         emailSender.sendEmails(recipients, "KARUN VISTOR MESSAGE", savedVisitorMessage.getBody(), null);
