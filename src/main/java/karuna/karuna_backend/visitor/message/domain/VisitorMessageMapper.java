@@ -2,8 +2,11 @@ package karuna.karuna_backend.visitor.message.domain;
 
 import karuna.karuna_backend.visitor.message.dto.VisitorMessageCreateDto;
 import karuna.karuna_backend.visitor.message.dto.VisitorMessageDto;
+import karuna.karuna_backend.visitor.message.dto.VisitorMessageWrapper;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 class VisitorMessageMapper {
@@ -19,10 +22,10 @@ class VisitorMessageMapper {
         return new VisitorMessageDto(visitorMessage.getID(), visitorMessage.getCreatedAt(), visitorMessage.getBody(), visitorMessage.getContact());
     }
 
-    static VisitorMessage shortenMessageBody(VisitorMessage message, int bodyLenLimit) {
-        if (message.getBody().length() > bodyLenLimit) {
-            message.setBody(message.getBody().substring(0, bodyLenLimit));
-        }
-        return message;
+    static VisitorMessageWrapper toWrapper(List<VisitorMessage> messages) {
+        return new VisitorMessageWrapper(messages.stream()
+                .map(VisitorMessageMapper::toDto)
+                .toList());
     }
+
 }
