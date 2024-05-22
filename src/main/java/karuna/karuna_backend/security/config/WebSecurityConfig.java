@@ -48,10 +48,6 @@ class WebSecurityConfig {
         return configurePublicHttpRequests(auth)
                 .requestMatchers(HttpMethod.GET, "/contents/**")
                 .permitAll()
-                .requestMatchers(
-                        "/receivers/add",
-                        "/receivers/delete")
-                .hasRole("ADMIN")
                 .anyRequest().authenticated();
     }
 
@@ -64,8 +60,7 @@ class WebSecurityConfig {
                         "/swagger-ui.html",
                         "/v3/api-docs/**",
                         "/swagger-resources/**",
-                        "/visitors/messages/**",
-                        "/receivers/all")
+                        "/visitors/messages/**")
                 .permitAll();
     }
 }
