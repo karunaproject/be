@@ -27,5 +27,4 @@ class VisitorMessageMapper {
                 .map(VisitorMessageMapper::toDto)
                 .toList());
     }
-
 }
