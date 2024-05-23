@@ -15,6 +15,7 @@ import karuna.karuna_backend.visitor.message.dto.VisitorMessageRequest;
 import karuna.karuna_backend.visitor.message.dto.VisitorMessageWrapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -64,6 +65,7 @@ class VisitorMessageController {
                     description = "Forbidden: You don't have permission to access this resource",
                     content = @Content(mediaType = "application/json"))
     })
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     VisitorMessageWrapper getMessages(@RequestBody VisitorMessageRequest visitorMessageRequest) {
         return visitorMessageService.getMessages(visitorMessageRequest);
