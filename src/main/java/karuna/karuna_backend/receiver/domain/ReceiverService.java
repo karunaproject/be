@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -26,14 +27,17 @@ public class ReceiverService {
     }
 
     public ReceiverDTO addReceiver(String email) {
-        ReceiverDTO receiverDTO;
-        if (!cache.get("allReceivers").receivers().contains(email)) {
-            receiverDTO = ReceiverMapper.mapToDto(receiverRepository.save(Receiver.builder().email(email).build()));
-            cache.get("allReceivers").receivers().add(receiverDTO.email());
+        Receiver receiver;
+        Set<String> receiversDTO = cache.get("allReceivers").receivers();
+
+        if (!receiversDTO.contains(email)) {
+            receiver = receiverRepository.save(Receiver.builder().email(email).build());
+            receiversDTO.add(email);
         } else {
-            receiverDTO = receiverRepository.findByEmailIgnoreCase(email);
+            receiver = receiverRepository.findByEmailIgnoreCase(email);
         }
-        return receiverDTO;
+
+        return ReceiverMapper.mapToDto(receiver);
     }
 
     @Transactional

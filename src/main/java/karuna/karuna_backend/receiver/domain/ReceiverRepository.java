@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 interface ReceiverRepository extends JpaRepository<Receiver, Integer> {
 
-    ReceiverDTO findByEmailIgnoreCase(String email);
+    Receiver findByEmailIgnoreCase(String email);
 
     void deleteByEmailIgnoreCase(String email);
 }

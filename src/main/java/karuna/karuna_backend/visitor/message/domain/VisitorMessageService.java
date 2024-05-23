@@ -24,7 +24,7 @@ public class VisitorMessageService {
         for (String email : receiverService.getAllReceivers().receivers()) {
             recipients.put(new JSONObject().put("Email", email).put("Name", email));
         }
-        emailSender.sendEmails(recipients, "KARUN VISTOR MESSAGE", savedVisitorMessage.getBody(), null);
+        emailSender.sendEmails(recipients, "KARUNA VISTOR MESSAGE", savedVisitorMessage.getBody(), null);
         return VisitorMessageMapper.toDto(savedVisitorMessage);
     }
 

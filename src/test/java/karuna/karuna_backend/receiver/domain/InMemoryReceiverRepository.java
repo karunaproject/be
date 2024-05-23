@@ -15,7 +15,7 @@ public class InMemoryReceiverRepository implements ReceiverRepository {
     private HashMap<Integer, Receiver> database = new HashMap<>();
 
     @Override
-    public ReceiverDTO findByEmailIgnoreCase(String email) {
+    public Receiver findByEmailIgnoreCase(String email) {
         return null;
     }
 

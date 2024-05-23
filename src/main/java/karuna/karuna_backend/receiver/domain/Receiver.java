@@ -1,8 +1,11 @@
 package karuna.karuna_backend.receiver.domain;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Size;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,8 +25,6 @@ class Receiver {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column(name = "email", unique = true, nullable = false)
-    @Email(message = "Invalid email address")
-    @Size(min = 5, max = 320)
     private String email;
 
 }
