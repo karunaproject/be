@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import karuna.karuna_backend.exception.dto.JwtErrorResponse;
+import karuna.karuna_backend.exception.dto.ReceiverErrorResponse;
 import karuna.karuna_backend.exception.dto.ValidationErrorResponse;
 import karuna.karuna_backend.receiver.domain.ReceiverService;
 import karuna.karuna_backend.receiver.dto.ReceiverCreateDto;
@@ -83,7 +84,7 @@ class ReceiverController {
             @ApiResponse(
                     responseCode = "404",
                     description = "Recipient not found.",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = String.class))),
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ReceiverErrorResponse.class))),
             @ApiResponse(
                     responseCode = "403",
                     description = "Forbidden: You don't have permission to access this resource"),

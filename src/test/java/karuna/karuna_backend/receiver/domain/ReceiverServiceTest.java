@@ -1,14 +1,15 @@
 package karuna.karuna_backend.receiver.domain;
 
 import karuna.karuna_backend.Constants;
+import karuna.karuna_backend.exception.receiver.ReceiverNotFoundException;
 import karuna.karuna_backend.receiver.dto.ReceiverCreateDto;
 import karuna.karuna_backend.receiver.dto.ReceiverDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ReceiverServiceTest {
 
@@ -49,11 +50,7 @@ class ReceiverServiceTest {
     }
 
     @Test
-    void shouldReturnNotFoundDeleteReceiver() {
-        //When
-        ResponseEntity<?> response = receiverService.deleteReceiver(new ReceiverCreateDto("notExistingEmail@gmail.com"));
-        //Then
-        assertEquals(2, receiverService.getAllReceivers().receivers().size());
-        assertEquals(new ResponseEntity<>("Recipient not found.", HttpStatus.NOT_FOUND), response);
+    void shouldThrowRecipientNotFoundExceptionDeleteReceiver() {
+        assertThrows(ReceiverNotFoundException.class, () -> receiverService.deleteReceiver(new ReceiverCreateDto("notExistingEmail@gmail.com")));
     }
 }

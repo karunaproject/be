@@ -2,12 +2,12 @@ package karuna.karuna_backend.receiver.domain;
 
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
+import karuna.karuna_backend.exception.receiver.ReceiverNotFoundException;
 import karuna.karuna_backend.receiver.dto.ReceiverCreateDto;
 import karuna.karuna_backend.receiver.dto.ReceiverDTO;
 import karuna.karuna_backend.receiver.dto.ReceiversDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,7 +49,7 @@ public class ReceiverService {
             receiverRepository.deleteByEmailIgnoreCase(email);
             cache.invalidate("allReceivers");
         } else {
-            return new ResponseEntity<>("Recipient not found.", HttpStatus.NOT_FOUND);
+            throw new ReceiverNotFoundException();
         }
 
         return ResponseEntity.ok("Recipient removed successfully.");
