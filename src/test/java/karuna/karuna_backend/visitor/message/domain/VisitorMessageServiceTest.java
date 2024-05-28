@@ -4,14 +4,20 @@ package karuna.karuna_backend.visitor.message.domain;
 import karuna.karuna_backend.Constants;
 import karuna.karuna_backend.visitor.message.dto.VisitorMessageCreateDto;
 import karuna.karuna_backend.visitor.message.dto.VisitorMessageDto;
+import karuna.karuna_backend.visitor.message.dto.VisitorMessageRequest;
+import karuna.karuna_backend.visitor.message.dto.VisitorMessageWrapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class VisitorMessageServiceTest {
 
     private final VisitorMessageService visitorMessageService = VisitorMessageTestConfiguration.visitorMessageService();
+    private InMemoryVisitorMessageRepository visitorMessageRepository;
+
 
     @Test
     void shouldSendMessage() {
@@ -23,5 +29,22 @@ class VisitorMessageServiceTest {
         Assertions.assertNotNull(visitorMessageDto.createdAt());
         assertEquals(Constants.BODY, visitorMessageDto.body());
         assertEquals(Constants.CONTACT, visitorMessageDto.contact());
+    }
+
+
+    @Test
+    void shouldReceiveShortenMessage() {
+        //given
+        VisitorMessageCreateDto visitorMessageCreateDto = new VisitorMessageCreateDto(Constants.LONG_BODY, Constants.CONTACT);
+        VisitorMessageRequest visitorMessageRequest = new VisitorMessageRequest(0, 10, 20);
+        VisitorMessage visitorMessage = VisitorMessageMapper.toModel(visitorMessageCreateDto);
+        visitorMessageRepository = new InMemoryVisitorMessageRepository();
+        visitorMessageRepository.save(visitorMessage);
+        //when
+        VisitorMessageWrapper shortenedMessages = visitorMessageService.getMessages(visitorMessageRequest);
+        //then
+        List<VisitorMessageDto> messages = shortenedMessages.messages();
+        for (VisitorMessageDto message : messages)
+            assertEquals(20, message.body().length());
     }
 }

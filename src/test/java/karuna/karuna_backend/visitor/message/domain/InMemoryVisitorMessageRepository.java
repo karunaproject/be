@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Comparator;
+import java.util.ArrayList;
 import java.util.function.Function;
 
 class InMemoryVisitorMessageRepository implements VisitorMessageRepository {
@@ -178,8 +180,14 @@ class InMemoryVisitorMessageRepository implements VisitorMessageRepository {
         return null;
     }
 
+    private List<VisitorMessage> messages = new ArrayList<>();
+
     @Override
     public List<VisitorMessage> findAllByOrderByCreatedAtDesc(PageRequest pageRequest) {
-        return null;
+        return messages.stream()
+                .sorted(Comparator.comparing(VisitorMessage::getCreatedAt).reversed())
+                .skip(pageRequest.getOffset())
+                .limit(pageRequest.getPageSize())
+                .toList();
     }
 }
