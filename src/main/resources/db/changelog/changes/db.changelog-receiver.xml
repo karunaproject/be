@@ -8,7 +8,7 @@
             <column name="ID" type="INT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="email" type="VARCHAR(320)">
+            <column name="email" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
         </createTable>

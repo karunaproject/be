@@ -12,6 +12,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -39,7 +42,12 @@ class MailjetEmailSender implements EmailSender {
             client.post(request);
             log.info("Success sent message!");
         } catch (MailjetException ex) {
-            throw new EmailSendException("recipients");
+            List<String> recipients = new ArrayList<>();
+            to.forEach(receiver -> {
+                JSONObject receiver1 = (JSONObject) receiver;
+                recipients.add((String) receiver1.get("Email"));
+            });
+            throw new EmailSendException(recipients.toString());
         }
     }
 

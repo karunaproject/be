@@ -60,7 +60,7 @@ class WebSecurityConfig {
                         "/swagger-ui.html",
                         "/v3/api-docs/**",
                         "/swagger-resources/**",
-                        "/visitors/messages/**")
+                        "/visitors/messages")
                 .permitAll();
     }
 }

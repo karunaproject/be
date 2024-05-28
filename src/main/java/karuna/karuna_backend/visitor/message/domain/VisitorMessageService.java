@@ -21,9 +21,9 @@ public class VisitorMessageService {
         VisitorMessage visitorMessage = VisitorMessageMapper.toModel(visitorMessageCreateDto);
         VisitorMessage savedVisitorMessage = visitorMessageRepository.save(visitorMessage);
         JSONArray recipients = new JSONArray();
-        for (String email : receiverService.getAllReceivers().receivers()) {
+        receiverService.getAllReceivers().receivers().forEach(email -> {
             recipients.put(new JSONObject().put("Email", email).put("Name", email));
-        }
+        });
         emailSender.sendEmails(recipients, "KARUNA VISTOR MESSAGE", savedVisitorMessage.getBody(), null);
         return VisitorMessageMapper.toDto(savedVisitorMessage);
     }
