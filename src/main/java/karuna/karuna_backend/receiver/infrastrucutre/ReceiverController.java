@@ -69,8 +69,8 @@ class ReceiverController {
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = JwtErrorResponse.class)))
     })
     @PreAuthorize("hasRole('ADMIN')")
-    ReceiverDTO addReceiver(@RequestBody @Valid ReceiverCreateDto email) {
-        return receiverService.addReceiver(email.email());
+    ReceiverDTO addReceiver(@RequestBody @Valid ReceiverCreateDto receiver) {
+        return receiverService.addReceiver(receiver);
     }
 
     @DeleteMapping
@@ -93,7 +93,7 @@ class ReceiverController {
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = JwtErrorResponse.class)))
     })
     @PreAuthorize("hasRole('ADMIN')")
-    ResponseEntity<?> deleteReceiver(@RequestBody ReceiverCreateDto email) {
-        return receiverService.deleteReceiver(email.email());
+    ResponseEntity<?> deleteReceiver(@RequestBody ReceiverCreateDto receiver) {
+        return receiverService.deleteReceiver(receiver);
     }
 }

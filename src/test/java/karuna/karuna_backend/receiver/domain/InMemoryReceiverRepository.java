@@ -14,16 +14,19 @@ import java.util.function.Function;
 
 public class InMemoryReceiverRepository implements ReceiverRepository {
 
-    private HashMap<Integer, Receiver> database = new HashMap<>();
+    private final HashMap<Integer, Receiver> database = new HashMap<>();
 
     @Override
     public Receiver findByEmailIgnoreCase(String email) {
-        return null;
+        return database.values().stream().filter(receiver -> receiver.getEmail().equals(email)).findFirst().get();
     }
 
     @Override
     public void deleteByEmailIgnoreCase(String email) {
-
+        Receiver receiver = findByEmailIgnoreCase(email);
+        int id = findByEmailIgnoreCase(email).getId();
+        database.remove(findByEmailIgnoreCase(email).getId());
+        database.remove(1);
     }
 
     @Override
@@ -108,7 +111,9 @@ public class InMemoryReceiverRepository implements ReceiverRepository {
 
     @Override
     public <S extends Receiver> S save(S entity) {
-        return null;
+        entity.setId(database.size() + 1);
+        database.put(database.size() + 1, entity);
+        return entity;
     }
 
     @Override
@@ -163,13 +168,11 @@ public class InMemoryReceiverRepository implements ReceiverRepository {
 
     @Override
     public void deleteAll() {
-
+        database.clear();
     }
 
     @Override
     public List<Receiver> findAll(Sort sort) {
-        database.put(1, new Receiver(1, "testEmail@gmail.com"));
-        database.put(2, new Receiver(2, "testEmail2@gmail.com"));
         return database.values().stream().toList();
     }
 
