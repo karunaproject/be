@@ -37,9 +37,6 @@ class VisitorMessageServiceTest {
         //given
         VisitorMessageCreateDto visitorMessageCreateDto = new VisitorMessageCreateDto(Constants.LONG_BODY, Constants.CONTACT);
         VisitorMessageRequest visitorMessageRequest = new VisitorMessageRequest(0, 10, 20);
-        VisitorMessage visitorMessage = VisitorMessageMapper.toModel(visitorMessageCreateDto);
-        visitorMessageRepository = new InMemoryVisitorMessageRepository();
-        visitorMessageRepository.save(visitorMessage);
         //when
         VisitorMessageWrapper shortenedMessages = visitorMessageService.getMessages(visitorMessageRequest);
         //then
