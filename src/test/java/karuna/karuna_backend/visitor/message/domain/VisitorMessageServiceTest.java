@@ -39,8 +39,8 @@ class VisitorMessageServiceTest {
         VisitorMessageRequest visitorMessageRequest = new VisitorMessageRequest(0, 10, 20);
         //when
         VisitorMessageWrapper shortenedMessages = visitorMessageService.getMessages(visitorMessageRequest);
-        //then
         List<VisitorMessageDto> messages = shortenedMessages.messages();
+        //then
         for (VisitorMessageDto message : messages)
             assertEquals(20, message.body().length());
     }
