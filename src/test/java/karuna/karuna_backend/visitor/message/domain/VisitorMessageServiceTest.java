@@ -16,7 +16,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class VisitorMessageServiceTest {
 
     private final VisitorMessageService visitorMessageService = VisitorMessageTestConfiguration.visitorMessageService();
-    private InMemoryVisitorMessageRepository visitorMessageRepository;
 
 
     @Test
