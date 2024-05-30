@@ -23,10 +23,7 @@ public class InMemoryReceiverRepository implements ReceiverRepository {
 
     @Override
     public void deleteByEmailIgnoreCase(String email) {
-        Receiver receiver = findByEmailIgnoreCase(email);
-        int id = findByEmailIgnoreCase(email).getId();
         database.remove(findByEmailIgnoreCase(email).getId());
-        database.remove(1);
     }
 
     @Override

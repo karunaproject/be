@@ -21,7 +21,7 @@ public class ReceiverService {
 
     private final ReceiverRepository receiverRepository;
 
-    private final LoadingCache<String, ReceiversDTO> cache = Caffeine.newBuilder().expireAfterWrite(1, TimeUnit.HOURS).build(this::getAllReceiversFromDatabase);
+    private final LoadingCache<String, ReceiversDTO> cache = Caffeine.newBuilder().expireAfterWrite(10, TimeUnit.MINUTES).build(this::getAllReceiversFromDatabase);
 
     public ReceiversDTO getAllReceivers() {
         return cache.get("allReceivers");
@@ -49,7 +49,7 @@ public class ReceiverService {
             receiverRepository.deleteByEmailIgnoreCase(email);
             cache.invalidate("allReceivers");
         } else {
-            throw new ReceiverNotFoundException();
+            throw new ReceiverNotFoundException(receiver.email());
         }
 
         return ResponseEntity.ok("Recipient removed successfully.");

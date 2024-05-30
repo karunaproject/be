@@ -16,6 +16,6 @@ class ReceiverMapper {
     }
 
     static ReceiverDTO mapToDto(Receiver receiver) {
-        return new ReceiverDTO(receiver.getId(), receiver.getEmail());
+        return new ReceiverDTO(receiver.getEmail());
     }
 }

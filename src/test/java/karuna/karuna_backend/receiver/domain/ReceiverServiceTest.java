@@ -25,27 +25,36 @@ class ReceiverServiceTest {
 
     @Test
     void shouldAddReceiver() {
+        //Given
+        ReceiverCreateDto receiverCreateDto = new ReceiverCreateDto("testEmail3@gmail.com");
         //When
-        receiverService.addReceiver(new ReceiverCreateDto("testEmail3@gmail.com"));
+        receiverService.addReceiver(receiverCreateDto);
+        int currentNumberOfReceivers = receiverService.getAllReceivers().receivers().size();
         //Then
-        assertEquals(3, receiverService.getAllReceivers().receivers().size());
+        assertEquals(3, currentNumberOfReceivers);
     }
 
     @Test
     void shouldReturnExistingReceiver() {
+        //Given
+        ReceiverCreateDto receiverCreateDto = new ReceiverCreateDto(Constants.RECEIVER_ONE_EMAIL);
         //When
-        ReceiverDTO receiver = receiverService.addReceiver(new ReceiverCreateDto(Constants.RECEIVER_ONE_EMAIL));
+        ReceiverDTO receiver = receiverService.addReceiver(receiverCreateDto);
+        int currentNumberOfReceivers = receiverService.getAllReceivers().receivers().size();
         //Then
         assertEquals(Constants.RECEIVER_ONE_EMAIL, receiver.email());
-        assertEquals(2, receiverService.getAllReceivers().receivers().size());
+        assertEquals(2, currentNumberOfReceivers);
     }
 
     @Test
     void shouldDeleteReceiver() {
+        //Given
+        ReceiverCreateDto receiverCreateDto = new ReceiverCreateDto(Constants.RECEIVER_ONE_EMAIL);
         //When
-        ResponseEntity<?> response = receiverService.deleteReceiver(new ReceiverCreateDto(Constants.RECEIVER_ONE_EMAIL));
+        ResponseEntity<?> response = receiverService.deleteReceiver(receiverCreateDto);
+        int currentNumberOfReceivers = receiverService.getAllReceivers().receivers().size();
         //Then
-        assertEquals(1, receiverService.getAllReceivers().receivers().size());
+        assertEquals(1, currentNumberOfReceivers);
         assertEquals(ResponseEntity.ok("Recipient removed successfully."), response);
     }
 
