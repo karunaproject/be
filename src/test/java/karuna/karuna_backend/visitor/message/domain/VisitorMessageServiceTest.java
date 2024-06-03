@@ -35,12 +35,14 @@ class VisitorMessageServiceTest {
     void shouldReceiveShortenMessage() {
         //given
         VisitorMessageCreateDto visitorMessageCreateDto = new VisitorMessageCreateDto(Constants.LONG_BODY, Constants.CONTACT);
-        VisitorMessageRequest visitorMessageRequest = new VisitorMessageRequest(0, 10, 20);
+        VisitorMessageDto visitorMessageDto = visitorMessageService.sendMessage(visitorMessageCreateDto);
+        VisitorMessageRequest visitorMessageRequest = new VisitorMessageRequest(0, 10, 5);
         //when
         VisitorMessageWrapper shortenedMessages = visitorMessageService.getMessages(visitorMessageRequest);
         List<VisitorMessageDto> messages = shortenedMessages.messages();
         //then
-        for (VisitorMessageDto message : messages)
-            assertEquals(20, message.body().length());
+        for (VisitorMessageDto message : messages) {
+            assertEquals(5, message.body().length());
+        }
     }
 }

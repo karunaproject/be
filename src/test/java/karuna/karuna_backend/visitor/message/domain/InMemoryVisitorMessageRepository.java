@@ -180,11 +180,10 @@ class InMemoryVisitorMessageRepository implements VisitorMessageRepository {
         return null;
     }
 
-    private List<VisitorMessage> messages = new ArrayList<>();
 
     @Override
     public List<VisitorMessage> findAllByOrderByCreatedAtDesc(PageRequest pageRequest) {
-        return messages.stream()
+        return database.values().stream()
                 .sorted(Comparator.comparing(VisitorMessage::getCreatedAt).reversed())
                 .skip(pageRequest.getOffset())
                 .limit(pageRequest.getPageSize())
