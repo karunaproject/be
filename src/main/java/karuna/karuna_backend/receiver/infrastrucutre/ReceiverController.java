@@ -10,7 +10,7 @@ import karuna.karuna_backend.exception.dto.JwtErrorResponse;
 import karuna.karuna_backend.exception.dto.ReceiverErrorResponse;
 import karuna.karuna_backend.exception.dto.ValidationErrorResponse;
 import karuna.karuna_backend.receiver.domain.ReceiverService;
-import karuna.karuna_backend.receiver.dto.ReceiverCreateDto;
+import karuna.karuna_backend.receiver.dto.ReceiverRequestDto;
 import karuna.karuna_backend.receiver.dto.ReceiverDTO;
 import karuna.karuna_backend.receiver.dto.ReceiversDTO;
 import lombok.RequiredArgsConstructor;
@@ -70,7 +70,7 @@ class ReceiverController {
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = JwtErrorResponse.class)))
     })
     @PreAuthorize("hasRole('ADMIN')")
-    ReceiverDTO addReceiver(@RequestBody @Valid ReceiverCreateDto receiver) {
+    ReceiverDTO addReceiver(@RequestBody @Valid ReceiverRequestDto receiver) {
         return receiverService.addReceiver(receiver);
     }
 
@@ -94,7 +94,7 @@ class ReceiverController {
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = JwtErrorResponse.class)))
     })
     @PreAuthorize("hasRole('ADMIN')")
-    ResponseEntity<?> deleteReceiver(@RequestBody ReceiverCreateDto receiver) {
+    ResponseEntity<?> deleteReceiver(@RequestBody ReceiverRequestDto receiver) {
         return receiverService.deleteReceiver(receiver);
     }
 }

@@ -2,7 +2,7 @@ package karuna.karuna_backend.receiver.domain;
 
 import karuna.karuna_backend.Constants;
 import karuna.karuna_backend.exception.receiver.ReceiverNotFoundException;
-import karuna.karuna_backend.receiver.dto.ReceiverCreateDto;
+import karuna.karuna_backend.receiver.dto.ReceiverRequestDto;
 import karuna.karuna_backend.receiver.dto.ReceiverDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,16 +19,16 @@ class ReceiverServiceTest {
     @BeforeEach
     void setUp() {
         ReceiverTestConfiguration.clearDatabase();
-        receiverService.addReceiver(new ReceiverCreateDto(Constants.RECEIVER_ONE_EMAIL));
-        receiverService.addReceiver(new ReceiverCreateDto(Constants.RECEIVER_TWO_EMAIL));
+        receiverService.addReceiver(new ReceiverRequestDto(Constants.RECEIVER_ONE_EMAIL));
+        receiverService.addReceiver(new ReceiverRequestDto(Constants.RECEIVER_TWO_EMAIL));
     }
 
     @Test
     void shouldAddReceiver() {
         //Given
-        ReceiverCreateDto receiverCreateDto = new ReceiverCreateDto("testEmail3@gmail.com");
+        ReceiverRequestDto receiverRequestDto = new ReceiverRequestDto("testEmail3@gmail.com");
         //When
-        receiverService.addReceiver(receiverCreateDto);
+        receiverService.addReceiver(receiverRequestDto);
         int currentNumberOfReceivers = receiverService.getAllReceivers().receivers().size();
         //Then
         assertEquals(3, currentNumberOfReceivers);
@@ -37,9 +37,9 @@ class ReceiverServiceTest {
     @Test
     void shouldReturnExistingReceiver() {
         //Given
-        ReceiverCreateDto receiverCreateDto = new ReceiverCreateDto(Constants.RECEIVER_ONE_EMAIL);
+        ReceiverRequestDto receiverRequestDto = new ReceiverRequestDto(Constants.RECEIVER_ONE_EMAIL);
         //When
-        ReceiverDTO receiver = receiverService.addReceiver(receiverCreateDto);
+        ReceiverDTO receiver = receiverService.addReceiver(receiverRequestDto);
         int currentNumberOfReceivers = receiverService.getAllReceivers().receivers().size();
         //Then
         assertEquals(Constants.RECEIVER_ONE_EMAIL, receiver.email());
@@ -49,9 +49,9 @@ class ReceiverServiceTest {
     @Test
     void shouldDeleteReceiver() {
         //Given
-        ReceiverCreateDto receiverCreateDto = new ReceiverCreateDto(Constants.RECEIVER_ONE_EMAIL);
+        ReceiverRequestDto receiverRequestDto = new ReceiverRequestDto(Constants.RECEIVER_ONE_EMAIL);
         //When
-        ResponseEntity<?> response = receiverService.deleteReceiver(receiverCreateDto);
+        ResponseEntity<?> response = receiverService.deleteReceiver(receiverRequestDto);
         int currentNumberOfReceivers = receiverService.getAllReceivers().receivers().size();
         //Then
         assertEquals(1, currentNumberOfReceivers);
@@ -60,6 +60,6 @@ class ReceiverServiceTest {
 
     @Test
     void shouldThrowRecipientNotFoundExceptionDeleteReceiver() {
-        assertThrows(ReceiverNotFoundException.class, () -> receiverService.deleteReceiver(new ReceiverCreateDto("notExistingEmail@gmail.com")));
+        assertThrows(ReceiverNotFoundException.class, () -> receiverService.deleteReceiver(new ReceiverRequestDto("notExistingEmail@gmail.com")));
     }
 }

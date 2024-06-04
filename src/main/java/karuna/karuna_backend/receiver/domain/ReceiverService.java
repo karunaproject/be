@@ -3,7 +3,7 @@ package karuna.karuna_backend.receiver.domain;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
 import karuna.karuna_backend.exception.receiver.ReceiverNotFoundException;
-import karuna.karuna_backend.receiver.dto.ReceiverCreateDto;
+import karuna.karuna_backend.receiver.dto.ReceiverRequestDto;
 import karuna.karuna_backend.receiver.dto.ReceiverDTO;
 import karuna.karuna_backend.receiver.dto.ReceiversDTO;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +27,7 @@ public class ReceiverService {
         return cache.get("allReceivers");
     }
 
-    public ReceiverDTO addReceiver(ReceiverCreateDto receiverToAdd) {
+    public ReceiverDTO addReceiver(ReceiverRequestDto receiverToAdd) {
         String email = receiverToAdd.email();
         Receiver receiver;
         Set<String> receiversDTO = cache.get("allReceivers").receivers();
@@ -43,7 +43,7 @@ public class ReceiverService {
     }
 
     @Transactional
-    public ResponseEntity<?> deleteReceiver(ReceiverCreateDto receiver) {
+    public ResponseEntity<?> deleteReceiver(ReceiverRequestDto receiver) {
         String email = receiver.email();
         if (cache.get("allReceivers").receivers().contains(email)) {
             receiverRepository.deleteByEmailIgnoreCase(email);
