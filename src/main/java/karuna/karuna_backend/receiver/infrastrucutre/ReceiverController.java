@@ -6,13 +6,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
-import karuna.karuna_backend.exception.dto.JwtErrorResponse;
 import karuna.karuna_backend.exception.dto.ReceiverErrorResponse;
 import karuna.karuna_backend.exception.dto.ValidationErrorResponse;
 import karuna.karuna_backend.receiver.domain.ReceiverService;
 import karuna.karuna_backend.receiver.dto.ReceiverRequestDto;
 import karuna.karuna_backend.receiver.dto.ReceiverDTO;
 import karuna.karuna_backend.receiver.dto.ReceiversDTO;
+import karuna.karuna_backend.receiver.exception.ErrorsDescription;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/receivers")
-class ReceiverController {
+public class ReceiverController {
 
     private final ReceiverService receiverService;
 
@@ -37,14 +37,8 @@ class ReceiverController {
                     responseCode = "200",
                     description = "All recipients from database",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ReceiversDTO.class))),
-            @ApiResponse(
-                    responseCode = "403",
-                    description = "Forbidden: You don't have permission to access this resource"),
-            @ApiResponse(
-                    responseCode = "401",
-                    description = "Authorization failed",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = JwtErrorResponse.class)))
     })
+    @ErrorsDescription
     @PreAuthorize("hasRole('ADMIN')")
     ReceiversDTO getAllReceivers() {
         return receiverService.getAllReceivers();
@@ -61,14 +55,8 @@ class ReceiverController {
                     responseCode = "400",
                     description = "Incorrect email",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ValidationErrorResponse.class))),
-            @ApiResponse(
-                    responseCode = "403",
-                    description = "Forbidden: You don't have permission to access this resource"),
-            @ApiResponse(
-                    responseCode = "401",
-                    description = "Authorization failed",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = JwtErrorResponse.class)))
     })
+    @ErrorsDescription
     @PreAuthorize("hasRole('ADMIN')")
     ReceiverDTO addReceiver(@RequestBody @Valid ReceiverRequestDto receiver) {
         return receiverService.addReceiver(receiver);
@@ -85,14 +73,8 @@ class ReceiverController {
                     responseCode = "404",
                     description = "Recipient not found.",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ReceiverErrorResponse.class))),
-            @ApiResponse(
-                    responseCode = "403",
-                    description = "Forbidden: You don't have permission to access this resource"),
-            @ApiResponse(
-                    responseCode = "401",
-                    description = "Authorization failed",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = JwtErrorResponse.class)))
     })
+    @ErrorsDescription
     @PreAuthorize("hasRole('ADMIN')")
     ResponseEntity<?> deleteReceiver(@RequestBody ReceiverRequestDto receiver) {
         return receiverService.deleteReceiver(receiver);
