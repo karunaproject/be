@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 class ReceiverMapper {
 
     static ReceiversDTO mapToDto(List<Receiver> receivers) {
-        return new ReceiversDTO(receivers.stream().map(Receiver::getEmail).collect(Collectors.toSet()));
+        return new ReceiversDTO(receivers.stream().map(Receiver::getEmail).collect(Collectors.toUnmodifiableSet()));
     }
 
     static ReceiverDTO mapToDto(Receiver receiver) {

@@ -34,7 +34,7 @@ public class ReceiverService {
 
         if (!receiversDTO.contains(email)) {
             receiver = receiverRepository.save(Receiver.builder().email(email).build());
-            receiversDTO.add(email);
+            cache.invalidate("allReceivers");
         } else {
             receiver = receiverRepository.findByEmailIgnoreCase(email);
         }
