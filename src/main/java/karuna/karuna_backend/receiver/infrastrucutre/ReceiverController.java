@@ -12,7 +12,7 @@ import karuna.karuna_backend.receiver.domain.ReceiverService;
 import karuna.karuna_backend.receiver.dto.ReceiverRequestDto;
 import karuna.karuna_backend.receiver.dto.ReceiverDTO;
 import karuna.karuna_backend.receiver.dto.ReceiversDTO;
-import karuna.karuna_backend.receiver.exception.ErrorsDescription;
+import karuna.karuna_backend.receiver.annotations.ErrorsDescription;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

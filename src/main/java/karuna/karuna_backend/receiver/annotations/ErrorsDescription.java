@@ -1,4 +1,4 @@
-package karuna.karuna_backend.receiver.exception;
+package karuna.karuna_backend.receiver.annotations;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
