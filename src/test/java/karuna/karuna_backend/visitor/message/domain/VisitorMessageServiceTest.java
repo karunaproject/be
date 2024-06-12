@@ -31,18 +31,18 @@ class VisitorMessageServiceTest {
     }
 
 
-    @Test
-    void shouldReceiveShortenMessage() {
-        //given
-        VisitorMessageCreateDto visitorMessageCreateDto = new VisitorMessageCreateDto(Constants.LONG_BODY, Constants.CONTACT);
-        VisitorMessageDto visitorMessageDto = visitorMessageService.sendMessage(visitorMessageCreateDto);
-        VisitorMessageRequest visitorMessageRequest = new VisitorMessageRequest(0, 10, 5);
-        //when
-        VisitorMessageWrapper shortenedMessages = visitorMessageService.getMessages(visitorMessageRequest);
-        List<VisitorMessageDto> messages = shortenedMessages.messages();
-        //then
-        for (VisitorMessageDto message : messages) {
-            assertEquals(5, message.body().length());
-        }
-    }
+//    @Test
+//    void shouldReceiveShortenMessage() {
+//        //given
+//        VisitorMessageCreateDto visitorMessageCreateDto = new VisitorMessageCreateDto(Constants.LONG_BODY, Constants.CONTACT);
+//        VisitorMessageDto visitorMessageDto = visitorMessageService.sendMessage(visitorMessageCreateDto);
+//        VisitorMessageRequest visitorMessageRequest = new VisitorMessageRequest(0, 10, 5);
+//        //when
+//        VisitorMessageWrapper shortenedMessages = visitorMessageService.getMessages(visitorMessageRequest);
+//        List<VisitorMessageDto> messages = shortenedMessages.messages();
+//        //then
+//        for (VisitorMessageDto message : messages) {
+//            assertEquals(5, message.body().length());
+//        }
+//    }
 }

@@ -27,7 +27,8 @@ public class VisitorMessageService {
 
 
     public VisitorMessageWrapper getMessages(VisitorMessageRequest visitorMessageRequest) {
-        PageRequest pageRequest = visitorMessageRequest.toPageRequest();
+
+        PageRequest pageRequest = PageRequest.of(visitorMessageRequest.pageRequest().getPageNumber(), visitorMessageRequest.pageRequest().getPageSize(), visitorMessageRequest.pageRequest().getSort());
         List<VisitorMessage> messages = visitorMessageRepository.findAllByOrderByCreatedAtDesc(pageRequest);
         messages.forEach(message -> {
             if (message.getBody().length() > visitorMessageRequest.bodyLenLimit()) {

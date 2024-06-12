@@ -2,10 +2,7 @@ package karuna.karuna_backend.visitor.message.dto;
 
 import org.springframework.data.domain.PageRequest;
 
-public record VisitorMessageRequest(int offset,
-                                    int limit,
+public record VisitorMessageRequest(PageRequest pageRequest,
                                     int bodyLenLimit) {
-    public PageRequest toPageRequest() {
-        return PageRequest.of(offset, limit);
-    }
+
 }
