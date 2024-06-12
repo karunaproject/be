@@ -1,10 +1,6 @@
 package karuna.karuna_backend.visitor.message.domain;
 
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.data.repository.query.FluentQuery;
 
 import java.time.OffsetDateTime;
@@ -15,6 +11,7 @@ import java.util.Optional;
 import java.util.Comparator;
 import java.util.ArrayList;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 class InMemoryVisitorMessageRepository implements VisitorMessageRepository {
 
@@ -175,18 +172,17 @@ class InMemoryVisitorMessageRepository implements VisitorMessageRepository {
         return null;
     }
 
+
     @Override
     public Page<VisitorMessage> findAll(Pageable pageable) {
-        return null;
-    }
-
-
-    @Override
-    public List<VisitorMessage> findAllByOrderByCreatedAtDesc(PageRequest pageRequest) {
-        return database.values().stream()
+        List<VisitorMessage> sortedMessages = database.values().stream()
                 .sorted(Comparator.comparing(VisitorMessage::getCreatedAt).reversed())
-                .skip(pageRequest.getOffset())
-                .limit(pageRequest.getPageSize())
-                .toList();
+                .collect(Collectors.toList());
+
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), sortedMessages.size());
+        List<VisitorMessage> pagedMessages = sortedMessages.subList(start, end);
+
+        return new PageImpl<>(pagedMessages, pageable, sortedMessages.size());
     }
 }

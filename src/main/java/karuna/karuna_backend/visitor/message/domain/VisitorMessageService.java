@@ -6,7 +6,6 @@ import karuna.karuna_backend.visitor.message.dto.VisitorMessageDto;
 import karuna.karuna_backend.visitor.message.dto.VisitorMessageRequest;
 import karuna.karuna_backend.visitor.message.dto.VisitorMessageWrapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,9 +26,7 @@ public class VisitorMessageService {
 
 
     public VisitorMessageWrapper getMessages(VisitorMessageRequest visitorMessageRequest) {
-
-        PageRequest pageRequest = PageRequest.of(visitorMessageRequest.pageRequest().getPageNumber(), visitorMessageRequest.pageRequest().getPageSize(), visitorMessageRequest.pageRequest().getSort());
-        List<VisitorMessage> messages = visitorMessageRepository.findAllByOrderByCreatedAtDesc(pageRequest);
+        List<VisitorMessage> messages = visitorMessageRepository.findAll(visitorMessageRequest.pageRequest()).getContent();
         messages.forEach(message -> {
             if (message.getBody().length() > visitorMessageRequest.bodyLenLimit()) {
                 message.setBody(message.getBody().substring(0, visitorMessageRequest.bodyLenLimit()));

@@ -8,6 +8,8 @@ import karuna.karuna_backend.visitor.message.dto.VisitorMessageRequest;
 import karuna.karuna_backend.visitor.message.dto.VisitorMessageWrapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
@@ -31,18 +33,18 @@ class VisitorMessageServiceTest {
     }
 
 
-//    @Test
-//    void shouldReceiveShortenMessage() {
-//        //given
-//        VisitorMessageCreateDto visitorMessageCreateDto = new VisitorMessageCreateDto(Constants.LONG_BODY, Constants.CONTACT);
-//        VisitorMessageDto visitorMessageDto = visitorMessageService.sendMessage(visitorMessageCreateDto);
-//        VisitorMessageRequest visitorMessageRequest = new VisitorMessageRequest(0, 10, 5);
-//        //when
-//        VisitorMessageWrapper shortenedMessages = visitorMessageService.getMessages(visitorMessageRequest);
-//        List<VisitorMessageDto> messages = shortenedMessages.messages();
-//        //then
-//        for (VisitorMessageDto message : messages) {
-//            assertEquals(5, message.body().length());
-//        }
-//    }
+    @Test
+    void shouldReceiveShortenMessage() {
+        //given
+        VisitorMessageCreateDto visitorMessageCreateDto = new VisitorMessageCreateDto(Constants.LONG_BODY, Constants.CONTACT);
+        VisitorMessageDto visitorMessageDto = visitorMessageService.sendMessage(visitorMessageCreateDto);
+        VisitorMessageRequest visitorMessageRequest = new VisitorMessageRequest(PageRequest.of(0, 10, Sort.Direction.DESC, "createdAt"), 5);
+        //when
+        VisitorMessageWrapper shortenedMessages = visitorMessageService.getMessages(visitorMessageRequest);
+        List<VisitorMessageDto> messages = shortenedMessages.messages();
+        //then
+        for (VisitorMessageDto message : messages) {
+            assertEquals(5, message.body().length());
+        }
+    }
 }
