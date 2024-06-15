@@ -14,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class VisitorMessageServiceTest {
 
@@ -43,6 +44,7 @@ class VisitorMessageServiceTest {
         VisitorMessageWrapper shortenedMessages = visitorMessageService.getMessages(visitorMessageRequest);
         List<VisitorMessageDto> messages = shortenedMessages.messages();
         //then
+        assertTrue(messages.size() >= 1);
         for (VisitorMessageDto message : messages) {
             assertEquals(5, message.body().length());
         }
