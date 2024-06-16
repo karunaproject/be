@@ -24,4 +24,7 @@ public class Constants {
     public static final Duration TOKEN_EXPIRATION_TIME = Duration.ofSeconds(1);
     public static final String TEST_DATA = "TEST_DATA";
     public static final String ROLE_ADMIN = "ROLE_ADMIN";
+
+    public static final String RECEIVER_ONE_EMAIL = "testEmail@gmail.com";
+    public static final String RECEIVER_TWO_EMAIL = "testEmail2@gmail.com";
 }

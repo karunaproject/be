@@ -4,8 +4,6 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
     <changeSet author="Maciej" id="create_contents_table">
-        <dropTable  cascadeConstraints="true"
-                    tableName="contents"/>
         <createTable tableName="contents">
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
