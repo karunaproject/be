@@ -17,7 +17,7 @@ import lombok.Setter;
 import java.time.OffsetDateTime;
 
 @Entity
-@Table(name="visitors_messages")
+@Table(name = "visitors_messages")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
