@@ -5,8 +5,6 @@ import karuna.karuna_backend.post.dto.PostDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.security.Principal;
-
 import static karuna.karuna_backend.utils.AuthenticationUtil.getUsername;
 
 @Service
