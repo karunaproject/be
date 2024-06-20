@@ -32,7 +32,7 @@ class PostController {
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = PostDto.class)))
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    PostDto createPost(@RequestBody PostCreateDto postCreateDto, @AuthenticationPrincipal Principal principal) {
-        return postService.createPost(postCreateDto, principal);
+    PostDto createPost(@RequestBody PostCreateDto postCreateDto) {
+        return postService.createPost(postCreateDto);
     }
 }

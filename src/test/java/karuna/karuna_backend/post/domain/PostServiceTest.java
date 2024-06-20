@@ -19,12 +19,11 @@ class PostServiceTest {
         //when: When create post, returns created post
         PostCreateDto postCreateDto = new PostCreateDto(Constants.BODY);
         Principal principal = () -> Constants.NAME;
-        PostDto postDto = postService.createPost(postCreateDto, principal);
+        PostDto postDto = postService.createPost(postCreateDto);
         //then: Check if  database give id and correctly save data
         assertEquals(1L, postDto.id());
         assertNotNull(postDto.createdAt());
         assertEquals(Constants.BODY, postDto.body());
-        assertEquals(Constants.NAME, postDto.author());
     }
 
 }

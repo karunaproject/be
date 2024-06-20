@@ -7,14 +7,16 @@ import org.springframework.stereotype.Service;
 
 import java.security.Principal;
 
+import static karuna.karuna_backend.utils.AuthenticationUtil.getUsername;
+
 @Service
 @RequiredArgsConstructor
 public class PostService {
 
     private final PostRepository postRepository;
 
-    public PostDto createPost(PostCreateDto postCreateDto, Principal principal) {
-        String username = principal.getName();
+    public PostDto createPost(PostCreateDto postCreateDto) {
+        String username = getUsername();
         Post post = Post.builder()
                 .body(postCreateDto.body())
                 .author(username)
