@@ -9,15 +9,11 @@ import karuna.karuna_backend.post.dto.PostCreateDto;
 import karuna.karuna_backend.post.dto.PostDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.security.Principal;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/posts")
@@ -25,7 +21,7 @@ class PostController {
 
     private final PostService postService;
 
-    @Operation(summary = "Create post", description = "Getting body from json (body of request) and principal from token and saving it to database as post with current date")
+    @Operation(summary = "Create post", description = "Getting body from json (body of request) and from token and saving it to database as post with current date")
     @ApiResponse(
             responseCode = "201",
             description = "Post content",
