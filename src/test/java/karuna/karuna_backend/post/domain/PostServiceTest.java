@@ -23,7 +23,7 @@ class PostServiceTest {
         assertEquals(1L, postDto.id());
         assertNotNull(postDto.createdAt());
         assertEquals(Constants.BODY, postDto.body());
-        assertEquals(postDto.author(), username);
+        assertEquals(username, postDto.author());
     }
 
 }
