@@ -3,6 +3,7 @@ package karuna.karuna_backend.post.domain;
 import karuna.karuna_backend.Constants;
 import karuna.karuna_backend.post.dto.PostCreateDto;
 import karuna.karuna_backend.post.dto.PostDto;
+import karuna.karuna_backend.utils.AuthenticationUtil;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -17,10 +18,12 @@ class PostServiceTest {
         //when: When create post, returns created post
         PostCreateDto postCreateDto = new PostCreateDto(Constants.BODY);
         PostDto postDto = postService.createPost(postCreateDto);
+        String username = AuthenticationUtil.getUsername();
         //then: Check if  database give id and correctly save data
         assertEquals(1L, postDto.id());
         assertNotNull(postDto.createdAt());
         assertEquals(Constants.BODY, postDto.body());
+        assertEquals(postDto.author(), username);
     }
 
 }
