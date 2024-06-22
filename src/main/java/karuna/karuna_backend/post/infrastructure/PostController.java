@@ -7,18 +7,16 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import karuna.karuna_backend.post.domain.PostService;
 import karuna.karuna_backend.post.dto.PostCreateDto;
 import karuna.karuna_backend.post.dto.PostDto;
+import karuna.karuna_backend.post.dto.PostWrapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -39,7 +37,7 @@ class PostController {
     }
 
     @GetMapping
-    List<PostDto> getPost(Pageable pageable) {
+    PostWrapper getPost(Pageable pageable) {
         return postService.getPost(pageable);
     }
 }

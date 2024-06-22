@@ -2,6 +2,7 @@ package karuna.karuna_backend.post.domain;
 
 import karuna.karuna_backend.post.dto.PostCreateDto;
 import karuna.karuna_backend.post.dto.PostDto;
+import karuna.karuna_backend.post.dto.PostWrapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -25,9 +26,8 @@ public class PostService {
         return PostMapper.toDto(postRepository.save(post));
     }
 
-    public List<PostDto> getPost(Pageable pageable) {
+    public PostWrapper getPost(Pageable pageable) {
         List<Post> posts = postRepository.findAll(pageable).getContent();
-        List<PostDto> postDtos = posts.stream().map(e -> PostMapper.toDto(e)).toList();
-        return  postDtos;
+        return PostMapper.toWrapper(posts);
     }
 }
