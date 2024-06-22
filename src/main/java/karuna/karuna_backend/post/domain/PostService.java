@@ -3,7 +3,10 @@ package karuna.karuna_backend.post.domain;
 import karuna.karuna_backend.post.dto.PostCreateDto;
 import karuna.karuna_backend.post.dto.PostDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 import static karuna.karuna_backend.utils.AuthenticationUtil.getUsername;
 
@@ -20,5 +23,11 @@ public class PostService {
                 .author(username)
                 .build();
         return PostMapper.toDto(postRepository.save(post));
+    }
+
+    public List<PostDto> getPost(Pageable pageable) {
+        List<Post> posts = postRepository.findAll(pageable).getContent();
+        List<PostDto> postDtos = posts.stream().map(e -> PostMapper.toDto(e)).toList();
+        return  postDtos;
     }
 }
