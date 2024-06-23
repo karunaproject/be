@@ -33,11 +33,9 @@ public class PostService {
             .expireAfterWrite(1, TimeUnit.HOURS)
             .build(this::getPostsFromDatabase);
 
-
     public PostWrapper getPosts(Pageable pageable) {
         return cache.get(pageable);
     }
-
 
     public PostWrapper getPostsFromDatabase(Pageable pageable) {
         List<Post> posts = postRepository.findAll(pageable).getContent();

@@ -36,6 +36,10 @@ class PostController {
         return postService.createPost(postCreateDto);
     }
 
+    @Operation(summary = "Get posts with pagination", description = "Fetches a paginated list of posts")
+    @ApiResponse(responseCode = "200",
+            description = "Posts fetched successfully",
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = PostWrapper.class)))
     @GetMapping
     PostWrapper getPost(Pageable pageable) {
         return postService.getPostsFromDatabase(pageable);
