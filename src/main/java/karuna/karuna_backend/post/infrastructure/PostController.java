@@ -38,6 +38,6 @@ class PostController {
 
     @GetMapping
     PostWrapper getPost(Pageable pageable) {
-        return postService.getPost(pageable);
+        return postService.getPostsFromDatabase(pageable);
     }
 }
