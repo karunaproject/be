@@ -40,8 +40,11 @@ class PostController {
     @ApiResponse(responseCode = "200",
             description = "Posts fetched successfully",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = PostWrapper.class)))
+    @ApiResponse(
+            responseCode = "403",
+            description = "Forbidden: You don't have permission to access this resource")
     @GetMapping
     PostWrapper getPost(Pageable pageable) {
-        return postService.getPostsFromDatabase(pageable);
+        return postService.getPosts(pageable);
     }
 }
