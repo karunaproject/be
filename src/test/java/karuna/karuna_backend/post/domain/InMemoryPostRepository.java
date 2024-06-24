@@ -2,11 +2,13 @@ package karuna.karuna_backend.post.domain;
 
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
 
 import java.time.OffsetDateTime;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -174,6 +176,12 @@ class InMemoryPostRepository implements PostRepository {
 
     @Override
     public Page<Post> findAll(Pageable pageable) {
-        return null;
+        List<Post> sortedPosts = database.values().stream()
+                .sorted(Comparator.comparing(Post::getCreatedAt).reversed())
+                .toList();
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), soertedPosts.size());
+        List<Post> pagedPosts = sortedPosts.subList(start, end);
+        return new PageImpl<>(pagedPosts, pageable, sortedPosts.size());
     }
 }
