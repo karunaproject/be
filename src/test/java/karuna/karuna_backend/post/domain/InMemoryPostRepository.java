@@ -180,7 +180,7 @@ class InMemoryPostRepository implements PostRepository {
                 .sorted(Comparator.comparing(Post::getCreatedAt).reversed())
                 .toList();
         int start = (int) pageable.getOffset();
-        int end = Math.min((start + pageable.getPageSize()), soertedPosts.size());
+        int end = Math.min((start + pageable.getPageSize()), sortedPosts.size());
         List<Post> pagedPosts = sortedPosts.subList(start, end);
         return new PageImpl<>(pagedPosts, pageable, sortedPosts.size());
     }
