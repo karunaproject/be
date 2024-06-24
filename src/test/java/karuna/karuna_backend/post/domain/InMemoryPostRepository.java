@@ -177,7 +177,7 @@ class InMemoryPostRepository implements PostRepository {
     @Override
     public Page<Post> findAll(Pageable pageable) {
         List<Post> sortedPosts = database.values().stream()
-                .sorted(Comparator.comparing(Post::getCreatedAt).reversed())
+                .sorted(Comparator.comparing(Post::getID).reversed())
                 .toList();
         int start = (int) pageable.getOffset();
         int end = Math.min((start + pageable.getPageSize()), sortedPosts.size());
