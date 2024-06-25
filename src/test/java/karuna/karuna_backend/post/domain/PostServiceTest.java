@@ -28,12 +28,11 @@ class PostServiceTest {
         //when: When create a new post
         PostCreateDto postCreateDto = new PostCreateDto(Constants.BODY);
         PostDto postDto = postService.createPost(postCreateDto);
-        String username = AuthenticationUtil.getUsername();
         //then: Check if database give ID and correctly save post
         assertEquals(1L, postDto.id());
         assertNotNull(postDto.createdAt());
         assertEquals(Constants.BODY, postDto.body());
-        assertEquals(username, postDto.author());
+        assertEquals(Constants.USERNAME, postDto.author());
         SecurityContextHolder.clearContext();
     }
 
