@@ -25,7 +25,7 @@ class PostController {
 
     private final PostService postService;
 
-    @Operation(summary = "Create post", description = "Getting body from json (body of request) and principal from token and saving it to database as post with current date")
+    @Operation(summary = "Create post", description = "Getting body from json (body of request) and from token and saving it to database as post with current date")
     @ApiResponse(
             responseCode = "201",
             description = "Post content",
