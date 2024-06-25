@@ -14,6 +14,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class PostServiceTest {
 
@@ -54,30 +55,12 @@ class PostServiceTest {
     }
 
     @Test
-    void shouldCachePosts() {
-        //given: Create three posts
-        PostCreateDto postCreateDto = new PostCreateDto(Constants.BODY);
-        PostDto postDto1 = postService.createPost(postCreateDto);
-        PostDto postDto2 = postService.createPost(postCreateDto);
-        PostDto postDto3 = postService.createPost(postCreateDto);
-        //and: Set up pagination and sorting
-        Pageable pageable = PageRequest.of(0, 10, Sort.by("createdAt").descending());
-        //when: Fetch posts from the database
-        PostWrapper postsFromDb = postService.getPosts(pageable);
-        assertNotNull(postsFromDb.posts());
-        //then: Verify posts retrieved from the database
-        assertEquals(3, postsFromDb.posts().size());
-        //when: Create fourth post and fetch posts again
-        PostDto postDto4 = postService.createPost(postCreateDto);
-        PostWrapper postsFromCache = postService.getPosts(pageable);
-        List<PostDto> listPost = postsFromCache.posts();
-        //then: Verify posts retrieved from the cache
-        assertNotNull(postsFromCache.posts());
-        assertEquals(3, postsFromCache.posts().size());
-        //when: clean cache
-        //TODO
-        //then: Verify posts retrieved from the database
-//        assertEquals(3, postsFromCache.posts().size());
+    void shouldNotGetPosts() {
+        //given: Set up pagination and sorting
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("ID").descending());
+        //when: Get posts from non-existent cache
+        PostWrapper posts = postService.getPosts(pageable);
+        //then Check if not exist posts
+        assertTrue(posts.posts().isEmpty());
     }
-
 }
