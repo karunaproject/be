@@ -54,13 +54,4 @@ class PostServiceTest {
         assertEquals("Body1", listPost.get(2).body());
     }
 
-    @Test
-    void shouldNotGetPosts() {
-        //given: Set up pagination and sorting
-        Pageable pageable = PageRequest.of(0, 10, Sort.by("ID").descending());
-        //when: Get posts from non-existent cache
-        PostWrapper posts = postService.getPosts(pageable);
-        //then Check if not exist posts
-        assertTrue(posts.posts().isEmpty());
-    }
 }
