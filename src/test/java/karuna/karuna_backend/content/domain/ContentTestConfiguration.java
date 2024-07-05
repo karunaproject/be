@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 class ContentTestConfiguration {
 
-    private static final ContentRepository contentRepository = new InMemoryContentRepository();
+    private static final ContentRepository contentRepository = new MockContentRepository();
 
     static ContentService contentService() {
         return new ContentService(contentRepository);
