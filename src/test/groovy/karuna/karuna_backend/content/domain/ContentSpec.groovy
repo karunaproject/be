@@ -26,6 +26,7 @@ class ContentSpec extends Specification {
         def page = "Home"
         def key = "navigation.header"
         def value = "Welcome to my world!"
+
         and: "Add content page"
         def massContentDto = new MassContentDto(page,key,value)
         def request = new MassContentWrapperRequest(List.of(massContentDto))
