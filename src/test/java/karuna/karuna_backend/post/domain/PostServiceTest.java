@@ -6,6 +6,7 @@ import karuna.karuna_backend.post.dto.PostDto;
 import karuna.karuna_backend.utils.AuthenticationUtil;
 import karuna.karuna_backend.post.dto.PostWrapper;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.Page;
 import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,7 +15,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -56,13 +56,12 @@ class PostServiceTest {
         Pageable pageable = PageRequest.of(0, 10, Sort.by("ID").descending());
         //when: Fetch the posts
         PostWrapper posts = postService.getPosts(pageable);
-        List<PostDto> listPost = posts.posts();
+        Page<PostDto> pagePost = posts.posts();
         //then: Verify the results
-        assertNotNull(listPost);
-        assertEquals(3, listPost.size());
-        assertEquals("Body3", listPost.get(0).body());
-        assertEquals("Body2", listPost.get(1).body());
-        assertEquals("Body1", listPost.get(2).body());
+        assertNotNull(pagePost);
+        assertEquals(3, pagePost.getTotalElements());
+        assertEquals("Body3", pagePost.getContent().get(0).body());
+        assertEquals("Body2", pagePost.getContent().get(1).body());
+        assertEquals("Body1", pagePost.getContent().get(2).body());
     }
-
 }

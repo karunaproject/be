@@ -1,6 +1,6 @@
 package karuna.karuna_backend.post.dto;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
 
-public record PostWrapper(List<PostDto> posts) {
+public record PostWrapper(Page<PostDto> posts) {
 }
