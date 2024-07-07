@@ -7,13 +7,17 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import karuna.karuna_backend.post.domain.PostService;
 import karuna.karuna_backend.post.dto.PostCreateDto;
 import karuna.karuna_backend.post.dto.PostDto;
+import karuna.karuna_backend.post.dto.PostWrapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/posts")
@@ -30,5 +34,17 @@ class PostController {
     @ResponseStatus(HttpStatus.CREATED)
     PostDto createPost(@RequestBody PostCreateDto postCreateDto) {
         return postService.createPost(postCreateDto);
+    }
+
+    @Operation(summary = "Get posts with pagination", description = "Fetches a paginated list of posts")
+    @ApiResponse(responseCode = "200",
+            description = "Posts fetched successfully",
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = PostWrapper.class)))
+    @ApiResponse(
+            responseCode = "401",
+            description = "Unauthorized access")
+    @GetMapping
+    PostWrapper getPost(Pageable pageable) {
+        return postService.getPosts(pageable);
     }
 }
