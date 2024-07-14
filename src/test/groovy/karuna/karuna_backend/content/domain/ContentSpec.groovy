@@ -5,54 +5,37 @@ import karuna.karuna_backend.content.dto.MassContentWrapper
 import karuna.karuna_backend.content.dto.MassContentWrapperRequest
 import spock.lang.Specification
 
-class ContentSpec extends Specification {
+class ContentSpec extends Specification implements Constants {
 
-    def contentRepository = new MockContentRepository()
-
-    def contentService = new ContentService(contentRepository)
+    def contentService = ContentConfiguration.contentService()
 
     def "should not get content page" () {
-        given: "Set up field for content page"
-        def page = "Home"
+        when: "Get contents for not existing page"
+        def contentDto = contentService.getContentByPage(PAGE)
 
-        when:
-        def contentDto = contentService.getContentByPage(page)
-
-        then:
+        then: "Should not found contents"
         contentDto.contents().isEmpty()
     }
 
     def "should get content page" () {
-        given: "Set up fields for content page"
-        def page = "Home"
-        def key = "navigation.header"
-        def value = "Welcome to my world!"
-
-        and: "Add content page"
-        def massContentDto = new MassContentDto(page,key,value)
-        def request = new MassContentWrapperRequest(List.of(massContentDto))
+        given: "Add content with page $PAGE, key $KEY, value $VALUE"
+        def request = new MassContentWrapperRequest([new MassContentDto(PAGE,KEY,VALUE)])
         contentService.massAddContent(request)
 
-        when: "Get content for page: $page"
-        def contentDto = contentService.getContentByPage(page)
+        when: "Get content for page: $PAGE"
+        def contentDto = contentService.getContentByPage(PAGE)
 
-        then: "For key: $key content should have value: $value"
+        then: "For key: $KEY content should have value: $VALUE"
         !contentDto.contents().isEmpty()
-        contentDto.contents().get(key) == value
+        contentDto.contents().get(KEY) == VALUE
     }
 
     def "should not add content page" () {
-        given: "Set up fields for content page"
-        def page = "Home"
-        def key = "navigation.header"
-        def value = "Welcome to my world!"
-
-        and: "Add content page"
-        def massContentDto = new MassContentDto(page,key,value)
-        def request = new MassContentWrapperRequest(List.of(massContentDto))
+        given: "Add content page with page $PAGE, key $KEY, value $VALUE"
+        def request = new MassContentWrapperRequest([new MassContentDto(PAGE,KEY,VALUE)])
         contentService.massAddContent(request)
 
-        when: "Add content page again"
+        when: "Add content page again with same $request"
         MassContentWrapper massContentWrapper = contentService.massAddContent(request)
 
         then: "Invalid contents is not empty, so not save content page again"
@@ -61,14 +44,8 @@ class ContentSpec extends Specification {
     }
 
     def "should add content page" () {
-        given: "Set up fields for content page"
-        def page = "Home"
-        def key = "navigation.header"
-        def value = "Welcome to my world!"
-        def massContentDto = new MassContentDto(page,key,value)
-        def request = new MassContentWrapperRequest(List.of(massContentDto))
-
-        when: "Add content page"
+        when: "Add content page with page $PAGE, key $KEY, value $VALUE"
+        def request = new MassContentWrapperRequest([new MassContentDto(PAGE,KEY,VALUE)])
         MassContentWrapper massContentWrapper = contentService.massAddContent(request)
 
         then: "Valid contents is not empty, so save content page"
@@ -77,41 +54,26 @@ class ContentSpec extends Specification {
     }
 
     def "should update content page" () {
-        given: "Set up fields for add content page"
-        def page = "Home"
-        def key = "navigation.header"
-        def value = "Welcome to my world!"
-
-        and: "Add content page"
-        def massContentDto = new MassContentDto(page,key,value)
-        def request = new MassContentWrapperRequest(List.of(massContentDto))
+        given:  "Add content page with page $PAGE, key $KEY, value $VALUE"
+        def request = new MassContentWrapperRequest([new MassContentDto(PAGE,KEY,VALUE)])
         contentService.massAddContent(request)
 
-        and: "Set up fields for update content page"
-        value = "Get the fuck out from my world!"
-        massContentDto = new MassContentDto(page,key,value)
-        request = new MassContentWrapperRequest(List.of(massContentDto))
-
-        when: "Update content page"
+        when: "Update content page with page $PAGE, key $KEY by changing value"
+        def value = "Get the fuck out from my world!"
+        request = new MassContentWrapperRequest([new MassContentDto(PAGE,KEY,value)])
         MassContentWrapper massContentWrapper = contentService.massUpdateContent(request)
 
-        then: "Valid contents is not empty, so update content page"
+        then: "Valid update is success"
         !massContentWrapper.validContents().isEmpty()
         massContentWrapper.invalidContents().isEmpty()
-        massContentWrapper.validContents().get(0).key() == key
-        massContentWrapper.validContents().get(0).page() == page
+        massContentWrapper.validContents().get(0).key() == KEY
+        massContentWrapper.validContents().get(0).page() == PAGE
         massContentWrapper.validContents().get(0).valuePl() == value
     }
 
     def "should not update content page" () {
-        given: "Set up fields for add content page"
-        def page = "Home"
-        def key = "navigation.header"
-        def value = "Welcome to my world!"
-        def massContentDto = new MassContentDto(page,key,value)
-        def request = new MassContentWrapperRequest(List.of(massContentDto))
-
-        when: "Update content page"
+        when: "Update content page which not exists"
+        def request = new MassContentWrapperRequest([new MassContentDto(PAGE,KEY,VALUE)])
         MassContentWrapper massContentWrapper = contentService.massUpdateContent(request)
 
         then: "Invalid contents is not empty, so not update content page"
