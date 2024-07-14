@@ -2,7 +2,7 @@ package karuna.karuna_backend.content.domain;
 
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
-import karuna.karuna_backend.content.dto.ContentDTO;
+import karuna.karuna_backend.content.dto.ContentDto;
 import karuna.karuna_backend.content.dto.MassContentDto;
 import karuna.karuna_backend.content.dto.MassContentWrapper;
 import karuna.karuna_backend.content.dto.MassContentWrapperRequest;
@@ -21,15 +21,15 @@ import java.util.stream.Collectors;
 public class ContentService {
 
     private final ContentRepository contentRepository;
-    private final LoadingCache<String, ContentDTO> cache = Caffeine.newBuilder()
+    private final LoadingCache<String, ContentDto> cache = Caffeine.newBuilder()
             .expireAfterWrite(1, TimeUnit.HOURS)
             .build(this::getContentByPageFromDatabase);
 
-    public ContentDTO getContentByPage(String page) {
+    public ContentDto getContentByPage(String page) {
         return cache.get(page);
     }
 
-    private ContentDTO getContentByPageFromDatabase(String page) {
+    private ContentDto getContentByPageFromDatabase(String page) {
         List<Content> pages = contentRepository.findByPageIgnoreCaseOrPageNull(page);
         HashMap<String, String> allContent = new HashMap<>();
         pages.forEach(singlePage -> allContent.put(singlePage.getKey(), singlePage.getValuePl()));
