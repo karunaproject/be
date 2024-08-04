@@ -9,7 +9,6 @@ import karuna.karuna_backend.exception.dto.DataIntegrityErrorResponse;
 import karuna.karuna_backend.exception.dto.JwtErrorResponse;
 import karuna.karuna_backend.security.jwt.JwtConfig;
 import karuna.karuna_backend.security.jwt.JwtTokenService;
-import karuna.karuna_backend.security.jwt.JwtTokenServiceImpl;
 import karuna.karuna_backend.user.domain.UserService;
 import karuna.karuna_backend.user.dto.UserDTO;
 import karuna.karuna_backend.user.dto.authentication.LoginRequestDto;
