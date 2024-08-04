@@ -1,7 +1,5 @@
 package karuna.karuna_backend
 
-import org.springframework.security.core.context.SecurityContextHolder
-
 trait Constants {
 
     static final String PAGE = "HOME"
@@ -17,5 +15,8 @@ trait Constants {
     static final String USERNAME = "REVO"
     static final String ROLE_USER = "ROLE_USER"
     static final String TOKEN = "Bearer "
+
+    static final String CONTACT = "karol.wolny@mypetstory.pl"
+    static final String CUT_BODY = "Example bo"
 
 }
