@@ -1,6 +1,5 @@
 package karuna.karuna_backend.user.domain
 
-import karuna.karuna_backend.Constants
 import karuna.karuna_backend.security.jwt.JwtConfig
 import karuna.karuna_backend.security.jwt.JwtTokenServiceImpl
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
@@ -11,6 +10,7 @@ class UserConfiguration{
 
     private static final String SECRET_KEY = "sGkXqJf3chLX7T52V7kPOj+KSLPZBEyeU9HxniZb2Sw"
     private static final String TOKEN_PREFIX = "TOKEN_PREFIX"
+
     private static UserRepository userRepository = new MockUserRepository()
 
     static UserService userService() {
