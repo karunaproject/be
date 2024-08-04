@@ -10,7 +10,7 @@ import java.util.function.Function
 
 class MockUserRepository implements UserRepository {
 
-    Map<Long, User> database = [:]
+    private Map<Long, User> database = [:]
 
     @Override
     Optional<User> findByUsername(String username) {

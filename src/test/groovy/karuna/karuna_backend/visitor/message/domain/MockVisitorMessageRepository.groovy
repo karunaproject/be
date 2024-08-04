@@ -12,7 +12,7 @@ import java.util.function.Function
 
 class MockVisitorMessageRepository implements VisitorMessageRepository {
 
-    Map<Long,VisitorMessage> database = [:]
+    private Map<Long,VisitorMessage> database = [:]
 
     @Override
     Page<VisitorMessage> findAll(Pageable pageable) {

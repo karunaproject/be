@@ -7,10 +7,11 @@ import org.springframework.data.domain.Sort
 import org.springframework.data.repository.query.FluentQuery
 
 import java.util.function.Function
+import java.util.stream.Collectors
 
 class MockReceiverRepository implements ReceiverRepository{
 
-    Map<Long, Receiver> database = [:]
+    private Map<Long, Receiver> database = [:]
 
     @Override
     Receiver findByEmailIgnoreCase(String email) {
@@ -22,7 +23,12 @@ class MockReceiverRepository implements ReceiverRepository{
 
     @Override
     void deleteByEmailIgnoreCase(String email) {
-
+        Optional<Receiver> receiverOptional = database.values().stream()
+            .filter { it.email.equalsIgnoreCase(email) }
+            .findFirst()
+        if (receiverOptional.isPresent()) {
+            database.remove(receiverOptional.get())
+        }
     }
 
     @Override
@@ -87,7 +93,7 @@ class MockReceiverRepository implements ReceiverRepository{
 
     @Override
     <S extends Receiver> S save(S entity) {
-        Long id = database.size() + 1
+        Integer id = database.size() + 1
         entity.setId(id)
         database.put(id, entity)
         entity
@@ -140,12 +146,12 @@ class MockReceiverRepository implements ReceiverRepository{
 
     @Override
     void deleteAll() {
-
+        database = [:]
     }
 
     @Override
     List<Receiver> findAll(Sort sort) {
-        database.values()
+        database.values().stream().collect(Collectors.toList())
     }
 
     @Override
