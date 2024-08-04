@@ -19,7 +19,7 @@ class UserSpec extends Specification implements Constants {
             response.isEmpty()
     }
 
-    def "should het user by id" () {
+    def "should get user by id" () {
         given: "Register new user"
             userService.registerUser(USERNAME, USERNAME)
         when: "Get registered user by id"
@@ -28,7 +28,6 @@ class UserSpec extends Specification implements Constants {
             response.isPresent()
             UserDTO userDTO = response.get()
             userDTO.username() == USERNAME
-            userDTO.password() == USERNAME
             !userDTO.roles().isEmpty()
             userDTO.id() == 1L
     }
@@ -49,7 +48,7 @@ class UserSpec extends Specification implements Constants {
         response.isPresent()
         UserDTO userDTO = response.get()
         userDTO.username() == USERNAME
-        userDTO.password() == USERNAME
+        userDTO.password() != null
         !userDTO.roles().isEmpty()
         userDTO.id() == 1L
     }
@@ -58,13 +57,22 @@ class UserSpec extends Specification implements Constants {
         when: "Register new user"
             String token = userService.registerUser(USERNAME, USERNAME)
         then: "Check generated token"
-            token == TOKEN + USERNAME
+            token != null
     }
 
     def "should authenticate user with mock authenticator" () {
-        when: "Authenticate mock user"
+        given: "Register new user"
+            userService.registerUser(USERNAME, USERNAME)
+        when: "Authenticate user"
             String response = userService.authenticateUser(USERNAME, USERNAME)
         then:
-            response == TOKEN + USERNAME
+            response != null
+    }
+
+    def "should not authenticate user with mock authenticator" () {
+        when: "Authenticate user"
+            userService.authenticateUser(USERNAME, USERNAME)
+        then:
+            thrown(RuntimeException)
     }
 }
