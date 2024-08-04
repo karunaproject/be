@@ -11,6 +11,7 @@ import karuna.karuna_backend.exception.dto.JwtErrorResponse;
 import karuna.karuna_backend.exception.keys.JwtErrorKey;
 import karuna.karuna_backend.security.jwt.JwtConfig;
 import karuna.karuna_backend.security.jwt.JwtTokenService;
+import karuna.karuna_backend.security.jwt.JwtTokenServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
