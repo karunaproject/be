@@ -39,7 +39,7 @@ class UserSpec extends Specification implements Constants {
             response.isEmpty()
     }
 
-    def "should het user by username" () {
+    def "should get user by username" () {
         given: "Register new user"
         userService.registerUser(USERNAME, USERNAME)
         when: "Get registered user by username"
