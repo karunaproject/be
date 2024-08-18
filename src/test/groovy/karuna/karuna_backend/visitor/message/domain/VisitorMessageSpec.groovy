@@ -26,7 +26,7 @@ class VisitorMessageSpec extends Specification implements Constants{
     }
 
     def "should return empty page of messages" () {
-        when: "Get messages when databse is empty"
+        when: "Get messages when database is empty"
             VisitorMessageRequest request = new VisitorMessageRequest(PageRequest.of(0, 10), 10)
             VisitorMessageWrapper response = visitorMessageService.getMessages(request)
         then: "Check if returns empty page"
