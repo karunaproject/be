@@ -118,6 +118,7 @@ public class JwtTokenService {
      * @throws ExpiredJwtException if the JWT has expired.
      * @throws MalformedJwtException if the JWT is not correctly structured.
      */
+    
     public void verifyToken(String token) throws SignatureException, ExpiredJwtException, MalformedJwtException{
         //TODO: Implement -> refresh token logic. Refresh token should be used to extend normal token life time.
         //TODO: Implement -> Logout and blacklisting tokens, either way blacklist tokens in database or redis cache. Ideally use refresh tokens as blacklsited ones in order
@@ -144,17 +145,20 @@ public class JwtTokenService {
                 .getBody();
     }
 
+    
     public OffsetDateTime getExpirationDate(String token) {
         Date expirationDate = getAllClaims(token).getExpiration();
         return expirationDate.toInstant().atZone(TIME_ZONE).toOffsetDateTime();
     }
 
 
+    
     public String getSubject(String token) {
         return getAllClaims(token).getSubject();
     }
 
 
+    
     public List<String> getRoles(String token) {
         return getAllClaims(token).get("roles", List.class);
     }

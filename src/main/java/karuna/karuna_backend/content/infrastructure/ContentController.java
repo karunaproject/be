@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import karuna.karuna_backend.content.domain.ContentService;
-import karuna.karuna_backend.content.dto.ContentDTO;
+import karuna.karuna_backend.content.dto.ContentDto;
 import karuna.karuna_backend.content.dto.MassContentWrapper;
 import karuna.karuna_backend.content.dto.MassContentWrapperRequest;
 import karuna.karuna_backend.exception.dto.DataIntegrityErrorResponse;
@@ -28,9 +28,9 @@ class ContentController {
     @ApiResponse(
             responseCode = "200",
             description = "Content for page",
-            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ContentDTO.class)))
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ContentDto.class)))
     @GetMapping("/{page}")
-    ContentDTO getContentByPage(@PathVariable String page) {
+    ContentDto getContentByPage(@PathVariable String page) {
         return contentService.getContentByPage(page);
     }
 
